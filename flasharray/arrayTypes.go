@@ -1,4 +1,4 @@
-package purestorage
+package flasharray
 
 type console_lock struct {
 	console_lock	string
