@@ -33,6 +33,8 @@ type Client struct {
         Hosts           *HostService
         Hostgroups      *HostgroupService
 	Offloads	*OffloadService
+	Protectiongroups *ProtectiongroupService
+	Vgroups		*VgroupService
 }
 
 type supported struct {
@@ -110,6 +112,8 @@ func NewClient(target string, username string, password string, api_token string
         c.Hosts = &HostService{client: c}
         c.Hostgroups = &HostgroupService{client: c}
 	c.Offloads = &OffloadService{client:c}
+	c.Protectiongroups = &ProtectiongroupService{client: c}
+	c.Vgroups = &VgroupService{client: c}
 
         return c, err
 }
