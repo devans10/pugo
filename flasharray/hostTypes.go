@@ -14,10 +14,10 @@ type ConnectedVolume struct {
 
 type HostPgroup struct {
 	Name	string		`json:"name,omitempty"`
-	Pgroup	string		`json:"pgroup,omitempty"`
+	Pgroup	string		`json:"protection_group,omitempty"`
 }
 
-type HostConnections struct {
+type HostConnection struct {
         Name    string          `json:"name,omitempty"`
         wwn     []string        `json:"wwn,omitempty"`
         iqn     []string        `json:"iqn,omitempty"`

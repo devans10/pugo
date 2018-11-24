@@ -4,13 +4,13 @@ import (
 	"fmt"
 )
 
-type HostService struct {
+type HostgroupService struct {
 	client *Client
 }
 
-func (h *HostService) ConnectHost(host string, volume string, params map[string]string) (*ConnectedVolume, error) {
+func (h *HostgroupService) ConnectHostgroup(hgroup string, volume string, params map[string]string) (*ConnectedVolume, error) {
 
-        path := fmt.Sprintf("host/%s/volume/%s", host, volume)
+        path := fmt.Sprintf("hgroup/%s/volume/%s", hgroup, volume)
         req, err := h.client.NewRequest("POST", path, params, nil)
         m := &ConnectedVolume{}
         _, err = h.client.Do(req, m, false)
@@ -21,15 +21,15 @@ func (h *HostService) ConnectHost(host string, volume string, params map[string]
         return m, err
 }
 
-func (h *HostService) CreateHost(name string, params map[string]string) (*Host, error) {
+func (h *HostgroupService) CreateHostgroup(name string, params map[string]string) (*Hostgroup, error) {
 
-        path := fmt.Sprintf("host/%s", name)
+        path := fmt.Sprintf("hgroup/%s", name)
         req, err := h.client.NewRequest("POST", path, params, nil)
         if err != nil {
                 return nil, err
         }
 
-        m := &Host{}
+        m := &Hostgroup{}
         _, err = h.client.Do(req, m, false)
         if err != nil {
                 return nil, err
@@ -38,15 +38,15 @@ func (h *HostService) CreateHost(name string, params map[string]string) (*Host, 
         return m, err
 }
 
-func (h *HostService) DeleteHost(name string, params map[string]string) (*Host, error) {
+func (h *HostgroupService) DeleteHostgroup(name string, params map[string]string) (*Hostgroup, error) {
 
-        path := fmt.Sprintf("host/%s", name)
+        path := fmt.Sprintf("hgroup/%s", name)
         req, err := h.client.NewRequest("DELETE", path, params, nil)
         if err != nil {
                 return nil, err
         }
 
-        m := &Host{}
+        m := &Hostgroup{}
         _, err = h.client.Do(req, m, false)
         if err != nil {
                 return nil, err
@@ -55,9 +55,9 @@ func (h *HostService) DeleteHost(name string, params map[string]string) (*Host, 
         return m, err
 }
 
-func (h *HostService) DisonnectHost(host string, volume string, params map[string]string) (*ConnectedVolume, error) {
+func (h *HostgroupService) DisonnectHostgroup(hgroup string, volume string, params map[string]string) (*ConnectedVolume, error) {
 
-        path := fmt.Sprintf("host/%s/volume/%s", host, volume)
+        path := fmt.Sprintf("hgroup/%s/volume/%s", hgroup, volume)
         req, err := h.client.NewRequest("DELETE", path, params, nil)
         m := &ConnectedVolume{}
         _, err = h.client.Do(req, m, false)
@@ -68,15 +68,15 @@ func (h *HostService) DisonnectHost(host string, volume string, params map[strin
         return m, err
 }
 
-func (h *HostService) GetHost(name string, params map[string]string) (*Host, error) {
+func (h *HostgroupService) GetHostgroup(name string, params map[string]string) (*Hostgroup, error) {
 
-        path := fmt.Sprintf("host/%s", name)
+        path := fmt.Sprintf("hgroup/%s", name)
         req, err := h.client.NewRequest("GET", path, params, nil)
         if err != nil {
                 return nil, err
         }
 
-        m := &Host{}
+        m := &Hostgroup{}
         _, err = h.client.Do(req, m, false)
         if err != nil {
                 return nil, err
@@ -85,11 +85,11 @@ func (h *HostService) GetHost(name string, params map[string]string) (*Host, err
         return m, err
 }
 
-func (h *HostService) AddHost(host string, pgroup string, params map[string]string) (*HostPgroup, error) {
+func (h *HostgroupService) AddHostgroup(hgroup string, pgroup string, params map[string]string) (*HostgroupPgroup, error) {
 
-        path := fmt.Sprintf("host/%s/pgroup/%s", host, pgroup)
+        path := fmt.Sprintf("hgroup/%s/pgroup/%s", hgroup, pgroup)
         req, err := h.client.NewRequest("POST", path, params, nil)
-        m := &HostPgroup{}
+        m := &HostgroupPgroup{}
         _, err = h.client.Do(req, m, false)
         if err != nil {
                 return nil, err
@@ -98,11 +98,11 @@ func (h *HostService) AddHost(host string, pgroup string, params map[string]stri
         return m, err
 }
 
-func (h *HostService) RemoveHost(host string, pgroup string, params map[string]string) (*HostPgroup, error) {
+func (h *HostgroupService) RemoveHostgroup(hgroup string, pgroup string, params map[string]string) (*HostgroupPgroup, error) {
 
-        path := fmt.Sprintf("host/%s/pgroup/%s", host, pgroup)
+        path := fmt.Sprintf("hgroup/%s/pgroup/%s", hgroup, pgroup)
         req, err := h.client.NewRequest("DELETE", path, params, nil)
-        m := &HostPgroup{}
+        m := &HostgroupPgroup{}
         _, err = h.client.Do(req, m, false)
         if err != nil {
                 return nil, err
@@ -111,11 +111,11 @@ func (h *HostService) RemoveHost(host string, pgroup string, params map[string]s
         return m, err
 }
 
-func (h *HostService) ListHostConnections(host string, params map[string]string) ([]HostConnection, error) {
+func (h *HostgroupService) ListHostgroupConnections(hgroup string, params map[string]string) ([]HostgroupConnection, error) {
 
-        path := fmt.Sprintf("host/%s/volume", host)
+        path := fmt.Sprintf("hgroup/%s/volume", hgroup)
         req, err := h.client.NewRequest("GET", path, params, nil)
-        m := []HostConnection{}
+        m := []HostgroupConnection{}
         _, err = h.client.Do(req, &m, false)
         if err != nil {
                 return nil, err
@@ -124,11 +124,11 @@ func (h *HostService) ListHostConnections(host string, params map[string]string)
         return m, err
 }
 
-func (h *HostService) ListHosts(host string, params map[string]string) ([]Host, error) {
+func (h *HostgroupService) ListHostgroups(hgroup string, params map[string]string) ([]Hostgroup, error) {
 
-        path := fmt.Sprintf("host", host)
+        path := fmt.Sprintf("hgroup", hgroup)
         req, err := h.client.NewRequest("GET", path, params, nil)
-        m := []Host{}
+        m := []Hostgroup{}
         _, err = h.client.Do(req, &m, false)
         if err != nil {
                 return nil, err
@@ -137,10 +137,10 @@ func (h *HostService) ListHosts(host string, params map[string]string) ([]Host, 
         return m, err
 }
 
-func (h *HostService) RenameHost(host string, name string, params map[string]string) (*Host, error) {
+func (h *HostgroupService) RenameHostgroup(hgroup string, name string, params map[string]string) (*Hostgroup, error) {
 
         data := map[string]string{"name": name}
-        m, err := h.SetHost(host, params, data)
+        m, err := h.SetHostgroup(hgroup, params, data)
         if err != nil {
                 return nil, err
         }
@@ -148,15 +148,15 @@ func (h *HostService) RenameHost(host string, name string, params map[string]str
         return m, err
 }
 
-func (h *HostService) SetHost(name string, params map[string]string, data interface{}) (*Host, error) {
+func (h *HostgroupService) SetHostgroup(name string, params map[string]string, data interface{}) (*Hostgroup, error) {
 
-        path := fmt.Sprintf("host/%s", name)
+        path := fmt.Sprintf("hgroup/%s", name)
         req, err := h.client.NewRequest("PUT", path, params, data)
         if err != nil {
                 return nil, err
         }
 
-        m := &Host{}
+        m := &Hostgroup{}
         _, err = h.client.Do(req, m, false)
         if err != nil {
                 return nil, err
