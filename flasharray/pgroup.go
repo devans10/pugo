@@ -43,7 +43,7 @@ func (v *ProtectiongroupService) SendPgroupSnapshot(pgroup string, params map[st
 
         d := &data{}
         d.Action = "send"
-	pgroups []string{pgroup}
+	pgroups := []string{pgroup}
         d.Source = pgroups
         req, err := v.client.NewRequest("POST", "pgroup", params, d)
         if err != nil {
@@ -67,7 +67,7 @@ func (v *ProtectiongroupService) CreatePgroupSnapshots(pgroups []string, params 
 
         d := &data{}
         d.Snap = true
-        d.Source = volumes
+        d.Source = pgroups
         req, err := v.client.NewRequest("POST", "pgroup", params, d)
         if err != nil {
                 return nil, err
@@ -101,7 +101,7 @@ func (h *ProtectiongroupService) DestroyProtectiongroup(name string, params map[
 
 func (h *ProtectiongroupService) DisablePgroupReplication(pgroup string, params map[string]string) (*Protectiongroup, error) {
 
-        data := map[string]string{"replicate_enabled": false}
+        data := map[string]bool{"replicate_enabled": false}
         m, err := h.SetProtectiongroup(pgroup, params, data)
         if err != nil {
                 return nil, err
@@ -112,7 +112,7 @@ func (h *ProtectiongroupService) DisablePgroupReplication(pgroup string, params 
 
 func (h *ProtectiongroupService) EnablePgroupReplication(pgroup string, params map[string]string) (*Protectiongroup, error) {
 
-        data := map[string]string{"replicate_enabled": true}
+        data := map[string]bool{"replicate_enabled": true}
         m, err := h.SetProtectiongroup(pgroup, params, data)
         if err != nil {
                 return nil, err
@@ -123,7 +123,7 @@ func (h *ProtectiongroupService) EnablePgroupReplication(pgroup string, params m
 
 func (h *ProtectiongroupService) DisablePgroupSnapshots(pgroup string, params map[string]string) (*Protectiongroup, error) {
 
-        data := map[string]string{"snap_enabled": false}
+        data := map[string]bool{"snap_enabled": false}
         m, err := h.SetProtectiongroup(pgroup, params, data)
         if err != nil {
                 return nil, err
@@ -134,7 +134,7 @@ func (h *ProtectiongroupService) DisablePgroupSnapshots(pgroup string, params ma
 
 func (h *ProtectiongroupService) EnablePgroupSnapshots(pgroup string, params map[string]string) (*Protectiongroup, error) {
 
-        data := map[string]string{"snap_enabled": true}
+        data := map[string]bool{"snap_enabled": true}
         m, err := h.SetProtectiongroup(pgroup, params, data)
         if err != nil {
                 return nil, err
@@ -145,7 +145,8 @@ func (h *ProtectiongroupService) EnablePgroupSnapshots(pgroup string, params map
 
 func (h *ProtectiongroupService) EradicateProtectiongroup(pgroup string, params map[string]string) (*Protectiongroup, error) {
 
-        data := map[string]string{"eradicate": true}
+        data := map[string]bool{"eradicate": true}
+	path := fmt.Sprintf("pgroup/%s", pgroup)
 	req, err := h.client.NewRequest("DELETE", path, params, data)
         if err != nil {
                 return nil, err
@@ -181,8 +182,7 @@ func (h *ProtectiongroupService) GetProtectiongroup(name string, params map[stri
 
 func (h *ProtectiongroupService) ListProtectiongroups(params map[string]string) ([]Protectiongroup, error) {
 
-        path := fmt.Sprintf("pgroup", pgroup)
-        req, err := h.client.NewRequest("GET", path, params, nil)
+        req, err := h.client.NewRequest("GET", "pgroup", params, nil)
         m := []Protectiongroup{}
         _, err = h.client.Do(req, &m, false)
         if err != nil {

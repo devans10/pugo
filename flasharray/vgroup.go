@@ -45,8 +45,8 @@ func (h *VgroupService) DestroyVgroup(name string, params map[string]string) (*V
 
 func (h *VgroupService) EradicateVgroup(vgroup string, params map[string]string) (*Vgroup, error) {
 
-        data := map[string]string{"eradicate": true}
-	path := fmt.Sprintf("vgroup/%s", name)
+        data := map[string]bool{"eradicate": true}
+	path := fmt.Sprintf("vgroup/%s", vgroup)
 	req, err := h.client.NewRequest("DELETE", path, params, data)
         if err != nil {
                 return nil, err
@@ -82,8 +82,7 @@ func (h *VgroupService) GetVgroup(name string, params map[string]string) (*Vgrou
 
 func (h *VgroupService) ListVgroups(params map[string]string) ([]Vgroup, error) {
 
-        path := fmt.Sprintf("vgroup", vgroup)
-        req, err := h.client.NewRequest("GET", path, params, nil)
+        req, err := h.client.NewRequest("GET", "vgroup", params, nil)
         m := []Vgroup{}
         _, err = h.client.Do(req, &m, false)
         if err != nil {
