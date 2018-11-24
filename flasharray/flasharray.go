@@ -30,7 +30,7 @@ type Client struct {
 
 	Array		*ArrayService
 	Volumes		*VolumeService
-        //Hosts           *HostService
+        Hosts           *HostService
         //Hostgroups      *HostgroupService
 }
 
@@ -106,7 +106,7 @@ func NewClient(target string, username string, password string, api_token string
 
 	c.Array = &ArrayService{client: c}
 	c.Volumes = &VolumeService{client: c}
-        //c.Hosts = &HostService{client: c}
+        c.Hosts = &HostService{client: c}
         //c.Hostgroups = &HostgroupService{client: c}
 
         return c, err
