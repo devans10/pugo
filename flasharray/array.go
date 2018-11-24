@@ -1,9 +1,5 @@
 package flasharray
 
-import (
-        "log"
-)
-
 type ArrayService struct {
         client *Client
 }
@@ -11,7 +7,7 @@ type ArrayService struct {
 func (v *ArrayService) set_console_lock(b bool) (*console_lock, error) {
 
 	data := map[string]bool{"enabled": b}
-	req, err := v.NewRequest("PUT", "array/console_lock", nil, data)
+	req, err := v.client.NewRequest("PUT", "array/console_lock", nil, data)
         if err != nil {
                 return nil, err
         }
@@ -22,7 +18,7 @@ func (v *ArrayService) set_console_lock(b bool) (*console_lock, error) {
                 return nil, err
         }
 
-        return &m, err
+        return m, err
 }
 
 func (v *ArrayService) enable_console_lock() error {
@@ -43,9 +39,9 @@ func (v *ArrayService) disable_console_lock() error {
         return nil
 }
 
-func (v *ArrayService) get_console_lock() (*console_lock, err) {
+func (v *ArrayService) get_console_lock() (*console_lock, error) {
 
-	req, err := v.NewRequest("GET", "array/console_lock", nil, nil)
+	req, err := v.client.NewRequest("GET", "array/console_lock", nil, nil)
         if err != nil {
                 return nil, err
         }
@@ -56,12 +52,12 @@ func (v *ArrayService) get_console_lock() (*console_lock, err) {
                 return nil, err
         }
 
-        return &m, err
+        return m, err
 }
 
 func (v *ArrayService) Get(params map[string]string) (*Array, error) {
 
-	req, err := v.NewRequest("GET", "array", params, nil)
+	req, err := v.client.NewRequest("GET", "array", params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -72,12 +68,12 @@ func (v *ArrayService) Get(params map[string]string) (*Array, error) {
 		return nil, err
 	}
 
-	return &m, err
+	return m, err
 }
 
 func (v *ArrayService) Set(params map[string]string) (*Array, error) {
 
-        req, err := v.NewRequest("PUT", "array", params, nil)
+        req, err := v.client.NewRequest("PUT", "array", params, nil)
         if err != nil {
                 return nil, err
         }
@@ -88,12 +84,12 @@ func (v *ArrayService) Set(params map[string]string) (*Array, error) {
                 return nil, err
         }
 
-        return &m, err
+        return m, err
 }
 
 func (v *ArrayService) Rename(name string) (*Array, error) {
 
 	params := map[string]string{"name": name}
 	m, err := v.Set(params)
-        return &m, err
+        return m, err
 }

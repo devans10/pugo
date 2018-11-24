@@ -12,6 +12,7 @@ import (
 	"net/http/cookiejar"
 	"net/url"
 	"strings"
+	"time"
 )
 
 var library_supported_versions = [...]string {"1.0","1.1","1.2","1.3","1.4","1.5","1.6","1.7","1.8","1.9","1.10","1.11","1.12","1.13","1.14","1.15","1.16"}
@@ -28,13 +29,13 @@ type Client struct {
 	client		*http.Client
 
 	Array		*ArrayService
-	//Vols            *VolService
+	Volumes		*VolumeService
         //Hosts           *HostService
         //Hostgroups      *HostgroupService
 }
 
-type supported_versions struct {
-        versions        []string
+type supported struct {
+	Versions        []string		`json:"version"`
 }
 
 type auth struct {
@@ -42,7 +43,7 @@ type auth struct {
 }
 
 func NewClient(target string, username string, password string, api_token string,
-               rest_version string, verify_https bool, ssl_cert string,
+               rest_version string, verify_https bool, ssl_cert bool,
                user_agent string, request_kwargs map[string]string) (*Client, error) {
 
 	if api_token == "" && (username == "" && password == "") {
@@ -52,38 +53,40 @@ func NewClient(target string, username string, password string, api_token string
 
 	if api_token != "" && (username != "" && password != "") {
 		err := errors.New("Specify only API token or both username and password.")
+		return nil, err
 	}
 
 	if request_kwargs == nil {
 		request_kwargs = make(map[string]string)
 	}
 
-	elem, ok := request_kwargs["verify"]
+	_, ok := request_kwargs["verify"]
 	if !ok {
 		if ssl_cert && verify_https {
-			request_kwargs["verify"] = ssl_cert
+			request_kwargs["verify"] = "false"
 		} else {
-			request_kwargs["verify"] = verify_https
+			request_kwargs["verify"] = "true"
 		}
 	}
 
 	if rest_version != "" {
 		err := checkRestVersion(rest_version, target)
 		if err != nil {
-			return err
+			return nil, err
 		}
 	} else {
-		rest_verion, err := chooseRestVersion(target)
+		r, err := chooseRestVersion(target)
 		if err != nil {
-			return err
+			return nil, err
 		}
+		rest_version = r
 	}
 
 	cookieJar, _ := cookiejar.New(nil)
 	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: verify_https},
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
-	c := &Client{Target: target, Username: username, Password: password, Api_token: api_token, Rest_version: rest_version, Request_kwargs}
+	c := &Client{Target: target, Username: username, Password: password, Api_token: api_token, Rest_version: rest_version, Request_kwargs: request_kwargs}
 	c.client = &http.Client{Transport: tr, Jar: cookieJar}
 
 	if api_token == "" {
@@ -102,27 +105,26 @@ func NewClient(target string, username string, password string, api_token string
         }
 
 	c.Array = &ArrayService{client: c}
-	//c.Vols = &VolService{client: c}
+	c.Volumes = &VolumeService{client: c}
         //c.Hosts = &HostService{client: c}
         //c.Hostgroups = &HostgroupService{client: c}
 
         return c, err
 }
 
-func (pc *Client) NewRequest(method string, path string, params map[string]string, data interface{}) (*http.Request, error) {
+func (c *Client) NewRequest(method string, path string, params map[string]string, data interface{}) (*http.Request, error) {
 
+	var fpath string
 	if strings.HasPrefix(path, "http") {
-                baseUrl, err := url.Parse(path)
-                if err != nil {
-                        return nil, err
-                }
+		fpath = path
         } else {
-                baseUrl, err := url.Parse(c.formatPath(path))
-                if err != nil {
-                        return nil, err
-                }
+		fpath = c.formatPath(path)
         }
 
+	baseUrl, err := url.Parse(fpath)
+	if err != nil {
+		return nil, err
+	}
         if params != nil {
                 ps := url.Values{}
                 for k, v := range params {
@@ -132,9 +134,15 @@ func (pc *Client) NewRequest(method string, path string, params map[string]strin
                 baseUrl.RawQuery = ps.Encode()
         }
         req, err := http.NewRequest(method, baseUrl.String(), nil)
+	if err != nil {
+                return nil, err
+        }
         if data != nil {
                 jsonString, _ := json.Marshal(data)
                 req, err = http.NewRequest(method, baseUrl.String(), bytes.NewBuffer(jsonString))
+		if err != nil {
+			return nil, err
+		}
         }
 
         req.Header.Add("content-type", "application/json; charset=utf-8")
@@ -155,7 +163,7 @@ func (pc *Client) Do(req *http.Request, v interface{}, reestablish_session bool)
         }
         defer resp.Body.Close()
 
-        log.Printf("[INFO] Response code: %v", resp.Status)
+        //log.Printf("[INFO] Response code: %v", resp.Status)
 
         if err := validateResponse(resp); err != nil {
                 return resp, err
@@ -187,26 +195,19 @@ func validateResponse(r *http.Response) error {
 }
 
 
-func checkRestVersion(v string, t string) (bool, error) {
+func checkRestVersion(v string, t string) error {
 
 	checkUrl, err := url.Parse("https://" + t + "/api/api_version")
 	if err != nil {
 		return err
 	}
-	r, err := http.Get(checkUrl.String())
-	if err != nil {
-		return err
-	}
-
-	s := supported_versions{}
-	defer r.Body.Close()
-
-	json.NewDecoder(r.Body).Decode(s)
+	s := &supported{}
+	err = getJson(checkUrl.String(), s)
 
 	var array_supported bool
-	for _, n := range s.versions {
+	for _, n := range s.Versions {
 		if v == n {
-			array_supported := true
+			array_supported = true
 		}
 	}
 	if !array_supported {
@@ -217,7 +218,7 @@ func checkRestVersion(v string, t string) (bool, error) {
 	var library_supported bool
         for _, n := range library_supported_versions {
                 if v == n {
-                        library_supported := true
+                        library_supported = true
                 }
         }
         if !library_supported {
@@ -231,27 +232,23 @@ func chooseRestVersion(t string) (string, error) {
 
 	checkUrl, err := url.Parse("https://" + t + "/api/api_version")
         if err != nil {
-                return err
+                return "", err
         }
-        r, err := http.Get(checkUrl.String())
-        if err != nil {
-                return err
-        }
-
-        s := supported_versions{}
-        defer r.Body.Close()
-
-        json.NewDecoder(r.Body).Decode(s)
+	s := &supported{}
+	err = getJson(checkUrl.String(), s)
+	if err != nil {
+		return "", err
+	}
 
 	for i := len(library_supported_versions)-1; i >= 0; i-- {
-		for _, n := range s.versions {
-			if library_supported_versions[i] == n {
-				return n, nil
+		for n := len(s.Versions)-1; n >= 0; n-- {
+			if library_supported_versions[i] == s.Versions[n] {
+				return s.Versions[n], nil
 			}
 		}
         }
         err = errors.New("[ERROR] Array is incompatible with all supported REST API versions")
-        return nil, err
+        return "", err
 }
 
 func (c *Client) getApiToken(uri string, token interface{}) error {
@@ -259,7 +256,7 @@ func (c *Client) getApiToken(uri string, token interface{}) error {
         if err != nil {
                 return err
         }
-        data := map[string]string{"username": c.User, "password": c.Password}
+        data := map[string]string{"username": c.Username, "password": c.Password}
         jsonValue, _ := json.Marshal(data)
         req, err := http.NewRequest("POST", authUrl.String(), bytes.NewBuffer(jsonValue))
         resp, err := c.client.Do(req)
@@ -272,9 +269,23 @@ func (c *Client) getApiToken(uri string, token interface{}) error {
 }
 
 func (c *Client) SetToken(token string) {
-        c.ApiToken = token
+        c.Api_token = token
 }
 
-func (c *Client) formatPath(path) string {
+func (c *Client) formatPath(path string) string {
 	return fmt.Sprintf("https://%s/api/%s/%s", c.Target, c.Rest_version, path)
+}
+
+func getJson(uri string, target interface{}) error {
+	tr := &http.Transport{
+                TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+        }
+	var c = &http.Client{Timeout: 10 * time.Second, Transport: tr}
+	r, err := c.Get(uri)
+	if err != nil {
+		return err
+	}
+	defer r.Body.Close()
+
+	return json.NewDecoder(r.Body).Decode(target)
 }
