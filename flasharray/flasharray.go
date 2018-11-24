@@ -32,6 +32,7 @@ type Client struct {
 	Volumes		*VolumeService
         Hosts           *HostService
         Hostgroups      *HostgroupService
+	Offloads	*OffloadService
 }
 
 type supported struct {
@@ -108,6 +109,7 @@ func NewClient(target string, username string, password string, api_token string
 	c.Volumes = &VolumeService{client: c}
         c.Hosts = &HostService{client: c}
         c.Hostgroups = &HostgroupService{client: c}
+	c.Offloads = &OffloadService{client:c}
 
         return c, err
 }
