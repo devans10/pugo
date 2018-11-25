@@ -42,7 +42,7 @@ type supported struct {
 }
 
 type auth struct {
-        token           string  `json:"api_token,omitempty"`
+        Token           string  `json:"api_token,omitempty"`
 }
 
 func NewClient(target string, username string, password string, api_token string,
@@ -93,10 +93,7 @@ func NewClient(target string, username string, password string, api_token string
 	c.client = &http.Client{Transport: tr, Jar: cookieJar}
 
 	if api_token == "" {
-                t := &auth{}
-                tokenUrl := c.formatPath("auth/apitoken")
-                c.getApiToken(tokenUrl, t)
-                c.SetToken(t.token)
+                c.getApiToken()
         }
 
         authUrl := c.formatPath("auth/session")
@@ -257,25 +254,32 @@ func chooseRestVersion(t string) (string, error) {
         return "", err
 }
 
-func (c *Client) getApiToken(uri string, token interface{}) error {
-        authUrl, err := url.Parse(uri)
+func (c *Client) getApiToken() error {
+
+	authUrl, err := url.Parse(c.formatPath("auth/apitoken"))
         if err != nil {
                 return err
         }
+
         data := map[string]string{"username": c.Username, "password": c.Password}
         jsonValue, _ := json.Marshal(data)
+	fmt.Println(bytes.NewBuffer(jsonValue))
         req, err := http.NewRequest("POST", authUrl.String(), bytes.NewBuffer(jsonValue))
-        resp, err := c.client.Do(req)
+	req.Header.Add("content-type", "application/json; charset=utf-8")
+        req.Header.Add("Accept", "application/json")
+        req.Header.Set("Content-Type", "application/json")
+
+	r, err := c.client.Do(req)
         if err != nil {
                 return err
         }
-        defer req.Body.Close()
+        defer r.Body.Close()
+	t := &auth{}
+	err = json.NewDecoder(r.Body).Decode(t)
+	fmt.Println(t)
+	c.Api_token = t.Token
 
-        return json.NewDecoder(resp.Body).Decode(token)
-}
-
-func (c *Client) SetToken(token string) {
-        c.Api_token = token
+	return err
 }
 
 func (c *Client) formatPath(path string) string {
