@@ -1,3 +1,13 @@
+// Copyright 2018 Dave Evans. All rights reserved.
+// Use of this source code is governed by a MIT
+// license that can be found in the LICENSE file.
+
+// Package flasharray is designed to provide a simple interface for 
+// issuing commands to a Pure Storage Flash Array using a REST API. 
+// It communicates with the array using the golang http library, 
+// and returns the data into types defined within the library.
+// This is not designed to be a standalone program. 
+// It is just meant to provide functions and communication within another program 
 package flasharray
 
 import (
@@ -15,8 +25,10 @@ import (
 	"time"
 )
 
-var library_supported_versions = [...]string {"1.0","1.1","1.2","1.3","1.4","1.5","1.6","1.7","1.8","1.9","1.10","1.11","1.12","1.13","1.14","1.15","1.16"}
+// supported_rest_versions is used to negotiate the API version to use
+var supported_rest_versions = [...]string {"1.0","1.1","1.2","1.3","1.4","1.5","1.6","1.7","1.8","1.9","1.10","1.11","1.12","1.13","1.14","1.15","1.16"}
 
+// Type Client represents a Pure Storage FlashArray and exposes administrative APIs.
 type Client struct {
 	Target		string
 	Username	string
@@ -37,13 +49,34 @@ type Client struct {
 	Vgroups		*VgroupService
 }
 
+// Type supported is used for retrieving the support API versions from the Flash Array
 type supported struct {
 	Versions        []string		`json:"version"`
 }
 
+// Type auth is used to for the API token used in API authentication
 type auth struct {
         Token           string  `json:"api_token,omitempty"`
 }
+
+// NewClient returns a Client struct used to call the administrative functions.
+//
+// target   	IP address or domain name of the target array's management interface.
+// username	Username to connect to the array
+// password	Password used to connect to the array
+// api_token	API token used to connect to the array
+//
+// The API Token is always used to connect to the REST API.  If username and password
+// are provided, then they are used to retrieve the API token for that user before
+// the HTTP session is started.  Either api_token or username and password are 
+// required. If neither or both are provided, then an error is returned.
+//
+// rest_version	The REST API version to use for the the session.  If not provied, 
+// 		the version will be negotiated between the library and the array.
+// verify_https	A bool used to set whether SSL host verification should be performed.
+// ssl_cert	Path to SSL certificate or CA Bundle file. Ignored if verify_https=False.
+// user_agent	String to be used as the HTTP User-Agent for requests.
+// request_kwargs	A map of keyword arguments that we will pass into the the call. 
 
 func NewClient(target string, username string, password string, api_token string,
                rest_version string, verify_https bool, ssl_cert bool,
@@ -219,7 +252,7 @@ func checkRestVersion(v string, t string) error {
 	}
 
 	var library_supported bool
-        for _, n := range library_supported_versions {
+        for _, n := range supported_rest_versions {
                 if v == n {
                         library_supported = true
                 }
@@ -243,9 +276,9 @@ func chooseRestVersion(t string) (string, error) {
 		return "", err
 	}
 
-	for i := len(library_supported_versions)-1; i >= 0; i-- {
+	for i := len(supported_rest_versions)-1; i >= 0; i-- {
 		for n := len(s.Versions)-1; n >= 0; n-- {
-			if library_supported_versions[i] == s.Versions[n] {
+			if supported_rest_versions[i] == s.Versions[n] {
 				return s.Versions[n], nil
 			}
 		}
