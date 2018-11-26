@@ -77,7 +77,6 @@ type auth struct {
 // ssl_cert	Path to SSL certificate or CA Bundle file. Ignored if verify_https=False.
 // user_agent	String to be used as the HTTP User-Agent for requests.
 // request_kwargs	A map of keyword arguments that we will pass into the the call. 
-
 func NewClient(target string, username string, password string, api_token string,
                rest_version string, verify_https bool, ssl_cert bool,
                user_agent string, request_kwargs map[string]string) (*Client, error) {
@@ -148,6 +147,15 @@ func NewClient(target string, username string, password string, api_token string
         return c, err
 }
 
+
+// NewRequest builds and returns a new HTTP request object.
+//
+// method	This is the HTTP method to be used, i.e. GET, PUT, POST, or DELETE
+// path		String of the API URI path to be called.
+// params	A map of key value pairs that will be added to the query string of the URL
+// data		The data body to be passed in the HTTP request. This will be converted to JSON, 
+//		then added to the request as bytes.
+//
 func (c *Client) NewRequest(method string, path string, params map[string]string, data interface{}) (*http.Request, error) {
 
 	var fpath string
@@ -191,6 +199,13 @@ func (c *Client) NewRequest(method string, path string, params map[string]string
         return req, err
 }
 
+// Do is the client function that performs the HTTP request.
+// req	The HTTP request object to be executed.
+// v	The data object that will be populated and returned. i.e. Volume struct
+// reestablish_session	A bool that states if the session should be reestablished prior to execution.
+//			This functionality is NOT implemented yet.  By default the Go HTTP library
+//			does not set a timeout, I need to set this implicitly.
+//			However, the array will timeout the session after 30 minutes.
 func (pc *Client) Do(req *http.Request, v interface{}, reestablish_session bool) (*http.Response, error) {
         resp, err := pc.client.Do(req)
         if err != nil {
@@ -209,6 +224,8 @@ func (pc *Client) Do(req *http.Request, v interface{}, reestablish_session bool)
         return resp, err
 
 }
+
+// decodeResponse function reads the http response body into an interface.
 func decodeResponse(r *http.Response, v interface{}) error {
         if v == nil {
                 return fmt.Errorf("nil interface provided to decodeResponse")
@@ -220,6 +237,10 @@ func decodeResponse(r *http.Response, v interface{}) error {
         return err
 }
 
+// validateResponse checks that the http response is within the 200 range.
+// Some functionality needs to be added here to check for some specific errors,
+// and probably add the equivlents to PureError and PureHTTPError from the Python 
+// REST client.
 func validateResponse(r *http.Response) error {
         if c := r.StatusCode; 200 <= c && c <= 299 {
                 return nil
@@ -230,7 +251,8 @@ func validateResponse(r *http.Response) error {
         return fmt.Errorf("Response code: %d, ResponeBody: %s", r.StatusCode, bodyString)
 }
 
-
+// checkRestVersion will check that the specified rest_version is supported
+// by the Flash Array, and the library.
 func checkRestVersion(v string, t string) error {
 
 	checkUrl, err := url.Parse("https://" + t + "/api/api_version")
@@ -264,6 +286,8 @@ func checkRestVersion(v string, t string) error {
 	return nil
 }
 
+// chooseRestVersion will negotiate the highest REST API version supported by 
+// the library and the flash array
 func chooseRestVersion(t string) (string, error) {
 
 	checkUrl, err := url.Parse("https://" + t + "/api/api_version")
@@ -287,6 +311,8 @@ func chooseRestVersion(t string) (string, error) {
         return "", err
 }
 
+// getApiToken retrieved the API token for the given user.  The API token
+// is then used for all http authentication.
 func (c *Client) getApiToken() error {
 
 	authUrl, err := url.Parse(c.formatPath("auth/apitoken"))
@@ -315,10 +341,16 @@ func (c *Client) getApiToken() error {
 	return err
 }
 
+// formatPath returns the formated string to be used for the base URL in 
+// all API calls/
 func (c *Client) formatPath(path string) string {
 	return fmt.Sprintf("https://%s/api/%s/%s", c.Target, c.Rest_version, path)
 }
 
+// getJson is just a helper function that creates and retrieves information
+// from the flash array before the actual session is established.
+// Right now, its just grabbing the supported API versions.  I should
+// probably find a more graceful way to accomplish this.
 func getJson(uri string, target interface{}) error {
 	tr := &http.Transport{
                 TLSClientConfig: &tls.Config{InsecureSkipVerify: true},

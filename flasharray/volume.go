@@ -8,6 +8,9 @@ type VolumeService struct {
 	client *Client
 }
 
+// function SetVolume is a helper function that sets the parameter passed in the data interface
+// of the volume in the name argument.
+// A Volume object is returned with the new values.
 func (v *VolumeService) SetVolume(name string, params map[string]string, data interface{}) (*Volume, error) {
 
 	path := fmt.Sprintf("volume/%s", name)
@@ -25,6 +28,7 @@ func (v *VolumeService) SetVolume(name string, params map[string]string, data in
         return m, err
 }
 
+// CreateSnapshot function creates a volume snapshot of the volume passed in the argument.
 func (v *VolumeService) CreateSnapshot(volume string, params map[string]string) (*Volume, error) {
 	volumes := []string{volume}
 	m, err := v.CreateSnapshots(volumes, nil)
@@ -35,6 +39,8 @@ func (v *VolumeService) CreateSnapshot(volume string, params map[string]string) 
 	return &m[0], err
 }
 
+// CreateSnapshosts function will create a snapshot of all the volumes passed in the volumes slice.
+// an array of volume objects is returned.
 func (v *VolumeService) CreateSnapshots(volumes []string, params map[string]string) ([]Volume, error) {
 	type data struct {
 		Snap	bool		`json:"snap"`
@@ -58,6 +64,19 @@ func (v *VolumeService) CreateSnapshots(volumes []string, params map[string]stri
         return m, err
 }
 
+// CreateVolume function will create a volume of the given size.  The size is a string with a number and
+// a suffix representing the size.
+// Accepted Suffixes
+//        ====== ======== ======
+//        Suffix Size     Bytes
+//        ====== ======== ======
+//        S      Sector   (2^9)
+//        K      Kilobyte (2^10)
+//        M      Megabyte (2^20)
+//        G      Gigabyte (2^30)
+//        T      Terabyte (2^40)
+//        P      Petabyte (2^50)
+//        ====== ======== ======
 func (v *VolumeService) CreateVolume(name string, size string, params map[string]string) (*Volume, error) {
 
 	path := fmt.Sprintf("volume/%s", name)
