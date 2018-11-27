@@ -139,7 +139,7 @@ func (n *NetworkService) DeleteSubnet(subnet string, params map[string]string) (
 func (n *NetworkService) DisableSubnet(subnet string, params map[string]string) (*Subnet, error) {
 
         data := map[string]bool{"enabled": false}
-        m, err := n.SetNetworkInterface(subnet, params, data)
+        m, err := n.SetSubnet(subnet, params, data)
         if err != nil {
                 return nil, err
         }
@@ -153,7 +153,7 @@ func (n *NetworkService) DisableSubnet(subnet string, params map[string]string) 
 func (n *NetworkService) EnableSubnet(subnet string, params map[string]string) (*Subnet, error) {
 
         data := map[string]bool{"enabled": true}
-        m, err := n.SetNetworkInterface(subnet, params, data)
+        m, err := n.SetSubnet(subnet, params, data)
         if err != nil {
                 return nil, err
         }
@@ -180,7 +180,7 @@ func (n *NetworkService) GetSubnet(subnet string) (*Subnet, error) {
 }
 
 // List Subnets
-func (n *NetworkService) ListSubnets() ([]Subnets, error) {
+func (n *NetworkService) ListSubnets() ([]Subnet, error) {
 
         req, err := n.client.NewRequest("GET", "subnet", nil, nil)
         if err != nil {
@@ -203,7 +203,7 @@ func (n *NetworkService) ListSubnets() ([]Subnets, error) {
 func (n *NetworkService) RenameSubnet(subnet string, name string, params map[string]string) (*Subnet, error) {
 
         data := map[string]string{"name": name}
-        m, err := n.SetNetworkInterface(subnet, params, data)
+        m, err := n.SetSubnet(subnet, params, data)
         if err != nil {
                 return nil, err
         }

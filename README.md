@@ -22,3 +22,8 @@ go get github.com/devans10/go-purestorage/flasharray
 
 # Documentation
 https://godoc.org/github.com/devans10/go-purestorage/flasharray
+
+# Testing
+```
+go test github.com/devans10/go-purestorage/tests
+```
