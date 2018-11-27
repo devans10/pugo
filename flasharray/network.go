@@ -269,3 +269,55 @@ func (n *NetworkService) DeleteVlanInterface(iface string, params map[string]str
         return m, err
 }
 
+// Get DNS settings
+func (n *NetworkService) GetDNS() (*DNS, error) {
+
+        req, err := n.client.NewRequest("GET", "dns", nil, nil)
+        if err != nil {
+                return nil, err
+        }
+
+        m := &DNS{}
+        _, err = n.client.Do(req, m, false)
+        if err != nil {
+                return nil, err
+        }
+
+        return m, err
+}
+
+// Set DNS settings
+func (n *NetworkService) SetDNS(params map[string]string) (*DNS, error) {
+
+        req, err := n.client.NewRequest("PUT", "dns", params, nil)
+        if err != nil {
+                return nil, err
+        }
+
+        m := &DNS{}
+        _, err = n.client.Do(req, m, false)
+        if err != nil {
+                return nil, err
+        }
+
+        return m, err
+}
+
+// List ports
+func (n *NetworkService) ListPorts(params map[string]string) ([]Port, error) {
+
+        req, err := n.client.NewRequest("GET", "port", params, nil)
+        if err != nil {
+                return nil, err
+        }
+
+        m := []Port{}
+        _, err = n.client.Do(req, &m, false)
+        if err != nil {
+                return nil, err
+        }
+
+        return m, err
+}
+
+

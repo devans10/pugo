@@ -22,3 +22,11 @@ type VlanInterface struct {
 	Enabled bool	`json:"enabled"`
         Subnet  string  `json:"subnet"`
 }
+
+type DNS struct {
+	Servers string `json:"servers"`
+}
+
+type Port struct {
+	Name	string	`json:"name"`
+}
