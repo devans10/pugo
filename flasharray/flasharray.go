@@ -47,6 +47,7 @@ type Client struct {
 	Offloads	*OffloadService
 	Protectiongroups *ProtectiongroupService
 	Vgroups		*VgroupService
+	Networks	*NetworkService
 }
 
 // Type supported is used for retrieving the support API versions from the Flash Array
@@ -143,6 +144,7 @@ func NewClient(target string, username string, password string, api_token string
 	c.Offloads = &OffloadService{client:c}
 	c.Protectiongroups = &ProtectiongroupService{client: c}
 	c.Vgroups = &VgroupService{client: c}
+	c.Networks = &NetworkService{client: c}
 
         return c, err
 }
