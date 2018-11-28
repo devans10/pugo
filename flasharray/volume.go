@@ -95,6 +95,11 @@ func (v *VolumeService) CreateVolume(name string, size string, params map[string
         return m, err
 }
 
+// Create a conglomerate volume.
+// This is not a typical volume thus there is no size.  It's main purpose to connect to a
+// host/hgroup to create a PE LUN.  Once the conglomerate volume is connected to a
+// host/hgroup, it is used as a protocol-endpoint to connect a vvol to a host/hgroup to
+// allow traffic.
 func (v *VolumeService) CreateConglomerateVolume(name string, params map[string]string) (*Volume, error) {
 
         path := fmt.Sprintf("volume/%s", name)
@@ -113,6 +118,7 @@ func (v *VolumeService) CreateConglomerateVolume(name string, params map[string]
         return m, err
 }
 
+// Clone a volume and return a dictionary describing the new volume.
 func (v *VolumeService) CopyVolume(dest string, source string, params map[string]string) (*Volume, error) {
 
         path := fmt.Sprintf("volume/%s", dest)
@@ -131,6 +137,7 @@ func (v *VolumeService) CopyVolume(dest string, source string, params map[string
         return m, err
 }
 
+// Delete an existing volume or snapshot
 func (v *VolumeService) DeleteVolume(name string, params map[string]string) (*Volume, error) {
 
         path := fmt.Sprintf("volume/%s", name)
@@ -148,6 +155,7 @@ func (v *VolumeService) DeleteVolume(name string, params map[string]string) (*Vo
         return m, err
 }
 
+// Eradicate a deleted volume or snapshot
 func (v *VolumeService) EradicateVolume(name string, params map[string]string) (*Volume, error) {
 
         path := fmt.Sprintf("volume/%s", name)
@@ -166,6 +174,7 @@ func (v *VolumeService) EradicateVolume(name string, params map[string]string) (
         return m, err
 }
 
+// Extend the size of the volume
 func (v *VolumeService) ExtendVolume(name string, size string, params map[string]string) (*Volume, error) {
 
 	type data struct {
@@ -183,6 +192,7 @@ func (v *VolumeService) ExtendVolume(name string, size string, params map[string
 	return m, err
 }
 
+// Get volume attributes
 func (v *VolumeService) GetVolume(name string, params map[string]string) (*Volume, error) {
 
 	path := fmt.Sprintf("volume/%s", name)
@@ -196,6 +206,7 @@ func (v *VolumeService) GetVolume(name string, params map[string]string) (*Volum
         return m, err
 }
 
+// Add a volume to a protection group
 func (v *VolumeService) AddVolume(volume string, pgroup string, params map[string]string) (*VolumePgroup, error) {
 
 	path := fmt.Sprintf("volume/%s/pgroup/%s", volume, pgroup)
@@ -209,6 +220,7 @@ func (v *VolumeService) AddVolume(volume string, pgroup string, params map[strin
         return m, err
 }
 
+// Remove a volume from a protection group
 func (v *VolumeService) RemoveVolume(volume string, pgroup string, params map[string]string) (*VolumePgroup, error) {
 
         path := fmt.Sprintf("volume/%s/pgroup/%s", volume, pgroup)
@@ -222,18 +234,24 @@ func (v *VolumeService) RemoveVolume(volume string, pgroup string, params map[st
         return m, err
 }
 
+// List Volume Block Differences
+// not implemented yet
 func (v *VolumeService) ListVolumeBlockDiff() error {
 	return nil
 }
 
+// List Volume Private Connections
+// not implemented yet
 func (v *VolumeService) ListVolumePrivateConnections() error {
         return nil
 }
 
+// List volume shared connections.
 func (v *VolumeService) ListVolumeSharedConnections() error {
         return nil
 }
 
+// List volumes
 func (v *VolumeService) ListVolumes(params map[string]string) ([]Volume, error) {
 
         req, err := v.client.NewRequest("GET", "volume", params, nil)
@@ -246,6 +264,7 @@ func (v *VolumeService) ListVolumes(params map[string]string) ([]Volume, error) 
         return m, err
 }
 
+// Rename a volume
 func (v *VolumeService) RenameVolume(volume string, name string, params map[string]string) (*Volume, error) {
 
         data := map[string]string{"name": name}
@@ -257,6 +276,7 @@ func (v *VolumeService) RenameVolume(volume string, name string, params map[stri
         return m, err
 }
 
+// Recover a deleted volume
 func (v *VolumeService) RecoverVolume(volume string, params map[string]string) (*Volume, error) {
 
         data := map[string]string{"action": "recover"}
@@ -268,6 +288,9 @@ func (v *VolumeService) RecoverVolume(volume string, params map[string]string) (
         return m, err
 }
 
+// Decrese the size of a volume
+// WARNING!!
+// Potential data loss
 func (v *VolumeService) TruncateVolume(name string, size string, params map[string]string) (*Volume, error) {
 
 	type data struct {
@@ -285,6 +308,7 @@ func (v *VolumeService) TruncateVolume(name string, size string, params map[stri
         return m, err
 }
 
+// Move a volume to a different container
 func (v *VolumeService) MoveVolume(name string, container string, params map[string]string) (*Volume, error) {
 
         data := map[string]string{"container": container}

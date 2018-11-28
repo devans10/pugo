@@ -62,22 +62,39 @@ type auth struct {
 
 // NewClient returns a Client struct used to call the administrative functions.
 //
-// target   	IP address or domain name of the target array's management interface.
-// username	Username to connect to the array
-// password	Password used to connect to the array
-// api_token	API token used to connect to the array
+// Parameters:
+// target   	
+// IP address or domain name of the target array's management interface.
+//
+// username	
+// Username to connect to the array
+//
+// password	
+// Password used to connect to the array
+//
+// api_token	
+// API token used to connect to the array
 //
 // The API Token is always used to connect to the REST API.  If username and password
 // are provided, then they are used to retrieve the API token for that user before
 // the HTTP session is started.  Either api_token or username and password are 
 // required. If neither or both are provided, then an error is returned.
 //
-// rest_version	The REST API version to use for the the session.  If not provied, 
-// 		the version will be negotiated between the library and the array.
-// verify_https	A bool used to set whether SSL host verification should be performed.
-// ssl_cert	Path to SSL certificate or CA Bundle file. Ignored if verify_https=False.
-// user_agent	String to be used as the HTTP User-Agent for requests.
-// request_kwargs	A map of keyword arguments that we will pass into the the call. 
+// rest_version	
+// The REST API version to use for the the session.  If not provied, 
+// the version will be negotiated between the library and the array.
+//
+// verify_https	
+// A bool used to set whether SSL host verification should be performed.
+//
+// ssl_cert	
+// Path to SSL certificate or CA Bundle file. Ignored if verify_https=False.
+//
+// user_agent	
+// String to be used as the HTTP User-Agent for requests.
+//
+// request_kwargs	
+// A map of keyword arguments that we will pass into the the call. 
 func NewClient(target string, username string, password string, api_token string,
                rest_version string, verify_https bool, ssl_cert bool,
                user_agent string, request_kwargs map[string]string) (*Client, error) {
@@ -151,12 +168,20 @@ func NewClient(target string, username string, password string, api_token string
 
 
 // NewRequest builds and returns a new HTTP request object.
+// 
+// Parameters:
+// method	
+// This is the HTTP method to be used, i.e. GET, PUT, POST, or DELETE
 //
-// method	This is the HTTP method to be used, i.e. GET, PUT, POST, or DELETE
-// path		String of the API URI path to be called.
-// params	A map of key value pairs that will be added to the query string of the URL
-// data		The data body to be passed in the HTTP request. This will be converted to JSON, 
-//		then added to the request as bytes.
+// path		
+// String of the API URI path to be called.
+//
+// params	
+// A map of key value pairs that will be added to the query string of the URL
+//
+// data		
+// The data body to be passed in the HTTP request. This will be converted to JSON, 
+// then added to the request as bytes.
 //
 func (c *Client) NewRequest(method string, path string, params map[string]string, data interface{}) (*http.Request, error) {
 
@@ -344,7 +369,7 @@ func (c *Client) getApiToken() error {
 }
 
 // formatPath returns the formated string to be used for the base URL in 
-// all API calls/
+// all API calls
 func (c *Client) formatPath(path string) string {
 	return fmt.Sprintf("https://%s/api/%s/%s", c.Target, c.Rest_version, path)
 }

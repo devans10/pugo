@@ -8,6 +8,7 @@ type VgroupService struct {
 	client *Client
 }
 
+// Create Vgroup
 func (h *VgroupService) CreateVgroup(name string, params map[string]string) (*Vgroup, error) {
 
         path := fmt.Sprintf("vgroup/%s", name)
@@ -25,6 +26,7 @@ func (h *VgroupService) CreateVgroup(name string, params map[string]string) (*Vg
         return m, err
 }
 
+// Destroy Vgroup
 func (h *VgroupService) DestroyVgroup(name string, params map[string]string) (*Vgroup, error) {
 
         path := fmt.Sprintf("vgroup/%s", name)
@@ -42,7 +44,7 @@ func (h *VgroupService) DestroyVgroup(name string, params map[string]string) (*V
         return m, err
 }
 
-
+// Eradicate Vgroup
 func (h *VgroupService) EradicateVgroup(vgroup string, params map[string]string) (*Vgroup, error) {
 
         data := map[string]bool{"eradicate": true}
@@ -61,6 +63,7 @@ func (h *VgroupService) EradicateVgroup(vgroup string, params map[string]string)
         return m, err
 }
 
+// Get Vgroup attributes
 func (h *VgroupService) GetVgroup(name string, params map[string]string) (*Vgroup, error) {
 
         path := fmt.Sprintf("vgroup/%s", name)
@@ -78,8 +81,7 @@ func (h *VgroupService) GetVgroup(name string, params map[string]string) (*Vgrou
         return m, err
 }
 
-
-
+// List Vgroups
 func (h *VgroupService) ListVgroups(params map[string]string) ([]Vgroup, error) {
 
         req, err := h.client.NewRequest("GET", "vgroup", params, nil)
@@ -92,6 +94,7 @@ func (h *VgroupService) ListVgroups(params map[string]string) ([]Vgroup, error) 
         return m, err
 }
 
+// Recover deleted vgroup
 func (h *VgroupService) RecoverVgroup(vgroup string, params map[string]string) (*Vgroup, error) {
 
         data := map[string]string{"action": "recover"}
@@ -103,6 +106,7 @@ func (h *VgroupService) RecoverVgroup(vgroup string, params map[string]string) (
         return m, err
 }
 
+// Rename vgroup
 func (h *VgroupService) RenameVgroup(vgroup string, name string, params map[string]string) (*Vgroup, error) {
 
         data := map[string]string{"name": name}
@@ -114,6 +118,7 @@ func (h *VgroupService) RenameVgroup(vgroup string, name string, params map[stri
         return m, err
 }
 
+// Set vgroup attribute
 func (h *VgroupService) SetVgroup(name string, params map[string]string, data interface{}) (*Vgroup, error) {
 
         path := fmt.Sprintf("vgroup/%s", name)

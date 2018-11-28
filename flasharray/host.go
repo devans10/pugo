@@ -8,6 +8,7 @@ type HostService struct {
 	client *Client
 }
 
+// Connect a volume to a host
 func (h *HostService) ConnectHost(host string, volume string, params map[string]string) (*ConnectedVolume, error) {
 
         path := fmt.Sprintf("host/%s/volume/%s", host, volume)
@@ -21,6 +22,7 @@ func (h *HostService) ConnectHost(host string, volume string, params map[string]
         return m, err
 }
 
+// Create a new host
 func (h *HostService) CreateHost(name string, params map[string]string) (*Host, error) {
 
         path := fmt.Sprintf("host/%s", name)
@@ -38,6 +40,7 @@ func (h *HostService) CreateHost(name string, params map[string]string) (*Host, 
         return m, err
 }
 
+// Delete a host
 func (h *HostService) DeleteHost(name string, params map[string]string) (*Host, error) {
 
         path := fmt.Sprintf("host/%s", name)
@@ -55,6 +58,7 @@ func (h *HostService) DeleteHost(name string, params map[string]string) (*Host, 
         return m, err
 }
 
+// Disconnect a volume from a host
 func (h *HostService) DisonnectHost(host string, volume string, params map[string]string) (*ConnectedVolume, error) {
 
         path := fmt.Sprintf("host/%s/volume/%s", host, volume)
@@ -68,6 +72,7 @@ func (h *HostService) DisonnectHost(host string, volume string, params map[strin
         return m, err
 }
 
+// Return the attributes of the given host
 func (h *HostService) GetHost(name string, params map[string]string) (*Host, error) {
 
         path := fmt.Sprintf("host/%s", name)
@@ -85,6 +90,7 @@ func (h *HostService) GetHost(name string, params map[string]string) (*Host, err
         return m, err
 }
 
+// Add a host to a protection group
 func (h *HostService) AddHost(host string, pgroup string, params map[string]string) (*HostPgroup, error) {
 
         path := fmt.Sprintf("host/%s/pgroup/%s", host, pgroup)
@@ -98,6 +104,7 @@ func (h *HostService) AddHost(host string, pgroup string, params map[string]stri
         return m, err
 }
 
+// Remove a host from a protection group
 func (h *HostService) RemoveHost(host string, pgroup string, params map[string]string) (*HostPgroup, error) {
 
         path := fmt.Sprintf("host/%s/pgroup/%s", host, pgroup)
@@ -111,6 +118,7 @@ func (h *HostService) RemoveHost(host string, pgroup string, params map[string]s
         return m, err
 }
 
+// The the host connections
 func (h *HostService) ListHostConnections(host string, params map[string]string) ([]HostConnection, error) {
 
         path := fmt.Sprintf("host/%s/volume", host)
@@ -124,6 +132,7 @@ func (h *HostService) ListHostConnections(host string, params map[string]string)
         return m, err
 }
 
+// List hosts
 func (h *HostService) ListHosts(host string, params map[string]string) ([]Host, error) {
 
         path := fmt.Sprintf("host", host)
@@ -137,6 +146,7 @@ func (h *HostService) ListHosts(host string, params map[string]string) ([]Host, 
         return m, err
 }
 
+// Rename a host
 func (h *HostService) RenameHost(host string, name string, params map[string]string) (*Host, error) {
 
         data := map[string]string{"name": name}
@@ -148,6 +158,7 @@ func (h *HostService) RenameHost(host string, name string, params map[string]str
         return m, err
 }
 
+// Set the attribute of a host
 func (h *HostService) SetHost(name string, params map[string]string, data interface{}) (*Host, error) {
 
         path := fmt.Sprintf("host/%s", name)
