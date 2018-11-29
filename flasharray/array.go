@@ -64,9 +64,9 @@ func (v *ArrayService) get_console_lock() (*console_lock, error) {
 }
 
 // Get returns and object describing the flash array
-func (v *ArrayService) Get(params map[string]string) (*Array, error) {
+func (v *ArrayService) Get(data interface{}) (*Array, error) {
 
-	req, err := v.client.NewRequest("GET", "array", params, nil)
+	req, err := v.client.NewRequest("GET", "array", nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -103,4 +103,150 @@ func (v *ArrayService) Rename(name string) (*Array, error) {
 	data := map[string]string{"name": name}
 	m, err := v.Set(nil, data)
         return m, err
+}
+
+// Set the phonehome service attributes
+func (v *ArrayService) setPhoneHome(data interface{}) (*Phonehome, error) {
+
+	req, err := v.client.NewRequest("PUT", "array/phonehome", nil, data)
+	if err != nil {
+		return nil, err
+	}
+
+	m := &Phonehome{}
+	_, err = v.client.Do(req, m, false)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
+}
+
+// Set the remote assist service attributes
+func (v *ArrayService) setRemoteAssist(data interface{}) (*RemoteAssist, error) {
+
+        req, err := v.client.NewRequest("PUT", "array/remoteassist", nil, data)
+        if err != nil {
+                return nil, err
+        }
+
+        m := &RemoteAssist{}
+        _, err = v.client.Do(req, m, false)
+        if err != nil {
+                return nil, err
+        }
+
+        return m, err
+}
+
+// Disable hourly phonehome
+func (v *ArrayService) DisablePhoneHome() (*Phonehome, error) {
+
+	data := map[string]bool{"enabled": false}
+	m, err := v.setPhoneHome(data)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
+}
+
+// Disable Remote Assist
+func (v *ArrayService) DisableRemoteAssist() (*RemoteAssist, error) {
+
+	data := map[string]bool{"enabled": false}
+	m, err := v.setRemoteAssist(data)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
+}
+
+// Enable hourly phonehome
+func (v *ArrayService) EnablePhoneHome() (*Phonehome, error) {
+
+	data := map[string]bool{"enabled": true}
+	m, err := v.setPhoneHome(data)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
+}
+
+// Enable Remote Assist
+func (v *ArrayService) EnableRemoteAssist() (*RemoteAssist, error) {
+
+	data := map[string]bool{"enabled": true}
+	m, err := v.setRemoteAssist(data)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
+}
+
+// Get manual phone home status
+func (v *ArrayService) GetManualPhoneHome() (*Phonehome, error) {
+
+	req, err := v.client.NewRequest("GET", "array/phoneome", nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	m := &Phonehome{}
+	_, err = v.client.Do(req, m, false)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
+}
+
+// Get Phonehome status
+func (v *ArrayService) GetPhoneHome() (*Array, error) {
+
+	data := map[string]bool{"phonehome": true}
+	m, err := v.Get(data)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
+}
+
+// Get Remote Status
+func (v *ArrayService) GetRemoteAssist() (*RemoteAssist, error) {
+
+	req, err := v.client.NewRequest("GET", "array/remoteassist", nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	m := &RemoteAssist{}
+	_, err = v.client.Do(req, m, false)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
+}
+
+// Manually initiate or cancel phonehome
+//
+// Parameters
+// action
+// The timeframe of logs to phonehome or cancel the current phonehome
+// action must be one of:
+// "send_today", "send_yesterday", "send_all", "cancel"
+func (v *ArrayService) Phonehome(action string) (*Phonehome, error) {
+
+	data := map[string]string{"action": action}
+	m, err := v.setPhoneHome(data)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
 }

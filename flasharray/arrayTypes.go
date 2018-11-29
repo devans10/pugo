@@ -13,3 +13,8 @@ type Array struct {
 	Revision	string	`json:"revision,omitempty"`
 }
 
+type Phonehome struct {
+}
+
+type RemoteAssist struct {
+}
