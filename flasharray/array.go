@@ -1,3 +1,7 @@
+// Copyright 2018 Dave Evans. All rights reserved.
+// Use of this source code is governed by a MIT
+// license that can be found in the LICENSE file.
+
 package flasharray
 
 // ArrayService type creates a service to perform functions for administering
@@ -7,7 +11,7 @@ type ArrayService struct {
 }
 
 // set_console_lock is a helper function used to set the console lock
-func (v *ArrayService) set_console_lock(b bool) (*console_lock, error) {
+func (v *ArrayService) set_console_lock(b bool) (*Console_lock, error) {
 
 	data := map[string]bool{"enabled": b}
 	req, err := v.client.NewRequest("PUT", "array/console_lock", nil, data)
@@ -15,7 +19,7 @@ func (v *ArrayService) set_console_lock(b bool) (*console_lock, error) {
                 return nil, err
         }
 
-        m := &console_lock{}
+        m := &Console_lock{}
         _, err = v.client.Do(req, m, false)
         if err != nil {
                 return nil, err
@@ -47,14 +51,14 @@ func (v *ArrayService) disable_console_lock() error {
 }
 
 // get_console_lock returns an object giving the console_lock status
-func (v *ArrayService) get_console_lock() (*console_lock, error) {
+func (v *ArrayService) get_console_lock() (*Console_lock, error) {
 
 	req, err := v.client.NewRequest("GET", "array/console_lock", nil, nil)
         if err != nil {
                 return nil, err
         }
 
-        m := &console_lock{}
+        m := &Console_lock{}
         _, err = v.client.Do(req, m, false)
         if err != nil {
                 return nil, err

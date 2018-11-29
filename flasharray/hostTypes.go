@@ -1,15 +1,21 @@
+// Copyright 2018 Dave Evans. All rights reserved.
+// Use of this source code is governed by a MIT
+// license that can be found in the LICENSE file.
+
 package flasharray
 
 type Host struct{
 	Name	string		`json:"name,omitempty"`
-	wwn	[]string	`json:"wwn,omitempty"`
-	iqn	[]string	`json:"iqn,omitempty"`
+	Wwn	[]string	`json:"wwn,omitempty"`
+	Iqn	[]string	`json:"iqn,omitempty"`
+	Hgroup	string		`json:"hgroup,omitempty"`
 }
 
 type ConnectedVolume struct {
 	Vol	string		`json:"vol,omitempty"`
 	Name	string		`json:"name,omitempty"`
 	Lun	int		`json:"lun,omitempty"`
+	Hgroup	string		`json:"hgroup,omitempty"`
 }
 
 type HostPgroup struct {
@@ -17,9 +23,3 @@ type HostPgroup struct {
 	Pgroup	string		`json:"protection_group,omitempty"`
 }
 
-type HostConnection struct {
-        Name    string          `json:"name,omitempty"`
-        wwn     []string        `json:"wwn,omitempty"`
-        iqn     []string        `json:"iqn,omitempty"`
-	hgroup	string		`json:"hgroup,omitempty"`
-}

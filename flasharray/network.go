@@ -1,3 +1,7 @@
+// Copyright 2018 Dave Evans. All rights reserved.
+// Use of this source code is governed by a MIT
+// license that can be found in the LICENSE file.
+
 package flasharray
 
 import (
@@ -232,7 +236,7 @@ func (n *NetworkService) SetSubnet(subnet string, params map[string]string, data
 // Create a VLAN Interface
 // param: iface - Name of interface to be created
 // param: subnet - Subnet to be associated with the new interface
-func (n *NetworkService) CreateVlanInterface(iface string, subnet string, params map[string]string) (*VlanInterface, error) {
+func (n *NetworkService) CreateVlanInterface(iface string, subnet string, params map[string]string) (*NetworkInterface, error) {
 
         data := map[string]string{"subnet": subnet}
         path := fmt.Sprintf("network/vif/%s", iface)
@@ -241,7 +245,7 @@ func (n *NetworkService) CreateVlanInterface(iface string, subnet string, params
                 return nil, err
         }
 
-        m := &VlanInterface{}
+        m := &NetworkInterface{}
         _, err = n.client.Do(req, m, false)
         if err != nil {
                 return nil, err
@@ -252,7 +256,7 @@ func (n *NetworkService) CreateVlanInterface(iface string, subnet string, params
 
 // Delete a VLAN Interface
 // param: iface - Name of iface to be deleted
-func (n *NetworkService) DeleteVlanInterface(iface string, params map[string]string) (*VlanInterface, error) {
+func (n *NetworkService) DeleteVlanInterface(iface string, params map[string]string) (*NetworkInterface, error) {
 
         path := fmt.Sprintf("network/vif/%s", iface)
         req, err := n.client.NewRequest("DELETE", path, params, nil)
@@ -260,7 +264,7 @@ func (n *NetworkService) DeleteVlanInterface(iface string, params map[string]str
                 return nil, err
         }
 
-        m := &VlanInterface{}
+        m := &NetworkInterface{}
         _, err = n.client.Do(req, m, false)
         if err != nil {
                 return nil, err

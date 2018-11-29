@@ -1,3 +1,7 @@
+// Copyright 2018 Dave Evans. All rights reserved.
+// Use of this source code is governed by a MIT
+// license that can be found in the LICENSE file.
+
 package flasharray
 
 import (
@@ -119,11 +123,11 @@ func (h *HostService) RemoveHost(host string, pgroup string, params map[string]s
 }
 
 // The the host connections
-func (h *HostService) ListHostConnections(host string, params map[string]string) ([]HostConnection, error) {
+func (h *HostService) ListHostConnections(host string, params map[string]string) ([]Host, error) {
 
         path := fmt.Sprintf("host/%s/volume", host)
         req, err := h.client.NewRequest("GET", path, params, nil)
-        m := []HostConnection{}
+        m := []Host{}
         _, err = h.client.Do(req, &m, false)
         if err != nil {
                 return nil, err
