@@ -27,10 +27,10 @@ func (h *HostgroupService) ConnectHostgroup(hgroup string, volume string, params
 }
 
 // Create a new hostgroup
-func (h *HostgroupService) CreateHostgroup(name string, params map[string]string) (*Hostgroup, error) {
+func (h *HostgroupService) CreateHostgroup(name string, hostlist map[string][]string, params map[string]string) (*Hostgroup, error) {
 
         path := fmt.Sprintf("hgroup/%s", name)
-        req, err := h.client.NewRequest("POST", path, params, nil)
+        req, err := h.client.NewRequest("POST", path, params, hostlist)
         if err != nil {
                 return nil, err
         }

@@ -213,7 +213,11 @@ func (c *Client) NewRequest(method string, path string, params map[string]string
                 return nil, err
         }
         if data != nil {
-                jsonString, _ := json.Marshal(data)
+                jsonString, err := json.Marshal(data)
+		fmt.Println(bytes.NewBuffer(jsonString))
+		if err != nil {
+			return nil, err
+		}
                 req, err = http.NewRequest(method, baseUrl.String(), bytes.NewBuffer(jsonString))
 		if err != nil {
 			return nil, err
