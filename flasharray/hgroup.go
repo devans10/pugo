@@ -63,7 +63,7 @@ func (h *HostgroupService) DeleteHostgroup(name string, params map[string]string
 }
 
 // Disconnect a volume from a hostgroup
-func (h *HostgroupService) DisonnectHostgroup(hgroup string, volume string, params map[string]string) (*ConnectedVolume, error) {
+func (h *HostgroupService) DisconnectHostgroup(hgroup string, volume string, params map[string]string) (*ConnectedVolume, error) {
 
         path := fmt.Sprintf("hgroup/%s/volume/%s", hgroup, volume)
         req, err := h.client.NewRequest("DELETE", path, params, nil)
