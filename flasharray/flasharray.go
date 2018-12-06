@@ -50,6 +50,7 @@ type Client struct {
 	Networks	*NetworkService
 	Hardware	*HardwareService
 	Users		*UserService
+	Dirsrv		*DirsrvService
 }
 
 // Type supported is used for retrieving the support API versions from the Flash Array
@@ -166,6 +167,7 @@ func NewClient(target string, username string, password string, api_token string
 	c.Networks = &NetworkService{client: c}
 	c.Hardware = &HardwareService{client: c}
 	c.Users = &UserService{client: c}
+	c.Dirsrv = &DirsrvService{client: c}
 
         return c, err
 }
