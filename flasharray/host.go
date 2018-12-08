@@ -63,7 +63,7 @@ func (h *HostService) DeleteHost(name string, params map[string]string) (*Host, 
 }
 
 // Disconnect a volume from a host
-func (h *HostService) DisonnectHost(host string, volume string, params map[string]string) (*ConnectedVolume, error) {
+func (h *HostService) DisconnectHost(host string, volume string, params map[string]string) (*ConnectedVolume, error) {
 
         path := fmt.Sprintf("host/%s/volume/%s", host, volume)
         req, err := h.client.NewRequest("DELETE", path, params, nil)
