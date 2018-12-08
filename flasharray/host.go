@@ -137,10 +137,9 @@ func (h *HostService) ListHostConnections(host string, params map[string]string)
 }
 
 // List hosts
-func (h *HostService) ListHosts(host string, params map[string]string) ([]Host, error) {
+func (h *HostService) ListHosts(params map[string]string) ([]Host, error) {
 
-	path := fmt.Sprintf("host", host)
-	req, err := h.client.NewRequest("GET", path, params, nil)
+	req, err := h.client.NewRequest("GET", "host", params, nil)
 	m := []Host{}
 	_, err = h.client.Do(req, &m, false)
 	if err != nil {

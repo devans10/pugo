@@ -137,10 +137,9 @@ func (h *HostgroupService) ListHostgroupConnections(hgroup string, params map[st
 }
 
 // List hostgroups
-func (h *HostgroupService) ListHostgroups(hgroup string, params map[string]string) ([]Hostgroup, error) {
+func (h *HostgroupService) ListHostgroups(params map[string]string) ([]Hostgroup, error) {
 
-	path := fmt.Sprintf("hgroup", hgroup)
-	req, err := h.client.NewRequest("GET", path, params, nil)
+	req, err := h.client.NewRequest("GET", "hgroup", params, nil)
 	m := []Hostgroup{}
 	_, err = h.client.Do(req, &m, false)
 	if err != nil {
