@@ -19,9 +19,9 @@ func TestNewClientNoAuth(t *testing.T) {
 func TestNewClientAllAuth(t *testing.T) {
 
 	_, err := flasharray.NewClient("target", "username", "password", "api_token", "rest_version", false, false, "user_agent", nil)
-        if err == nil {
-                t.Errorf("An Error was NOT raised when All authentication methods were provided")
-        }
+	if err == nil {
+		t.Errorf("An Error was NOT raised when All authentication methods were provided")
+	}
 }
 
 // Test that NewRequest returns an http.Request object

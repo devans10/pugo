@@ -11,41 +11,40 @@ type DirsrvService struct {
 // Set Directory Service Attributes
 func (n *DirsrvService) SetDirectoryService(data interface{}) (*Dirsrv, error) {
 
-        req, err := n.client.NewRequest("PUT", "directoryservice", nil, data)
-        if err != nil {
-                return nil, err
-        }
+	req, err := n.client.NewRequest("PUT", "directoryservice", nil, data)
+	if err != nil {
+		return nil, err
+	}
 
-        m := &Dirsrv{}
-        _, err = n.client.Do(req, m, false)
-        if err != nil {
-                return nil, err
-        }
+	m := &Dirsrv{}
+	_, err = n.client.Do(req, m, false)
+	if err != nil {
+		return nil, err
+	}
 
-        return m, err
+	return m, err
 }
-
 
 // Get Directory Service Attributes
 func (n *DirsrvService) GetDirectoryService() (*Dirsrv, error) {
 
-        req, err := n.client.NewRequest("GET", "directoryservice", nil, nil)
-        if err != nil {
-                return nil, err
-        }
+	req, err := n.client.NewRequest("GET", "directoryservice", nil, nil)
+	if err != nil {
+		return nil, err
+	}
 
-        m := &Dirsrv{}
-        _, err = n.client.Do(req, m, false)
-        if err != nil {
-                return nil, err
-        }
+	m := &Dirsrv{}
+	_, err = n.client.Do(req, m, false)
+	if err != nil {
+		return nil, err
+	}
 
-        return m, err
+	return m, err
 }
 
 // Disable Directory Service
 // if check_peer is true, enables server authenticity enforcement
-func (n *DirsrvService) DisableDirectoryService(check_peer bool) (*Dirsrv, error){
+func (n *DirsrvService) DisableDirectoryService(check_peer bool) (*Dirsrv, error) {
 
 	var data map[string]bool
 	if check_peer {
@@ -64,7 +63,7 @@ func (n *DirsrvService) DisableDirectoryService(check_peer bool) (*Dirsrv, error
 
 // Enable Directory Service
 // if check_peer is true, enables server authenticity enforcement
-func (n *DirsrvService) EnableDirectoryService(check_peer bool) (*Dirsrv, error){
+func (n *DirsrvService) EnableDirectoryService(check_peer bool) (*Dirsrv, error) {
 
 	var data map[string]bool
 	if check_peer {
@@ -82,54 +81,53 @@ func (n *DirsrvService) EnableDirectoryService(check_peer bool) (*Dirsrv, error)
 }
 
 // Test the directory service
-func (n *DirsrvService) TestDirectoryService() (*DirsrvTest, error){
+func (n *DirsrvService) TestDirectoryService() (*DirsrvTest, error) {
 
 	data := map[string]string{"action": "test"}
 	req, err := n.client.NewRequest("PUT", "directoryservice", nil, data)
-        if err != nil {
-                return nil, err
-        }
+	if err != nil {
+		return nil, err
+	}
 
-        m := &DirsrvTest{}
-        _, err = n.client.Do(req, m, false)
-        if err != nil {
-                return nil, err
-        }
+	m := &DirsrvTest{}
+	_, err = n.client.Do(req, m, false)
+	if err != nil {
+		return nil, err
+	}
 
-        return m, err
+	return m, err
 }
 
 // Get directory service groups for roles
-func (n *DirsrvService) ListDirectoryServiceRoles() ([]DirsrvRole, error){
+func (n *DirsrvService) ListDirectoryServiceRoles() ([]DirsrvRole, error) {
 
-        req, err := n.client.NewRequest("GET", "directoryservice/role", nil, nil)
-        if err != nil {
-                return nil, err
-        }
+	req, err := n.client.NewRequest("GET", "directoryservice/role", nil, nil)
+	if err != nil {
+		return nil, err
+	}
 
-        m := []DirsrvRole{}
-        _, err = n.client.Do(req, &m, false)
-        if err != nil {
-                return nil, err
-        }
+	m := []DirsrvRole{}
+	_, err = n.client.Do(req, &m, false)
+	if err != nil {
+		return nil, err
+	}
 
-        return m, err
+	return m, err
 }
 
 // Set directory service groups for roles
-func (n *DirsrvService) SetDirectoryServiceRoles(data interface{}) (*DirsrvRole, error){
+func (n *DirsrvService) SetDirectoryServiceRoles(data interface{}) (*DirsrvRole, error) {
 
 	req, err := n.client.NewRequest("PUT", "directoryservice/role", nil, data)
 	if err != nil {
-                return nil, err
-        }
+		return nil, err
+	}
 
-        m := &DirsrvRole{}
-        _, err = n.client.Do(req, m, false)
-        if err != nil {
-                return nil, err
-        }
+	m := &DirsrvRole{}
+	_, err = n.client.Do(req, m, false)
+	if err != nil {
+		return nil, err
+	}
 
-        return m, err
+	return m, err
 }
-
