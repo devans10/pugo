@@ -99,13 +99,8 @@ type auth struct {
 // request_kwargs
 // A map of keyword arguments that we will pass into the the call.
 func NewClient(target string, username string, password string, api_token string,
-<<<<<<< HEAD
-	rest_version string, verify_https bool, ssl_cert bool,
-	user_agent string, request_kwargs map[string]string) (*Client, error) {
-=======
                rest_version string, verify_https bool, ssl_cert bool,
                user_agent string, request_kwargs map[string]interface{}) (*Client, error) {
->>>>>>> 2b5035634bbe4d21a87ced65554fd394778ed041
 
 	if api_token == "" && (username == "" && password == "") {
 		err := errors.New("[ERROR] Must specify API token or both username and password.")
