@@ -30,21 +30,21 @@ var supported_rest_versions = [...]string{"1.0", "1.1", "1.2", "1.3", "1.4", "1.
 
 // Type Client represents a Pure Storage FlashArray and exposes administrative APIs.
 type Client struct {
-	Target         string
-	Username       string
-	Password       string
-	Api_token      string
-	Rest_version   string
-	User_agent     string
-	Request_kwargs map[string]string
+	Target		string
+	Username	string
+	Password	string
+	Api_token	string
+	Rest_version	string
+	User_agent	string
+	Request_kwargs	map[string]interface{}
 
-	client *http.Client
+	client		*http.Client
 
-	Array            *ArrayService
-	Volumes          *VolumeService
-	Hosts            *HostService
-	Hostgroups       *HostgroupService
-	Offloads         *OffloadService
+	Array		*ArrayService
+	Volumes		*VolumeService
+        Hosts           *HostService
+        Hostgroups      *HostgroupService
+	Offloads	*OffloadService
 	Protectiongroups *ProtectiongroupService
 	Vgroups          *VgroupService
 	Networks         *NetworkService
@@ -99,8 +99,13 @@ type auth struct {
 // request_kwargs
 // A map of keyword arguments that we will pass into the the call.
 func NewClient(target string, username string, password string, api_token string,
+<<<<<<< HEAD
 	rest_version string, verify_https bool, ssl_cert bool,
 	user_agent string, request_kwargs map[string]string) (*Client, error) {
+=======
+               rest_version string, verify_https bool, ssl_cert bool,
+               user_agent string, request_kwargs map[string]interface{}) (*Client, error) {
+>>>>>>> 2b5035634bbe4d21a87ced65554fd394778ed041
 
 	if api_token == "" && (username == "" && password == "") {
 		err := errors.New("[ERROR] Must specify API token or both username and password.")
@@ -113,7 +118,7 @@ func NewClient(target string, username string, password string, api_token string
 	}
 
 	if request_kwargs == nil {
-		request_kwargs = make(map[string]string)
+		request_kwargs = make(map[string]interface{})
 	}
 
 	_, ok := request_kwargs["verify"]
