@@ -1,15 +1,13 @@
-package pure_tests
+package flasharray
 
 import (
 	"testing"
-
-	"github.com/devans10/go-purestorage/flasharray"
 )
 
 // Test that a NewClient call with no authentication returns an error
 func TestNewClientNoAuth(t *testing.T) {
 
-	_, err := flasharray.NewClient("target", "", "", "", "rest_version", false, false, "user_agent", nil)
+	_, err := NewClient("target", "", "", "", "rest_version", false, false, "user_agent", nil)
 	if err == nil {
 		t.Errorf("An Error was NOT raised when no authentication methods provided")
 	}
@@ -18,7 +16,7 @@ func TestNewClientNoAuth(t *testing.T) {
 // Test that a NewClient call with all authentication methods provided returns an error
 func TestNewClientAllAuth(t *testing.T) {
 
-	_, err := flasharray.NewClient("target", "username", "password", "api_token", "rest_version", false, false, "user_agent", nil)
+	_, err := NewClient("target", "username", "password", "api_token", "rest_version", false, false, "user_agent", nil)
 	if err == nil {
 		t.Errorf("An Error was NOT raised when All authentication methods were provided")
 	}
@@ -27,7 +25,7 @@ func TestNewClientAllAuth(t *testing.T) {
 // Test that NewRequest returns an http.Request object
 func TestNewRequest(t *testing.T) {
 
-	c := &flasharray.Client{Target: "flasharray.example.com", Username: "", Password: "", Api_token: "apitoken", Rest_version: "1.0", User_agent: "", Request_kwargs: nil}
+	c := &Client{Target: "flasharray.example.com", Username: "", Password: "", Api_token: "apitoken", Rest_version: "1.0", User_agent: "", Request_kwargs: nil}
 
 	req, err := c.NewRequest("GET", "array", nil, nil)
 

@@ -102,6 +102,7 @@ func NewClient(target string, username string, password string, api_token string
                rest_version string, verify_https bool, ssl_cert bool,
                user_agent string, request_kwargs map[string]string) (*Client, error) {
 
+	log.Printf("[DEBUG] flasharray.NewClient: checking auth paramters")
 	if api_token == "" && (username == "" && password == "") {
 		err := errors.New("[ERROR] Must specify API token or both username and password.")
 		return nil, err
@@ -112,6 +113,7 @@ func NewClient(target string, username string, password string, api_token string
 		return nil, err
 	}
 
+	log.Printf("[DEBUG] flasharray.NewClient: checking request_kwargs")
 	if request_kwargs == nil {
 		request_kwargs = make(map[string]string)
 	}
@@ -125,6 +127,7 @@ func NewClient(target string, username string, password string, api_token string
 		}
 	}
 
+	log.Printf("[DEBUG] flasharray.NewClient: checking rest_version")
 	if rest_version != "" {
 		err := checkRestVersion(rest_version, target)
 		if err != nil {
@@ -138,6 +141,9 @@ func NewClient(target string, username string, password string, api_token string
 		rest_version = r
 	}
 
+	log.Printf("[DEBUG] flasharray.NewClient: Rest Vesrion: %s", rest_version)
+
+	log.Printf("[DEBUG] flasharray.NewClient: creating client")
 	cookieJar, _ := cookiejar.New(nil)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -145,6 +151,7 @@ func NewClient(target string, username string, password string, api_token string
 	c := &Client{Target: target, Username: username, Password: password, Api_token: api_token, Rest_version: rest_version, Request_kwargs: request_kwargs}
 	c.client = &http.Client{Transport: tr, Jar: cookieJar}
 
+	log.Printf("[DEBUG] flasharray.NewClient: Authenticating REST session")
 	if api_token == "" {
 		c.getApiToken()
 	}
@@ -156,6 +163,7 @@ func NewClient(target string, username string, password string, api_token string
 	if err != nil {
 		return nil, err
 	}
+	log.Printf("[DEBUG] flasharray.NewClient: REST session created.")
 
 	c.Array = &ArrayService{client: c}
 	c.Volumes = &VolumeService{client: c}
