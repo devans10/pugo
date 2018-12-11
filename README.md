@@ -16,14 +16,21 @@ versions of the REST API. For example, functionality relating to FlashRecover an
 REST API version 1.2, which is supported only by Purity versions 4.0 and later.
 
 # Installation
-```
-go get github.com/devans10/go-purestorage/flasharray
+```sh
+$ go get github.com/devans10/go-purestorage/flasharray
 ```
 
 # Documentation
 https://godoc.org/github.com/devans10/go-purestorage/flasharray
 
 # Testing
+
+Run unit tests
+```sh
+$ make test
 ```
-go test github.com/devans10/go-purestorage/tests
+To Run Acceptance tests
+```sh
+$ make testacc
 ```
+These tests require a connection to a Pure FlashArray.  They will require environment variables are set for `PURE_TARGET` and `PURE_APITOKEN` or `PURE_USERNAME` and `PURE_PASSWORD`
