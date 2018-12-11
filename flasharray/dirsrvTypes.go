@@ -5,12 +5,12 @@
 package flasharray
 
 type Dirsrv struct {
-	Bind_user     string `json:"bind_user"`
-	Bind_password string `json:"bind_password"`
-	Base_dn       string `json:"base_dn"`
-	Check_peer    bool   `json:"check_peer"`
-	Enabled       bool   `json:"enabled"`
-	Uri           string `json:"uri"`
+	Bind_user     string   `json:"bind_user"`
+	Bind_password string   `json:"bind_password"`
+	Base_dn       string   `json:"base_dn"`
+	Check_peer    bool     `json:"check_peer"`
+	Enabled       bool     `json:"enabled"`
+	Uri           []string `json:"uri"`
 }
 
 type DirsrvTest struct {

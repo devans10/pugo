@@ -17,5 +17,5 @@ type HostgroupPgroup struct {
 type HostgroupConnection struct {
 	Name string `json:"name,omitempty"`
 	Vol  string `json:"vol,omitempty"`
-	Lun  string `json:"lun,omitempty"`
+	Lun  int    `json:"lun,omitempty"`
 }

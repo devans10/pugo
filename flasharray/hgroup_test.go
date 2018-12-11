@@ -39,6 +39,9 @@ func TestAccHostgroups(t *testing.T) {
 	t.Run("RenameHostgroup", testAccRenameHostgroup(c, "testacchgroupnew"))
 	c.Hostgroups.RenameHostgroup("testacchgroupnew", testAccHostgroupName, nil)
 	t.Run("DisconnectVolumeFromHostgroup", testAccDisconnectVolumeFromHostgroup(c, testvol))
+	testhosts = []string{}
+	hostlist = map[string][]string{"hostlist": testhosts}
+	t.Run("RemoveHostsFromHostgroup", testAccRemoveHostsFromHostgroup(c, hostlist))
 	t.Run("DeleteHostgroup", testAccDeleteHostgroup(c))
 
 	c.Hosts.DeleteHost(testhost1, nil)
@@ -46,6 +49,7 @@ func TestAccHostgroups(t *testing.T) {
 	c.Volumes.DeleteVolume(testvol, nil)
 	c.Volumes.EradicateVolume(testvol, nil)
 	c.Protectiongroups.DestroyProtectiongroup(testpgroup, nil)
+	c.Protectiongroups.EradicateProtectiongroup(testpgroup, nil)
 }
 
 func testAccCreateHostgroup_basic(c *Client) func(*testing.T) {
@@ -152,6 +156,15 @@ func testAccDisconnectVolumeFromHostgroup(c *Client, volume string) func(*testin
 	}
 }
 
+func testAccRemoveHostsFromHostgroup(c *Client, hostlist map[string][]string) func(*testing.T) {
+	return func(t *testing.T) {
+		_, err := c.Hostgroups.SetHostgroup(testAccHostgroupName, nil, hostlist)
+		if err != nil {
+			t.Fatalf("error removing hosts from hostgroup %s: %s", testAccHostgroupName, err)
+		}
+
+	}
+}
 func testAccDeleteHostgroup(c *Client) func(t *testing.T) {
 	return func(t *testing.T) {
 		_, err := c.Hostgroups.DeleteHostgroup(testAccHostgroupName, nil)

@@ -12,7 +12,7 @@ func TestAccGetDrive(t *testing.T) {
 	testAccPreChecks(t)
 	c := testAccGenerateClient(t)
 
-	expected := "DriveName"
+	expected := "CH0.BAY0"
 	h, err := c.Hardware.GetDrive(expected)
 	if err != nil {
 		t.Fatalf("error getting drive: %s", err)
