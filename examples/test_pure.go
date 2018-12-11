@@ -45,7 +45,7 @@ func main() {
 	fmt.Println("-------------")
 	fmt.Println("Name: ", h.Name)
 
-	hg, hgerr := c.Hostgroups.CreateHostgroup("hgroup-"+suffix, nil)
+	hg, hgerr := c.Hostgroups.CreateHostgroup("hgroup-"+suffix, nil, nil)
 	if err != nil {
 		fmt.Println(hgerr)
 		os.Exit(1)
@@ -54,7 +54,7 @@ func main() {
 	fmt.Println("-------------")
 	fmt.Println("Name: ", hg.Name)
 
-	pg, pgerr := c.Protectiongroups.CreateProtectiongroup("pgroup-"+suffix, nil)
+	pg, pgerr := c.Protectiongroups.CreateProtectiongroup("pgroup-"+suffix, nil, nil)
 	if pgerr != nil {
 		fmt.Println(pgerr)
 		os.Exit(1)
