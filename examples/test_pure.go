@@ -36,7 +36,7 @@ func main() {
 	fmt.Println("Serial: ", v.Serial)
 	fmt.Println("Size: ", v.Size)
 
-	h, herr := c.Hosts.CreateHost("host-"+suffix, nil)
+	h, herr := c.Hosts.CreateHost("host-"+suffix, nil, nil)
 	if err != nil {
 		fmt.Println(herr)
 		os.Exit(1)

@@ -27,10 +27,10 @@ func (h *HostService) ConnectHost(host string, volume string, params map[string]
 }
 
 // Create a new host
-func (h *HostService) CreateHost(name string, params map[string]string) (*Host, error) {
+func (h *HostService) CreateHost(name string, params map[string]string, data interface{}) (*Host, error) {
 
 	path := fmt.Sprintf("host/%s", name)
-	req, err := h.client.NewRequest("POST", path, params, nil)
+	req, err := h.client.NewRequest("POST", path, params, data)
 	if err != nil {
 		return nil, err
 	}
