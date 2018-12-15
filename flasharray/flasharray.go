@@ -212,7 +212,7 @@ func (c *Client) NewRequest(method string, path string, params map[string]string
 	if params != nil {
 		ps := url.Values{}
 		for k, v := range params {
-			log.Printf("[DEBUG] key: %s, value: %s \n", v, k)
+			//log.Printf("[DEBUG] key: %s, value: %s \n", v, k)
 			ps.Set(k, v)
 		}
 		baseUrl.RawQuery = ps.Encode()
@@ -223,7 +223,6 @@ func (c *Client) NewRequest(method string, path string, params map[string]string
 	}
 	if data != nil {
 		jsonString, err := json.Marshal(data)
-		fmt.Println(bytes.NewBuffer(jsonString))
 		if err != nil {
 			return nil, err
 		}
