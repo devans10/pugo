@@ -25,7 +25,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	v, verr := c.Volumes.CreateVolume("vol-"+suffix, "1G", nil)
+	v, verr := c.Volumes.CreateVolume("vol-"+suffix, 1024000000, nil)
 	if verr != nil {
 		fmt.Println(verr)
 		os.Exit(1)

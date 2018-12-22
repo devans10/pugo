@@ -12,8 +12,8 @@ import (
 const testAccVolumeName = "testAccvolume"
 const testvolsnapshot = "testaccvolsnapshot"
 const testvolclone = "testaccvolcone"
-const testvolsize = "1G"
-const testvolresize = "2G"
+const testvolsize = 1024000000
+const testvolresize = 2048000000
 const testpgroup = "testacchostpgroup"
 
 func TestAccVolumes(t *testing.T) {
@@ -87,7 +87,7 @@ func testAccCreateSnapshot(c *Client) func(*testing.T) {
 
 func testAccCloneVolume(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		h, err := c.Volumes.CopyVolume(testvolclone, testAccVolumeName, nil)
+		h, err := c.Volumes.CopyVolume(testvolclone, testAccVolumeName, false, nil)
 		if err != nil {
 			t.Fatalf("error cloning volume %s: %s", testAccVolumeName, err)
 		}
@@ -132,7 +132,7 @@ func testAccExtendVolume(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		_, err := c.Volumes.ExtendVolume(testAccVolumeName, testvolresize, nil)
 		if err != nil {
-			t.Fatalf("error extending volume %s to %s: %s", testAccVolumeName, testvolresize, err)
+			t.Fatalf("error extending volume %s to %d: %s", testAccVolumeName, testvolresize, err)
 		}
 	}
 }
@@ -141,7 +141,7 @@ func testAccTruncateVolume(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		_, err := c.Volumes.TruncateVolume(testAccVolumeName, testvolsize, nil)
 		if err != nil {
-			t.Fatalf("error truncating volume %s to %s: %s", testAccVolumeName, testvolsize, err)
+			t.Fatalf("error truncating volume %s to %d: %s", testAccVolumeName, testvolsize, err)
 		}
 	}
 }

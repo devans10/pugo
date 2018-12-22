@@ -21,7 +21,7 @@ func TestAccHostgroups(t *testing.T) {
 
 	c.Hosts.CreateHost(testhost1, nil, nil)
 	c.Hosts.CreateHost(testhost2, nil, nil)
-	c.Volumes.CreateVolume(testvol, "1G", nil)
+	c.Volumes.CreateVolume(testvol, 1024000000, nil)
 	c.Protectiongroups.CreateProtectiongroup(testpgroup, nil, nil)
 
 	t.Run("CreateHostgroup_basic", testAccCreateHostgroup_basic(c))
