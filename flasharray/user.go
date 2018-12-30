@@ -78,10 +78,10 @@ func (n *UserService) DeleteAdmin(name string) (*User, error) {
 }
 
 // Set Admin Attribute
-func (n *UserService) SetAdmin(name string, params map[string]string, data interface{}) (*User, error) {
+func (n *UserService) SetAdmin(name string, data interface{}) (*User, error) {
 
 	path := fmt.Sprintf("admin/%s", name)
-	req, err := n.client.NewRequest("PUT", path, params, data)
+	req, err := n.client.NewRequest("PUT", path, nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -174,10 +174,10 @@ func (n *UserService) ListApiTokens() ([]User, error) {
 }
 
 // Refresh the admin permission cache for the specified admin
-func (n *UserService) RefreshAdmin(name string, params map[string]string) (*User, error) {
+func (n *UserService) RefreshAdmin(name string) (*User, error) {
 
 	data := map[string]string{"action": "refresh"}
-	m, err := n.SetAdmin(name, params, data)
+	m, err := n.SetAdmin(name, data)
 	if err != nil {
 		return nil, err
 	}
@@ -187,15 +187,10 @@ func (n *UserService) RefreshAdmin(name string, params map[string]string) (*User
 
 // Clear the admin permission cache.
 func (n *UserService) RefreshAdmins() (*User, error) {
-
-	type data struct {
-		Action string `json:"action"`
-		Clear  bool   `json:"clear"`
-	}
-	d := &data{}
-	d.Action = "refresh"
-	d.Clear = true
-	req, err := n.client.NewRequest("PUT", "admin", nil, d)
+	data := make(map[string]interface{})
+	data["action"] = "refresh"
+	data["clear"] = true
+	req, err := n.client.NewRequest("PUT", "admin", nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -210,10 +205,10 @@ func (n *UserService) RefreshAdmins() (*User, error) {
 }
 
 // Set public key for the specified admin
-func (n *UserService) SetPublicKey(name string, key string, params map[string]string) (*User, error) {
+func (n *UserService) SetPublicKey(name string, key string) (*User, error) {
 
 	data := map[string]string{"publickey": key}
-	m, err := n.SetAdmin(name, params, data)
+	m, err := n.SetAdmin(name, data)
 	if err != nil {
 		return nil, err
 	}
@@ -222,10 +217,10 @@ func (n *UserService) SetPublicKey(name string, key string, params map[string]st
 }
 
 // Set the password for the specified admin
-func (n *UserService) SetPassword(name string, new_password string, old_password string, params map[string]string) (*User, error) {
+func (n *UserService) SetPassword(name string, new_password string, old_password string) (*User, error) {
 
 	data := map[string]string{"password": new_password, "old_password": old_password}
-	m, err := n.SetAdmin(name, params, data)
+	m, err := n.SetAdmin(name, data)
 	if err != nil {
 		return nil, err
 	}

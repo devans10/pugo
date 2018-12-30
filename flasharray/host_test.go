@@ -17,8 +17,8 @@ func TestAccHosts(t *testing.T) {
 	testvol := "testacchostvol1"
 	testpgroup := "testacchostpgroup"
 
-	c.Volumes.CreateVolume(testvol, 1024000000, nil)
-	c.Protectiongroups.CreateProtectiongroup(testpgroup, nil, nil)
+	c.Volumes.CreateVolume(testvol, 1024000000)
+	c.Protectiongroups.CreateProtectiongroup(testpgroup, nil)
 
 	t.Run("CreateHost_basic", testAccCreateHost_basic(c))
 	t.Run("GetHost", testAccGetHost(c))
@@ -33,19 +33,19 @@ func TestAccHosts(t *testing.T) {
 	t.Run("ListHostConnections", testAccListHostConnections(c))
 	t.Run("ListHosts", testAccListHosts(c))
 	t.Run("RenameHost", testAccRenameHost(c, "testAcchostnew"))
-	c.Hosts.RenameHost("testAcchostnew", testAccHostName, nil)
+	c.Hosts.RenameHost("testAcchostnew", testAccHostName)
 	t.Run("RemoveVolumeFromHost", testAccDisconnectVolumeFromHost(c, testvol))
 	t.Run("DeleteHost", testAccDeleteHost(c))
 
-	c.Volumes.DeleteVolume(testvol, nil)
-	c.Volumes.EradicateVolume(testvol, nil)
-	c.Protectiongroups.DestroyProtectiongroup(testpgroup, nil)
-	c.Protectiongroups.EradicateProtectiongroup(testpgroup, nil)
+	c.Volumes.DeleteVolume(testvol)
+	c.Volumes.EradicateVolume(testvol)
+	c.Protectiongroups.DestroyProtectiongroup(testpgroup)
+	c.Protectiongroups.EradicateProtectiongroup(testpgroup)
 }
 
 func testAccCreateHost_basic(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		h, err := c.Hosts.CreateHost(testAccHostName, nil, nil)
+		h, err := c.Hosts.CreateHost(testAccHostName, nil)
 		if err != nil {
 			t.Fatalf("error creating hostgroup %s: %s", testAccHostName, err)
 		}
@@ -58,7 +58,7 @@ func testAccCreateHost_basic(c *Client) func(*testing.T) {
 
 func testAccGetHost(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		h, err := c.Hosts.GetHost(testAccHostName, nil)
+		h, err := c.Hosts.GetHost(testAccHostName)
 		if err != nil {
 			t.Fatalf("error getting host %s: %s", testAccHostName, err)
 		}
@@ -71,7 +71,7 @@ func testAccGetHost(c *Client) func(*testing.T) {
 
 func testAccCreateHost_withWWN(c *Client, wwnlist map[string][]string) func(*testing.T) {
 	return func(t *testing.T) {
-		h, err := c.Hosts.CreateHost(testAccHostName, nil, wwnlist)
+		h, err := c.Hosts.CreateHost(testAccHostName, wwnlist)
 		if err != nil {
 			t.Fatalf("error creating host %s with wwn: %s", testAccHostName, err)
 		}
@@ -84,7 +84,7 @@ func testAccCreateHost_withWWN(c *Client, wwnlist map[string][]string) func(*tes
 
 func testAccConnectVolumeToHost(c *Client, volume string) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Hosts.ConnectHost(testAccHostName, volume, nil)
+		_, err := c.Hosts.ConnectHost(testAccHostName, volume)
 		if err != nil {
 			t.Fatalf("error connecting volume to host %s: %s", testAccHostName, err)
 		}
@@ -94,7 +94,7 @@ func testAccConnectVolumeToHost(c *Client, volume string) func(*testing.T) {
 
 func testAccAddHost(c *Client, pgroup string) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Hosts.AddHost(testAccHostName, pgroup, nil)
+		_, err := c.Hosts.AddHost(testAccHostName, pgroup)
 		if err != nil {
 			t.Fatalf("error adding host %s to pgroup %s: %s", testAccHostName, pgroup, err)
 		}
@@ -103,7 +103,7 @@ func testAccAddHost(c *Client, pgroup string) func(*testing.T) {
 
 func testAccRemoveHost(c *Client, pgroup string) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Hosts.RemoveHost(testAccHostName, pgroup, nil)
+		_, err := c.Hosts.RemoveHost(testAccHostName, pgroup)
 		if err != nil {
 			t.Fatalf("error adding host %s to pgroup %s: %s", testAccHostName, pgroup, err)
 		}
@@ -112,7 +112,7 @@ func testAccRemoveHost(c *Client, pgroup string) func(*testing.T) {
 
 func testAccListHostConnections(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Hosts.ListHostConnections(testAccHostName, nil)
+		_, err := c.Hosts.ListHostConnections(testAccHostName)
 		if err != nil {
 			t.Fatalf("error listing host connections for %s: %s", testAccHostName, err)
 		}
@@ -121,7 +121,7 @@ func testAccListHostConnections(c *Client) func(*testing.T) {
 
 func testAccListHosts(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Hosts.ListHosts(nil)
+		_, err := c.Hosts.ListHosts()
 		if err != nil {
 			t.Fatalf("error listing hosts: %s", err)
 		}
@@ -130,7 +130,7 @@ func testAccListHosts(c *Client) func(*testing.T) {
 
 func testAccRenameHost(c *Client, name string) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Hosts.RenameHost(testAccHostName, name, nil)
+		_, err := c.Hosts.RenameHost(testAccHostName, name)
 		if err != nil {
 			t.Fatalf("error renaming host %s to %s: %s", testAccHostName, name, err)
 		}
@@ -139,7 +139,7 @@ func testAccRenameHost(c *Client, name string) func(*testing.T) {
 
 func testAccDisconnectVolumeFromHost(c *Client, volume string) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Hosts.DisconnectHost(testAccHostName, volume, nil)
+		_, err := c.Hosts.DisconnectHost(testAccHostName, volume)
 		if err != nil {
 			t.Fatalf("error disconnecting volume from host %s: %s", testAccHostName, err)
 		}
@@ -149,7 +149,7 @@ func testAccDisconnectVolumeFromHost(c *Client, volume string) func(*testing.T) 
 
 func testAccDeleteHost(c *Client) func(t *testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Hosts.DeleteHost(testAccHostName, nil)
+		_, err := c.Hosts.DeleteHost(testAccHostName)
 		if err != nil {
 			t.Fatalf("error deleting host: %s", err)
 		}

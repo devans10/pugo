@@ -13,11 +13,11 @@ type OffloadService struct {
 }
 
 // Connect to NFS Offload
-func (o *OffloadService) ConnectNFSOffload(name string, address string, mount_point string, params map[string]string) (*NFSOffload, error) {
+func (o *OffloadService) ConnectNFSOffload(name string, address string, mount_point string) (*NFSOffload, error) {
 
 	data := map[string]string{"name": name, "address": address, "mount_point": mount_point}
 	path := fmt.Sprintf("nfs_offload/%s", name)
-	req, err := o.client.NewRequest("POST", path, params, data)
+	req, err := o.client.NewRequest("POST", path, nil, data)
 	m := &NFSOffload{}
 	_, err = o.client.Do(req, m, false)
 	if err != nil {
@@ -28,10 +28,10 @@ func (o *OffloadService) ConnectNFSOffload(name string, address string, mount_po
 }
 
 // Disconnect an NFS Offload
-func (o *OffloadService) DisconnectNFSOffload(name string, params map[string]string) (*NFSOffload, error) {
+func (o *OffloadService) DisconnectNFSOffload(name string) (*NFSOffload, error) {
 
 	path := fmt.Sprintf("nfs_offload/%s", name)
-	req, err := o.client.NewRequest("DELETE", path, params, nil)
+	req, err := o.client.NewRequest("DELETE", path, nil, nil)
 	m := &NFSOffload{}
 	_, err = o.client.Do(req, m, false)
 	if err != nil {
@@ -42,10 +42,10 @@ func (o *OffloadService) DisconnectNFSOffload(name string, params map[string]str
 }
 
 // Get NFS offload attributes
-func (o *OffloadService) GetNFSOffload(name string, params map[string]string) (*NFSOffload, error) {
+func (o *OffloadService) GetNFSOffload(name string) (*NFSOffload, error) {
 
 	path := fmt.Sprintf("nfs_offload/%s", name)
-	req, err := o.client.NewRequest("GET", path, params, nil)
+	req, err := o.client.NewRequest("GET", path, nil, nil)
 	m := &NFSOffload{}
 	_, err = o.client.Do(req, m, false)
 	if err != nil {

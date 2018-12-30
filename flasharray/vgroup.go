@@ -13,10 +13,10 @@ type VgroupService struct {
 }
 
 // Create Vgroup
-func (h *VgroupService) CreateVgroup(name string, params map[string]string) (*Vgroup, error) {
+func (h *VgroupService) CreateVgroup(name string) (*Vgroup, error) {
 
 	path := fmt.Sprintf("vgroup/%s", name)
-	req, err := h.client.NewRequest("POST", path, params, nil)
+	req, err := h.client.NewRequest("POST", path, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -31,10 +31,10 @@ func (h *VgroupService) CreateVgroup(name string, params map[string]string) (*Vg
 }
 
 // Destroy Vgroup
-func (h *VgroupService) DestroyVgroup(name string, params map[string]string) (*Vgroup, error) {
+func (h *VgroupService) DestroyVgroup(name string) (*Vgroup, error) {
 
 	path := fmt.Sprintf("vgroup/%s", name)
-	req, err := h.client.NewRequest("DELETE", path, params, nil)
+	req, err := h.client.NewRequest("DELETE", path, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -49,11 +49,11 @@ func (h *VgroupService) DestroyVgroup(name string, params map[string]string) (*V
 }
 
 // Eradicate Vgroup
-func (h *VgroupService) EradicateVgroup(vgroup string, params map[string]string) (*Vgroup, error) {
+func (h *VgroupService) EradicateVgroup(vgroup string) (*Vgroup, error) {
 
 	data := map[string]bool{"eradicate": true}
 	path := fmt.Sprintf("vgroup/%s", vgroup)
-	req, err := h.client.NewRequest("DELETE", path, params, data)
+	req, err := h.client.NewRequest("DELETE", path, nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -68,10 +68,10 @@ func (h *VgroupService) EradicateVgroup(vgroup string, params map[string]string)
 }
 
 // Get Vgroup attributes
-func (h *VgroupService) GetVgroup(name string, params map[string]string) (*Vgroup, error) {
+func (h *VgroupService) GetVgroup(name string) (*Vgroup, error) {
 
 	path := fmt.Sprintf("vgroup/%s", name)
-	req, err := h.client.NewRequest("GET", path, params, nil)
+	req, err := h.client.NewRequest("GET", path, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -86,9 +86,9 @@ func (h *VgroupService) GetVgroup(name string, params map[string]string) (*Vgrou
 }
 
 // List Vgroups
-func (h *VgroupService) ListVgroups(params map[string]string) ([]Vgroup, error) {
+func (h *VgroupService) ListVgroups() ([]Vgroup, error) {
 
-	req, err := h.client.NewRequest("GET", "vgroup", params, nil)
+	req, err := h.client.NewRequest("GET", "vgroup", nil, nil)
 	m := []Vgroup{}
 	_, err = h.client.Do(req, &m, false)
 	if err != nil {
@@ -99,10 +99,10 @@ func (h *VgroupService) ListVgroups(params map[string]string) ([]Vgroup, error) 
 }
 
 // Recover deleted vgroup
-func (h *VgroupService) RecoverVgroup(vgroup string, params map[string]string) (*Vgroup, error) {
+func (h *VgroupService) RecoverVgroup(vgroup string) (*Vgroup, error) {
 
 	data := map[string]string{"action": "recover"}
-	m, err := h.SetVgroup(vgroup, params, data)
+	m, err := h.SetVgroup(vgroup, data)
 	if err != nil {
 		return nil, err
 	}
@@ -111,10 +111,10 @@ func (h *VgroupService) RecoverVgroup(vgroup string, params map[string]string) (
 }
 
 // Rename vgroup
-func (h *VgroupService) RenameVgroup(vgroup string, name string, params map[string]string) (*Vgroup, error) {
+func (h *VgroupService) RenameVgroup(vgroup string, name string) (*Vgroup, error) {
 
 	data := map[string]string{"name": name}
-	m, err := h.SetVgroup(vgroup, params, data)
+	m, err := h.SetVgroup(vgroup, data)
 	if err != nil {
 		return nil, err
 	}
@@ -123,10 +123,10 @@ func (h *VgroupService) RenameVgroup(vgroup string, name string, params map[stri
 }
 
 // Set vgroup attribute
-func (h *VgroupService) SetVgroup(name string, params map[string]string, data interface{}) (*Vgroup, error) {
+func (h *VgroupService) SetVgroup(name string, data interface{}) (*Vgroup, error) {
 
 	path := fmt.Sprintf("vgroup/%s", name)
-	req, err := h.client.NewRequest("PUT", path, params, data)
+	req, err := h.client.NewRequest("PUT", path, nil, data)
 	if err != nil {
 		return nil, err
 	}

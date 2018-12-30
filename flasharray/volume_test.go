@@ -20,7 +20,7 @@ func TestAccVolumes(t *testing.T) {
 	testAccPreChecks(t)
 	c := testAccGenerateClient(t)
 
-	c.Protectiongroups.CreateProtectiongroup(testpgroup, nil, nil)
+	c.Protectiongroups.CreateProtectiongroup(testpgroup, nil)
 
 	t.Run("CreateVolume", testAccCreateVolume(c))
 	t.Run("GetVolume", testAccGetVolume(c))
@@ -32,23 +32,23 @@ func TestAccVolumes(t *testing.T) {
 	t.Run("TruncateVolume", testAccTruncateVolume(c))
 	t.Run("ListVolumes", testAccListVolumes(c))
 	t.Run("RenameVolume", testAccRenameVolume(c, "testAccVolnew"))
-	c.Volumes.RenameVolume("testAccVolnew", testAccVolumeName, nil)
+	c.Volumes.RenameVolume("testAccVolnew", testAccVolumeName)
 	t.Run("DeleteVolume", testAccDeleteVolume(c))
 	t.Run("RecoverVolume", testAccRecoverVolume(c))
-	c.Volumes.DeleteVolume(testAccVolumeName, nil)
+	c.Volumes.DeleteVolume(testAccVolumeName)
 	t.Run("EradicateVolume", testAccEradicateVolume(c))
 
-	c.Volumes.DeleteVolume(testvolclone, nil)
-	c.Volumes.DeleteVolume(fmt.Sprintf("%s.%s", testAccVolumeName, testvolsnapshot), nil)
-	c.Volumes.EradicateVolume(testvolclone, nil)
-	c.Volumes.EradicateVolume(fmt.Sprintf("%s.%s", testAccVolumeName, testvolsnapshot), nil)
-	c.Protectiongroups.DestroyProtectiongroup(testpgroup, nil)
-	c.Protectiongroups.EradicateProtectiongroup(testpgroup, nil)
+	c.Volumes.DeleteVolume(testvolclone)
+	c.Volumes.DeleteVolume(fmt.Sprintf("%s.%s", testAccVolumeName, testvolsnapshot))
+	c.Volumes.EradicateVolume(testvolclone)
+	c.Volumes.EradicateVolume(fmt.Sprintf("%s.%s", testAccVolumeName, testvolsnapshot))
+	c.Protectiongroups.DestroyProtectiongroup(testpgroup)
+	c.Protectiongroups.EradicateProtectiongroup(testpgroup)
 }
 
 func testAccCreateVolume(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		h, err := c.Volumes.CreateVolume(testAccVolumeName, testvolsize, nil)
+		h, err := c.Volumes.CreateVolume(testAccVolumeName, testvolsize)
 		if err != nil {
 			t.Fatalf("error creating volume %s: %s", testAccVolumeName, err)
 		}
@@ -61,7 +61,7 @@ func testAccCreateVolume(c *Client) func(*testing.T) {
 
 func testAccGetVolume(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		h, err := c.Volumes.GetVolume(testAccVolumeName, nil)
+		h, err := c.Volumes.GetVolume(testAccVolumeName)
 		if err != nil {
 			t.Fatalf("error getting volume %s: %s", testAccVolumeName, err)
 		}
@@ -74,7 +74,7 @@ func testAccGetVolume(c *Client) func(*testing.T) {
 
 func testAccCreateSnapshot(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		h, err := c.Volumes.CreateSnapshot(testAccVolumeName, testvolsnapshot, nil)
+		h, err := c.Volumes.CreateSnapshot(testAccVolumeName, testvolsnapshot)
 		if err != nil {
 			t.Fatalf("error snapshotting volume %s: %s", testAccVolumeName, err)
 		}
@@ -87,7 +87,7 @@ func testAccCreateSnapshot(c *Client) func(*testing.T) {
 
 func testAccCloneVolume(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		h, err := c.Volumes.CopyVolume(testvolclone, testAccVolumeName, false, nil)
+		h, err := c.Volumes.CopyVolume(testvolclone, testAccVolumeName, false)
 		if err != nil {
 			t.Fatalf("error cloning volume %s: %s", testAccVolumeName, err)
 		}
@@ -103,7 +103,7 @@ func testAccCloneVolume(c *Client) func(*testing.T) {
 
 func testAccAddVolume(c *Client, pgroup string) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Volumes.AddVolume(testAccVolumeName, pgroup, nil)
+		_, err := c.Volumes.AddVolume(testAccVolumeName, pgroup)
 		if err != nil {
 			t.Fatalf("error adding volume %s to pgroup %s: %s", testAccVolumeName, pgroup, err)
 		}
@@ -112,7 +112,7 @@ func testAccAddVolume(c *Client, pgroup string) func(*testing.T) {
 
 func testAccRemoveVolume(c *Client, pgroup string) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Volumes.RemoveVolume(testAccVolumeName, pgroup, nil)
+		_, err := c.Volumes.RemoveVolume(testAccVolumeName, pgroup)
 		if err != nil {
 			t.Fatalf("error removing volume %s from pgroup %s: %s", testAccVolumeName, pgroup, err)
 		}
@@ -130,7 +130,7 @@ func testAccListVolumes(c *Client) func(*testing.T) {
 
 func testAccExtendVolume(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Volumes.ExtendVolume(testAccVolumeName, testvolresize, nil)
+		_, err := c.Volumes.ExtendVolume(testAccVolumeName, testvolresize)
 		if err != nil {
 			t.Fatalf("error extending volume %s to %d: %s", testAccVolumeName, testvolresize, err)
 		}
@@ -139,7 +139,7 @@ func testAccExtendVolume(c *Client) func(*testing.T) {
 
 func testAccTruncateVolume(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Volumes.TruncateVolume(testAccVolumeName, testvolsize, nil)
+		_, err := c.Volumes.TruncateVolume(testAccVolumeName, testvolsize)
 		if err != nil {
 			t.Fatalf("error truncating volume %s to %d: %s", testAccVolumeName, testvolsize, err)
 		}
@@ -148,7 +148,7 @@ func testAccTruncateVolume(c *Client) func(*testing.T) {
 
 func testAccRenameVolume(c *Client, name string) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Volumes.RenameVolume(testAccVolumeName, name, nil)
+		_, err := c.Volumes.RenameVolume(testAccVolumeName, name)
 		if err != nil {
 			t.Fatalf("error renaming volume %s to %s: %s", testAccVolumeName, name, err)
 		}
@@ -157,7 +157,7 @@ func testAccRenameVolume(c *Client, name string) func(*testing.T) {
 
 func testAccDeleteVolume(c *Client) func(t *testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Volumes.DeleteVolume(testAccVolumeName, nil)
+		_, err := c.Volumes.DeleteVolume(testAccVolumeName)
 		if err != nil {
 			t.Fatalf("error deleting volume: %s", err)
 		}
@@ -166,7 +166,7 @@ func testAccDeleteVolume(c *Client) func(t *testing.T) {
 
 func testAccRecoverVolume(c *Client) func(t *testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Volumes.RecoverVolume(testAccVolumeName, nil)
+		_, err := c.Volumes.RecoverVolume(testAccVolumeName)
 		if err != nil {
 			t.Fatalf("error recovering volume %s: %s", testAccVolumeName, err)
 		}
@@ -175,7 +175,7 @@ func testAccRecoverVolume(c *Client) func(t *testing.T) {
 
 func testAccEradicateVolume(c *Client) func(t *testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Volumes.EradicateVolume(testAccVolumeName, nil)
+		_, err := c.Volumes.EradicateVolume(testAccVolumeName)
 		if err != nil {
 			t.Fatalf("error eradicating volume: %s", err)
 		}

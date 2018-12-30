@@ -13,10 +13,10 @@ type ProtectiongroupService struct {
 }
 
 // Create a Protection group
-func (h *ProtectiongroupService) CreateProtectiongroup(name string, data interface{}, params map[string]string) (*Protectiongroup, error) {
+func (h *ProtectiongroupService) CreateProtectiongroup(name string, data interface{}) (*Protectiongroup, error) {
 
 	path := fmt.Sprintf("pgroup/%s", name)
-	req, err := h.client.NewRequest("POST", path, params, data)
+	req, err := h.client.NewRequest("POST", path, nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -31,9 +31,9 @@ func (h *ProtectiongroupService) CreateProtectiongroup(name string, data interfa
 }
 
 // Create a Protection Group Snapshot
-func (v *ProtectiongroupService) CreatePgroupSnapshot(pgroup string, params map[string]string) (*ProtectiongroupSnapshot, error) {
+func (v *ProtectiongroupService) CreatePgroupSnapshot(pgroup string) (*ProtectiongroupSnapshot, error) {
 	pgroups := []string{pgroup}
-	m, err := v.CreatePgroupSnapshots(pgroups, nil)
+	m, err := v.CreatePgroupSnapshots(pgroups)
 	if err != nil {
 		return nil, err
 	}
@@ -42,17 +42,12 @@ func (v *ProtectiongroupService) CreatePgroupSnapshot(pgroup string, params map[
 }
 
 // Send the Protection group snapshot to the target
-func (v *ProtectiongroupService) SendPgroupSnapshot(pgroup string, params map[string]string) ([]ProtectiongroupSnapshot, error) {
-	type data struct {
-		Action string   `json:"action"`
-		Source []string `json:"source"`
-	}
-
-	d := &data{}
-	d.Action = "send"
+func (v *ProtectiongroupService) SendPgroupSnapshot(pgroup string) ([]ProtectiongroupSnapshot, error) {
+	data := make(map[string]interface{})
+	data["action"] = "send"
 	pgroups := []string{pgroup}
-	d.Source = pgroups
-	req, err := v.client.NewRequest("POST", "pgroup", params, d)
+	data["source"] = pgroups
+	req, err := v.client.NewRequest("POST", "pgroup", nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -67,16 +62,11 @@ func (v *ProtectiongroupService) SendPgroupSnapshot(pgroup string, params map[st
 }
 
 // Create Protection Group snapshots for multiple Protection groups.
-func (v *ProtectiongroupService) CreatePgroupSnapshots(pgroups []string, params map[string]string) ([]ProtectiongroupSnapshot, error) {
-	type data struct {
-		Snap   bool     `json:"snap"`
-		Source []string `json:"source"`
-	}
-
-	d := &data{}
-	d.Snap = true
-	d.Source = pgroups
-	req, err := v.client.NewRequest("POST", "pgroup", params, d)
+func (v *ProtectiongroupService) CreatePgroupSnapshots(pgroups []string) ([]ProtectiongroupSnapshot, error) {
+	data := make(map[string]interface{})
+	data["snap"] = true
+	data["source"] = pgroups
+	req, err := v.client.NewRequest("POST", "pgroup", nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -91,10 +81,10 @@ func (v *ProtectiongroupService) CreatePgroupSnapshots(pgroups []string, params 
 }
 
 // Destroy Protection group
-func (h *ProtectiongroupService) DestroyProtectiongroup(name string, params map[string]string) (*Protectiongroup, error) {
+func (h *ProtectiongroupService) DestroyProtectiongroup(name string) (*Protectiongroup, error) {
 
 	path := fmt.Sprintf("pgroup/%s", name)
-	req, err := h.client.NewRequest("DELETE", path, params, nil)
+	req, err := h.client.NewRequest("DELETE", path, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -109,10 +99,10 @@ func (h *ProtectiongroupService) DestroyProtectiongroup(name string, params map[
 }
 
 // Disable Protection Group Replication
-func (h *ProtectiongroupService) DisablePgroupReplication(pgroup string, params map[string]string) (*Protectiongroup, error) {
+func (h *ProtectiongroupService) DisablePgroupReplication(pgroup string) (*Protectiongroup, error) {
 
 	data := map[string]bool{"replicate_enabled": false}
-	m, err := h.SetProtectiongroup(pgroup, params, data)
+	m, err := h.SetProtectiongroup(pgroup, data)
 	if err != nil {
 		return nil, err
 	}
@@ -121,10 +111,10 @@ func (h *ProtectiongroupService) DisablePgroupReplication(pgroup string, params 
 }
 
 // Enable Protection Group Replication
-func (h *ProtectiongroupService) EnablePgroupReplication(pgroup string, params map[string]string) (*Protectiongroup, error) {
+func (h *ProtectiongroupService) EnablePgroupReplication(pgroup string) (*Protectiongroup, error) {
 
 	data := map[string]bool{"replicate_enabled": true}
-	m, err := h.SetProtectiongroup(pgroup, params, data)
+	m, err := h.SetProtectiongroup(pgroup, data)
 	if err != nil {
 		return nil, err
 	}
@@ -133,10 +123,10 @@ func (h *ProtectiongroupService) EnablePgroupReplication(pgroup string, params m
 }
 
 // Disable Protection group snapshot schedule
-func (h *ProtectiongroupService) DisablePgroupSnapshots(pgroup string, params map[string]string) (*Protectiongroup, error) {
+func (h *ProtectiongroupService) DisablePgroupSnapshots(pgroup string) (*Protectiongroup, error) {
 
 	data := map[string]bool{"snap_enabled": false}
-	m, err := h.SetProtectiongroup(pgroup, params, data)
+	m, err := h.SetProtectiongroup(pgroup, data)
 	if err != nil {
 		return nil, err
 	}
@@ -145,10 +135,10 @@ func (h *ProtectiongroupService) DisablePgroupSnapshots(pgroup string, params ma
 }
 
 // Enable Protection Group Snapshot schedule
-func (h *ProtectiongroupService) EnablePgroupSnapshots(pgroup string, params map[string]string) (*Protectiongroup, error) {
+func (h *ProtectiongroupService) EnablePgroupSnapshots(pgroup string) (*Protectiongroup, error) {
 
 	data := map[string]bool{"snap_enabled": true}
-	m, err := h.SetProtectiongroup(pgroup, params, data)
+	m, err := h.SetProtectiongroup(pgroup, data)
 	if err != nil {
 		return nil, err
 	}
@@ -157,11 +147,11 @@ func (h *ProtectiongroupService) EnablePgroupSnapshots(pgroup string, params map
 }
 
 // Eradicate deleted protection group
-func (h *ProtectiongroupService) EradicateProtectiongroup(pgroup string, params map[string]string) (*Protectiongroup, error) {
+func (h *ProtectiongroupService) EradicateProtectiongroup(pgroup string) (*Protectiongroup, error) {
 
 	data := map[string]bool{"eradicate": true}
 	path := fmt.Sprintf("pgroup/%s", pgroup)
-	req, err := h.client.NewRequest("DELETE", path, params, data)
+	req, err := h.client.NewRequest("DELETE", path, nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -176,10 +166,10 @@ func (h *ProtectiongroupService) EradicateProtectiongroup(pgroup string, params 
 }
 
 // Get protection group attributes
-func (h *ProtectiongroupService) GetProtectiongroup(name string, params map[string]string, data interface{}) (*Protectiongroup, error) {
+func (h *ProtectiongroupService) GetProtectiongroup(name string, data interface{}) (*Protectiongroup, error) {
 
 	path := fmt.Sprintf("pgroup/%s", name)
-	req, err := h.client.NewRequest("GET", path, params, data)
+	req, err := h.client.NewRequest("GET", path, nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -194,9 +184,9 @@ func (h *ProtectiongroupService) GetProtectiongroup(name string, params map[stri
 }
 
 // List Protection groups
-func (h *ProtectiongroupService) ListProtectiongroups(params map[string]string) ([]Protectiongroup, error) {
+func (h *ProtectiongroupService) ListProtectiongroups() ([]Protectiongroup, error) {
 
-	req, err := h.client.NewRequest("GET", "pgroup", params, nil)
+	req, err := h.client.NewRequest("GET", "pgroup", nil, nil)
 	m := []Protectiongroup{}
 	_, err = h.client.Do(req, &m, false)
 	if err != nil {
@@ -207,10 +197,10 @@ func (h *ProtectiongroupService) ListProtectiongroups(params map[string]string) 
 }
 
 // Recover deleted protection group
-func (h *ProtectiongroupService) RecoverProtectiongroup(pgroup string, params map[string]string) (*Protectiongroup, error) {
+func (h *ProtectiongroupService) RecoverProtectiongroup(pgroup string) (*Protectiongroup, error) {
 
 	data := map[string]string{"action": "recover"}
-	m, err := h.SetProtectiongroup(pgroup, params, data)
+	m, err := h.SetProtectiongroup(pgroup, data)
 	if err != nil {
 		return nil, err
 	}
@@ -219,10 +209,10 @@ func (h *ProtectiongroupService) RecoverProtectiongroup(pgroup string, params ma
 }
 
 // Rename Protection group
-func (h *ProtectiongroupService) RenameProtectiongroup(pgroup string, name string, params map[string]string) (*Protectiongroup, error) {
+func (h *ProtectiongroupService) RenameProtectiongroup(pgroup string, name string) (*Protectiongroup, error) {
 
 	data := map[string]string{"name": name}
-	m, err := h.SetProtectiongroup(pgroup, params, data)
+	m, err := h.SetProtectiongroup(pgroup, data)
 	if err != nil {
 		return nil, err
 	}
@@ -231,10 +221,10 @@ func (h *ProtectiongroupService) RenameProtectiongroup(pgroup string, name strin
 }
 
 // Set protection group attributes
-func (h *ProtectiongroupService) SetProtectiongroup(name string, params map[string]string, data interface{}) (*Protectiongroup, error) {
+func (h *ProtectiongroupService) SetProtectiongroup(name string, data interface{}) (*Protectiongroup, error) {
 
 	path := fmt.Sprintf("pgroup/%s", name)
-	req, err := h.client.NewRequest("PUT", path, params, data)
+	req, err := h.client.NewRequest("PUT", path, nil, data)
 	if err != nil {
 		return nil, err
 	}

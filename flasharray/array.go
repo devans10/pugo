@@ -85,9 +85,9 @@ func (v *ArrayService) Get(data interface{}) (*Array, error) {
 }
 
 // Set will change the parameter on the array that is passed in the data map
-func (v *ArrayService) Set(params map[string]string, data interface{}) (*Array, error) {
+func (v *ArrayService) Set(data interface{}) (*Array, error) {
 
-	req, err := v.client.NewRequest("PUT", "array", params, nil)
+	req, err := v.client.NewRequest("PUT", "array", nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func (v *ArrayService) Set(params map[string]string, data interface{}) (*Array, 
 func (v *ArrayService) Rename(name string) (*Array, error) {
 
 	data := map[string]string{"name": name}
-	m, err := v.Set(nil, data)
+	m, err := v.Set(data)
 	return m, err
 }
 

@@ -83,10 +83,10 @@ func (n *HardwareService) ListHardware() ([]Component, error) {
 }
 
 // Set hardware attributes
-func (n *HardwareService) SetHardware(name string, params map[string]string, data interface{}) (*Component, error) {
+func (n *HardwareService) SetHardware(name string, data interface{}) (*Component, error) {
 
 	path := fmt.Sprintf("hardware/%s", name)
-	req, err := n.client.NewRequest("PUT", path, params, data)
+	req, err := n.client.NewRequest("PUT", path, nil, data)
 	if err != nil {
 		return nil, err
 	}

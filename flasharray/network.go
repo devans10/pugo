@@ -15,10 +15,10 @@ type NetworkService struct {
 // Disable a network interface.
 // param: iface: Name of network interface to be disabled.
 // Returns an object describing the interface.
-func (n *NetworkService) DisableNetworkInterface(iface string, params map[string]string) (*NetworkInterface, error) {
+func (n *NetworkService) DisableNetworkInterface(iface string) (*NetworkInterface, error) {
 
 	data := map[string]bool{"enabled": false}
-	m, err := n.SetNetworkInterface(iface, params, data)
+	m, err := n.SetNetworkInterface(iface, data)
 	if err != nil {
 		return nil, err
 	}
@@ -29,10 +29,10 @@ func (n *NetworkService) DisableNetworkInterface(iface string, params map[string
 // Enable a network interface.
 // param: iface: Name of network interface to be enabled.
 // Returns an object describing the interface.
-func (n *NetworkService) EnableNetworkInterface(iface string, params map[string]string) (*NetworkInterface, error) {
+func (n *NetworkService) EnableNetworkInterface(iface string) (*NetworkInterface, error) {
 
 	data := map[string]bool{"enabled": true}
-	m, err := n.SetNetworkInterface(iface, params, data)
+	m, err := n.SetNetworkInterface(iface, data)
 	if err != nil {
 		return nil, err
 	}
@@ -76,10 +76,10 @@ func (n *NetworkService) ListNetworkInterfaces() ([]NetworkInterface, error) {
 }
 
 // Set network interface attributes
-func (n *NetworkService) SetNetworkInterface(iface string, params map[string]string, data interface{}) (*NetworkInterface, error) {
+func (n *NetworkService) SetNetworkInterface(iface string, data interface{}) (*NetworkInterface, error) {
 
 	path := fmt.Sprintf("network/%s", iface)
-	req, err := n.client.NewRequest("PUT", path, params, data)
+	req, err := n.client.NewRequest("PUT", path, nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -99,11 +99,11 @@ func (n *NetworkService) SetNetworkInterface(iface string, params map[string]str
 // note:
 // prefix should be specified as an IPv4 CIDR address.
 // ("xxx.xxx.xxx.xxx/nn", representing prefix and prefix length)
-func (n *NetworkService) CreateSubnet(subnet string, prefix string, params map[string]string) (*Subnet, error) {
+func (n *NetworkService) CreateSubnet(subnet string, prefix string) (*Subnet, error) {
 
 	data := map[string]string{"prefix": prefix}
 	path := fmt.Sprintf("subnet/%s", subnet)
-	req, err := n.client.NewRequest("POST", path, params, data)
+	req, err := n.client.NewRequest("POST", path, nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -119,10 +119,10 @@ func (n *NetworkService) CreateSubnet(subnet string, prefix string, params map[s
 
 // Delete a subnet
 // param: subnet - Name of subnet to be deleted
-func (n *NetworkService) DeleteSubnet(subnet string, params map[string]string) (*Subnet, error) {
+func (n *NetworkService) DeleteSubnet(subnet string) (*Subnet, error) {
 
 	path := fmt.Sprintf("subnet/%s", subnet)
-	req, err := n.client.NewRequest("DELETE", path, params, nil)
+	req, err := n.client.NewRequest("DELETE", path, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -139,10 +139,10 @@ func (n *NetworkService) DeleteSubnet(subnet string, params map[string]string) (
 // Disable a subnet
 // param: subnet: Name of subnet to be disabled.
 // Returns an object describing the subnet
-func (n *NetworkService) DisableSubnet(subnet string, params map[string]string) (*Subnet, error) {
+func (n *NetworkService) DisableSubnet(subnet string) (*Subnet, error) {
 
 	data := map[string]bool{"enabled": false}
-	m, err := n.SetSubnet(subnet, params, data)
+	m, err := n.SetSubnet(subnet, data)
 	if err != nil {
 		return nil, err
 	}
@@ -153,10 +153,10 @@ func (n *NetworkService) DisableSubnet(subnet string, params map[string]string) 
 // Enable a subnet
 // param: subnet: Name of subnet to be enabled.
 // Returns an object describing the subnet
-func (n *NetworkService) EnableSubnet(subnet string, params map[string]string) (*Subnet, error) {
+func (n *NetworkService) EnableSubnet(subnet string) (*Subnet, error) {
 
 	data := map[string]bool{"enabled": true}
-	m, err := n.SetSubnet(subnet, params, data)
+	m, err := n.SetSubnet(subnet, data)
 	if err != nil {
 		return nil, err
 	}
@@ -203,10 +203,10 @@ func (n *NetworkService) ListSubnets() ([]Subnet, error) {
 // param: subnet: Name of subnet to be renamed.
 // param: name: Name to change the subnet to
 // Returns an object describing the subnet
-func (n *NetworkService) RenameSubnet(subnet string, name string, params map[string]string) (*Subnet, error) {
+func (n *NetworkService) RenameSubnet(subnet string, name string) (*Subnet, error) {
 
 	data := map[string]string{"name": name}
-	m, err := n.SetSubnet(subnet, params, data)
+	m, err := n.SetSubnet(subnet, data)
 	if err != nil {
 		return nil, err
 	}
@@ -215,10 +215,10 @@ func (n *NetworkService) RenameSubnet(subnet string, name string, params map[str
 }
 
 // Set subnet attributes
-func (n *NetworkService) SetSubnet(subnet string, params map[string]string, data interface{}) (*Subnet, error) {
+func (n *NetworkService) SetSubnet(subnet string, data interface{}) (*Subnet, error) {
 
 	path := fmt.Sprintf("subnet/%s", subnet)
-	req, err := n.client.NewRequest("PUT", path, params, data)
+	req, err := n.client.NewRequest("PUT", path, nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -235,11 +235,11 @@ func (n *NetworkService) SetSubnet(subnet string, params map[string]string, data
 // Create a VLAN Interface
 // param: iface - Name of interface to be created
 // param: subnet - Subnet to be associated with the new interface
-func (n *NetworkService) CreateVlanInterface(iface string, subnet string, params map[string]string) (*NetworkInterface, error) {
+func (n *NetworkService) CreateVlanInterface(iface string, subnet string) (*NetworkInterface, error) {
 
 	data := map[string]string{"subnet": subnet}
 	path := fmt.Sprintf("network/vif/%s", iface)
-	req, err := n.client.NewRequest("POST", path, params, data)
+	req, err := n.client.NewRequest("POST", path, nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -255,10 +255,10 @@ func (n *NetworkService) CreateVlanInterface(iface string, subnet string, params
 
 // Delete a VLAN Interface
 // param: iface - Name of iface to be deleted
-func (n *NetworkService) DeleteVlanInterface(iface string, params map[string]string) (*NetworkInterface, error) {
+func (n *NetworkService) DeleteVlanInterface(iface string) (*NetworkInterface, error) {
 
 	path := fmt.Sprintf("network/vif/%s", iface)
-	req, err := n.client.NewRequest("DELETE", path, params, nil)
+	req, err := n.client.NewRequest("DELETE", path, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -290,9 +290,9 @@ func (n *NetworkService) GetDNS() (*DNS, error) {
 }
 
 // Set DNS settings
-func (n *NetworkService) SetDNS(params map[string]string) (*DNS, error) {
+func (n *NetworkService) SetDNS(data interface{}) (*DNS, error) {
 
-	req, err := n.client.NewRequest("PUT", "dns", params, nil)
+	req, err := n.client.NewRequest("PUT", "dns", nil, data)
 	if err != nil {
 		return nil, err
 	}
@@ -307,9 +307,9 @@ func (n *NetworkService) SetDNS(params map[string]string) (*DNS, error) {
 }
 
 // List ports
-func (n *NetworkService) ListPorts(params map[string]string) ([]Port, error) {
+func (n *NetworkService) ListPorts(data interface{}) ([]Port, error) {
 
-	req, err := n.client.NewRequest("GET", "port", params, nil)
+	req, err := n.client.NewRequest("GET", "port", nil, data)
 	if err != nil {
 		return nil, err
 	}
