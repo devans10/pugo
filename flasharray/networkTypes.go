@@ -11,11 +11,11 @@ type NetworkInterface struct {
 	Netmask  string   `json:"netmask,omitempty"`
 	Enabled  bool     `json:"enabled,omitempty"`
 	Subnet   string   `json:"subnet,omitempty"`
-	Mtu      int      `json:"subnet,omitempty"`
+	Mtu      int      `json:"mtu,omitempty"`
 	Services []string `json:"services,omitempty"`
-	Slaves   []string `json:slaves,omitempty"`
+	Slaves   []string `json:"slaves,omitempty"`
 	Hwaddr   string   `json:"hwaddr,omitempty"`
-	speed    int      `json:"speed,omitempty"`
+	Speed    int      `json:"speed,omitempty"`
 }
 
 type Subnet struct {
@@ -29,7 +29,7 @@ type Subnet struct {
 
 type DNS struct {
 	Nameservers []string `json:"nameservers"`
-	Domain      string   `json:domain"`
+	Domain      string   `json:"domain"`
 }
 
 type Port struct {
