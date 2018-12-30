@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/devans10/go-purestorage.svg?branch=master)](https://travis-ci.com/devans10/go-purestorage)
+
 # Pure Storage REST client for Go
 This library is designed to provide a simple interface for issuing commands to a Pure Storage Flash Array using a REST API. 
 It communicates with the array using the golang http library, and returns the data into types defined within the library.
