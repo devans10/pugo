@@ -26,6 +26,7 @@ func TestAccHostgroups(t *testing.T) {
 
 	t.Run("CreateHostgroup_basic", testAccCreateHostgroup_basic(c))
 	t.Run("GetHostgroup", testAccGetHostgroup(c))
+	t.Run("GetHostgroup_withParams", testAccGetHostgroup_withParams(c))
 	t.Run("DeleteHostgroup", testAccDeleteHostgroup(c))
 
 	testhosts := []string{testhost1, testhost2}
@@ -36,6 +37,7 @@ func TestAccHostgroups(t *testing.T) {
 	t.Run("RemoveHostgroupFromPgroup", testAccRemoveHostgroup(c, testpgroup))
 	t.Run("ListHostgroupConnections", testAccListHostgroupConnections(c))
 	t.Run("ListHostgroups", testAccListHostgroups(c))
+	t.Run("ListHostgroups_withParams", testAccListHostgroups_withParams(c))
 	t.Run("RenameHostgroup", testAccRenameHostgroup(c, "testacchgroupnew"))
 	c.Hostgroups.RenameHostgroup("testacchgroupnew", testAccHostgroupName)
 	t.Run("DisconnectVolumeFromHostgroup", testAccDisconnectVolumeFromHostgroup(c, testvol))
@@ -67,7 +69,21 @@ func testAccCreateHostgroup_basic(c *Client) func(*testing.T) {
 
 func testAccGetHostgroup(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		h, err := c.Hostgroups.GetHostgroup(testAccHostgroupName)
+		h, err := c.Hostgroups.GetHostgroup(testAccHostgroupName, nil)
+		if err != nil {
+			t.Fatalf("error getting hostgroup %s: %s", testAccHostgroupName, err)
+		}
+
+		if h.Name != testAccHostgroupName {
+			t.Fatalf("expected: %s; got %s", testAccHostgroupName, h.Name)
+		}
+	}
+}
+
+func testAccGetHostgroup_withParams(c *Client) func(*testing.T) {
+	return func(t *testing.T) {
+		params := map[string]string{"space": "true"}
+		h, err := c.Hostgroups.GetHostgroup(testAccHostgroupName, params)
 		if err != nil {
 			t.Fatalf("error getting hostgroup %s: %s", testAccHostgroupName, err)
 		}
@@ -130,7 +146,17 @@ func testAccListHostgroupConnections(c *Client) func(*testing.T) {
 
 func testAccListHostgroups(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Hostgroups.ListHostgroups()
+		_, err := c.Hostgroups.ListHostgroups(nil)
+		if err != nil {
+			t.Fatalf("error listing hostgroups: %s", err)
+		}
+	}
+}
+
+func testAccListHostgroups_withParams(c *Client) func(*testing.T) {
+	return func(t *testing.T) {
+		params := map[string]string{"space": "true"}
+		_, err := c.Hostgroups.ListHostgroups(params)
 		if err != nil {
 			t.Fatalf("error listing hostgroups: %s", err)
 		}

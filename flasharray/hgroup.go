@@ -77,10 +77,11 @@ func (h *HostgroupService) DisconnectHostgroup(hgroup string, volume string) (*C
 }
 
 // Return a map of the hostgroup attributes
-func (h *HostgroupService) GetHostgroup(name string) (*Hostgroup, error) {
+// see API reference on array for list of valid parameters
+func (h *HostgroupService) GetHostgroup(name string, params map[string]string) (*Hostgroup, error) {
 
 	path := fmt.Sprintf("hgroup/%s", name)
-	req, err := h.client.NewRequest("GET", path, nil, nil)
+	req, err := h.client.NewRequest("GET", path, params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -137,9 +138,9 @@ func (h *HostgroupService) ListHostgroupConnections(hgroup string) ([]HostgroupC
 }
 
 // List hostgroups
-func (h *HostgroupService) ListHostgroups() ([]Hostgroup, error) {
+func (h *HostgroupService) ListHostgroups(params map[string]string) ([]Hostgroup, error) {
 
-	req, err := h.client.NewRequest("GET", "hgroup", nil, nil)
+	req, err := h.client.NewRequest("GET", "hgroup", params, nil)
 	m := []Hostgroup{}
 	_, err = h.client.Do(req, &m, false)
 	if err != nil {

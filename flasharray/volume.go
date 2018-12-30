@@ -178,10 +178,10 @@ func (v *VolumeService) ExtendVolume(name string, size int) (*Volume, error) {
 }
 
 // Get volume attributes
-func (v *VolumeService) GetVolume(name string) (*Volume, error) {
+func (v *VolumeService) GetVolume(name string, params map[string]string) (*Volume, error) {
 
 	path := fmt.Sprintf("volume/%s", name)
-	req, err := v.client.NewRequest("GET", path, nil, nil)
+	req, err := v.client.NewRequest("GET", path, params, nil)
 	m := &Volume{}
 	_, err = v.client.Do(req, m, false)
 	if err != nil {
@@ -237,9 +237,9 @@ func (v *VolumeService) ListVolumeSharedConnections() error {
 }
 
 // List volumes
-func (v *VolumeService) ListVolumes(data interface{}) ([]Volume, error) {
+func (v *VolumeService) ListVolumes(params map[string]string) ([]Volume, error) {
 
-	req, err := v.client.NewRequest("GET", "volume", nil, data)
+	req, err := v.client.NewRequest("GET", "volume", params, nil)
 	m := []Volume{}
 	_, err = v.client.Do(req, &m, false)
 	if err != nil {

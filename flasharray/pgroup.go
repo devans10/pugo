@@ -166,10 +166,10 @@ func (h *ProtectiongroupService) EradicateProtectiongroup(pgroup string) (*Prote
 }
 
 // Get protection group attributes
-func (h *ProtectiongroupService) GetProtectiongroup(name string, data interface{}) (*Protectiongroup, error) {
+func (h *ProtectiongroupService) GetProtectiongroup(name string, params map[string]string) (*Protectiongroup, error) {
 
 	path := fmt.Sprintf("pgroup/%s", name)
-	req, err := h.client.NewRequest("GET", path, nil, data)
+	req, err := h.client.NewRequest("GET", path, params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -184,9 +184,9 @@ func (h *ProtectiongroupService) GetProtectiongroup(name string, data interface{
 }
 
 // List Protection groups
-func (h *ProtectiongroupService) ListProtectiongroups() ([]Protectiongroup, error) {
+func (h *ProtectiongroupService) ListProtectiongroups(params map[string]string) ([]Protectiongroup, error) {
 
-	req, err := h.client.NewRequest("GET", "pgroup", nil, nil)
+	req, err := h.client.NewRequest("GET", "pgroup", params, nil)
 	m := []Protectiongroup{}
 	_, err = h.client.Do(req, &m, false)
 	if err != nil {

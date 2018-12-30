@@ -24,6 +24,7 @@ func TestAccVolumes(t *testing.T) {
 
 	t.Run("CreateVolume", testAccCreateVolume(c))
 	t.Run("GetVolume", testAccGetVolume(c))
+	t.Run("GetVolume_withParams", testAccGetVolume_withParams(c))
 	t.Run("CreateSnapshot", testAccCreateSnapshot(c))
 	t.Run("CloneVolume", testAccCloneVolume(c))
 	t.Run("AddVolumeToPgroup", testAccAddVolume(c, testpgroup))
@@ -31,6 +32,7 @@ func TestAccVolumes(t *testing.T) {
 	t.Run("ExtendVolume", testAccExtendVolume(c))
 	t.Run("TruncateVolume", testAccTruncateVolume(c))
 	t.Run("ListVolumes", testAccListVolumes(c))
+	t.Run("ListVolumes_withParams", testAccListVolumes_withParams(c))
 	t.Run("RenameVolume", testAccRenameVolume(c, "testAccVolnew"))
 	c.Volumes.RenameVolume("testAccVolnew", testAccVolumeName)
 	t.Run("DeleteVolume", testAccDeleteVolume(c))
@@ -61,7 +63,21 @@ func testAccCreateVolume(c *Client) func(*testing.T) {
 
 func testAccGetVolume(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		h, err := c.Volumes.GetVolume(testAccVolumeName)
+		h, err := c.Volumes.GetVolume(testAccVolumeName, nil)
+		if err != nil {
+			t.Fatalf("error getting volume %s: %s", testAccVolumeName, err)
+		}
+
+		if h.Name != testAccVolumeName {
+			t.Fatalf("expected: %s; got %s", testAccVolumeName, h.Name)
+		}
+	}
+}
+
+func testAccGetVolume_withParams(c *Client) func(*testing.T) {
+	return func(t *testing.T) {
+		params := map[string]string{"space": "true"}
+		h, err := c.Volumes.GetVolume(testAccVolumeName, params)
 		if err != nil {
 			t.Fatalf("error getting volume %s: %s", testAccVolumeName, err)
 		}
@@ -122,6 +138,16 @@ func testAccRemoveVolume(c *Client, pgroup string) func(*testing.T) {
 func testAccListVolumes(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		_, err := c.Volumes.ListVolumes(nil)
+		if err != nil {
+			t.Fatalf("error listing volumes: %s", err)
+		}
+	}
+}
+
+func testAccListVolumes_withParams(c *Client) func(*testing.T) {
+	return func(t *testing.T) {
+		params := map[string]string{"space": "true"}
+		_, err := c.Volumes.ListVolumes(params)
 		if err != nil {
 			t.Fatalf("error listing volumes: %s", err)
 		}
