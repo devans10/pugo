@@ -77,10 +77,10 @@ func (h *HostService) DisconnectHost(host string, volume string) (*ConnectedVolu
 }
 
 // Return the attributes of the given host
-func (h *HostService) GetHost(name string) (*Host, error) {
+func (h *HostService) GetHost(name string, params map[string]string) (*Host, error) {
 
 	path := fmt.Sprintf("host/%s", name)
-	req, err := h.client.NewRequest("GET", path, nil, nil)
+	req, err := h.client.NewRequest("GET", path, params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -137,9 +137,9 @@ func (h *HostService) ListHostConnections(host string) ([]ConnectedVolume, error
 }
 
 // List hosts
-func (h *HostService) ListHosts() ([]Host, error) {
+func (h *HostService) ListHosts(params map[string]string) ([]Host, error) {
 
-	req, err := h.client.NewRequest("GET", "host", nil, nil)
+	req, err := h.client.NewRequest("GET", "host", params, nil)
 	m := []Host{}
 	_, err = h.client.Do(req, &m, false)
 	if err != nil {

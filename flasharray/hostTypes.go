@@ -5,10 +5,17 @@
 package flasharray
 
 type Host struct {
-	Name   string   `json:"name,omitempty"`
-	Wwn    []string `json:"wwn,omitempty"`
-	Iqn    []string `json:"iqn,omitempty"`
-	Hgroup string   `json:"hgroup,omitempty"`
+	Name           string   `json:"name,omitempty"`
+	Wwn            []string `json:"wwn,omitempty"`
+	Iqn            []string `json:"iqn,omitempty"`
+	Nqn            []string `json:"nqn,omitempty"`
+	HostPassword   string   `json:"host_password,omitempty"`
+	HostUser       string   `json:"host_user,omitempty"`
+	Personality    string   `json:"personality,omitempty"`
+	PreferredArray []string `json:"preferred_array,omitempty"`
+	TargetPassword string   `json:"target_password,omitempty"`
+	TargetUser     string   `json:"target_user,omitempty"`
+	Hgroup         string   `json:"hgroup,omitempty"`
 }
 
 type ConnectedVolume struct {
