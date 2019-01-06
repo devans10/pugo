@@ -3,6 +3,8 @@
 IMPROVEMENTS:
 * Added CHAP, Personality, and Preferred Array properties to Host Struct.
 * Added params to ListHosts and GetHost to be able to query for above properties.
+* Added data arg to Hosts.ConnectHost to allow setting of LUN.
+* Added params to Host.ListHostConnections to allow returning private or shared connections.
 
 ## 0.1.2
 

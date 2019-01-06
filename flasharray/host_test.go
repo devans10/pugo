@@ -98,7 +98,7 @@ func testAccCreateHost_withWWN(c *Client, wwnlist map[string][]string) func(*tes
 
 func testAccConnectVolumeToHost(c *Client, volume string) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Hosts.ConnectHost(testAccHostName, volume)
+		_, err := c.Hosts.ConnectHost(testAccHostName, volume, nil)
 		if err != nil {
 			t.Fatalf("error connecting volume to host %s: %s", testAccHostName, err)
 		}
@@ -126,7 +126,7 @@ func testAccRemoveHost(c *Client, pgroup string) func(*testing.T) {
 
 func testAccListHostConnections(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Hosts.ListHostConnections(testAccHostName)
+		_, err := c.Hosts.ListHostConnections(testAccHostName, nil)
 		if err != nil {
 			t.Fatalf("error listing host connections for %s: %s", testAccHostName, err)
 		}
