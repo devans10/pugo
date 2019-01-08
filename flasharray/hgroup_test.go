@@ -109,7 +109,7 @@ func testAccCreateHostgroup_withHosts(c *Client, hostlist map[string][]string) f
 
 func testAccConnectVolumeToHostgroup(c *Client, volume string) func(*testing.T) {
 	return func(t *testing.T) {
-		_, err := c.Hostgroups.ConnectHostgroup(testAccHostgroupName, volume)
+		_, err := c.Hostgroups.ConnectHostgroup(testAccHostgroupName, volume, nil)
 		if err != nil {
 			t.Fatalf("error connecting volume to hostgroup %s: %s", testAccHostgroupName, err)
 		}
