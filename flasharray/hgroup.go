@@ -13,10 +13,10 @@ type HostgroupService struct {
 }
 
 // Connect a Volume to a hostgroup
-func (h *HostgroupService) ConnectHostgroup(hgroup string, volume string) (*ConnectedVolume, error) {
+func (h *HostgroupService) ConnectHostgroup(hgroup string, volume string, data interface{}) (*ConnectedVolume, error) {
 
 	path := fmt.Sprintf("hgroup/%s/volume/%s", hgroup, volume)
-	req, err := h.client.NewRequest("POST", path, nil, nil)
+	req, err := h.client.NewRequest("POST", path, nil, data)
 	m := &ConnectedVolume{}
 	_, err = h.client.Do(req, m, false)
 	if err != nil {
