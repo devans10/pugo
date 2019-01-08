@@ -1,3 +1,8 @@
+## 0.1.4
+
+IMPROVEMENTS:
+* Added data arg to Hostgroups.ConnectHostgroup to allow setting of LUN
+
 ## 0.1.3
 
 IMPROVEMENTS:
