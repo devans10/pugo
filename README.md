@@ -16,7 +16,9 @@ Table of Contents
    * [Testing](#Testing)
    * [Documentation](#Documentation)
       * [FlashArray](#FlashArray)
-      * [Create a Client](#Create a Client)
+      * [Client](#Client)
+      * [Array](#Array)
+      * [Volume](#Volume)
 
 # Requirements
 You should have a working Go environment setup.  If not check out the Go [getting started](http://golang.org/doc/install) guide.
@@ -52,7 +54,7 @@ These tests require a connection to a Pure FlashArray.  They will require enviro
 ## FlashArray
 https://godoc.org/github.com/devans10/go-purestorage/flasharray
 
-### Create a Client
+### Client
 
 Create a client to connect to the FlashArray
 ```go
