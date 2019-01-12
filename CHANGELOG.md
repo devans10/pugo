@@ -1,3 +1,10 @@
+## 0.2.0
+
+IMPROVEMENTS:
+* Added PodService
+* Added AlertService
+* Added MessageService
+
 ## 0.1.4
 
 IMPROVEMENTS:
