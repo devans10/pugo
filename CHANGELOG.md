@@ -5,6 +5,9 @@ IMPROVEMENTS:
 * Added AlertService
 * Added MessageService
 
+FIXES:
+* Fixed the Enable/Disable RemoteAssist functions
+
 ## 0.1.4
 
 IMPROVEMENTS:

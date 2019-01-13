@@ -16,3 +16,16 @@ type VolumePgroup struct {
 	Name   string `json:"name"`
 	Pgroup string `json:"protection_group"`
 }
+
+type Connection struct {
+	Name   string `json:"name,omitempty"`
+	Host   string `json:"host,omitempty"`
+	Hgroup string `json:"hgroup,omitempty"`
+	Lun    int    `json:"lun,omitempty"`
+	Size   int    `json:"size,omitempty"`
+}
+
+type Block struct {
+	Length int `json:"length,omitempty"`
+	Offset int `json:offset,omitempty"`
+}

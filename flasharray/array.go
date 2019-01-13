@@ -158,7 +158,7 @@ func (v *ArrayService) DisablePhoneHome() (*Phonehome, error) {
 // Disable Remote Assist
 func (v *ArrayService) DisableRemoteAssist() (*RemoteAssist, error) {
 
-	data := map[string]bool{"enabled": false}
+	data := map[string]string{"action": "disconnect"}
 	m, err := v.setRemoteAssist(data)
 	if err != nil {
 		return nil, err
@@ -182,7 +182,7 @@ func (v *ArrayService) EnablePhoneHome() (*Phonehome, error) {
 // Enable Remote Assist
 func (v *ArrayService) EnableRemoteAssist() (*RemoteAssist, error) {
 
-	data := map[string]bool{"enabled": true}
+	data := map[string]string{"action": "connect"}
 	m, err := v.setRemoteAssist(data)
 	if err != nil {
 		return nil, err

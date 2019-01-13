@@ -220,20 +220,42 @@ func (v *VolumeService) RemoveVolume(volume string, pgroup string) (*VolumePgrou
 }
 
 // List Volume Block Differences
-// not implemented yet
-func (v *VolumeService) ListVolumeBlockDiff() error {
-	return nil
+func (v *VolumeService) ListVolumeBlockDiff(name string, params map[string]string) ([]Block, error) {
+	path := fmt.Sprintf("volume/%s/diff", name)
+	req, err := v.client.NewRequest("GET", path, params, nil)
+	m := []Block{}
+	_, err = v.client.Do(req, &m, false)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
 }
 
 // List Volume Private Connections
-// not implemented yet
-func (v *VolumeService) ListVolumePrivateConnections() error {
-	return nil
+func (v *VolumeService) ListVolumePrivateConnections(name string) ([]Connection, error) {
+	path := fmt.Sprintf("volume/%s/host", name)
+	req, err := v.client.NewRequest("GET", path, nil, nil)
+	m := []Connection{}
+	_, err = v.client.Do(req, &m, false)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
 }
 
-// List volume shared connections.
-func (v *VolumeService) ListVolumeSharedConnections() error {
-	return nil
+// List Volume Shared Connections
+func (v *VolumeService) ListVolumeSharedConnections(name string) ([]Connection, error) {
+	path := fmt.Sprintf("volume/%s/hgroup", name)
+	req, err := v.client.NewRequest("GET", path, nil, nil)
+	m := []Connection{}
+	_, err = v.client.Do(req, &m, false)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
 }
 
 // List volumes

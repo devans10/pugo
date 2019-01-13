@@ -16,9 +16,9 @@ Table of Contents
    * [Testing](#Testing)
    * [Documentation](#Documentation)
       * [FlashArray](#FlashArray)
-      * [Client](#Client)
-      * [Array](#Array)
-      * [Volume](#Volume)
+         * [Client](#Client)
+         * [Array](#Array)
+         * [Volume](#Volume)
 
 # Requirements
 You should have a working Go environment setup.  If not check out the Go [getting started](http://golang.org/doc/install) guide.
