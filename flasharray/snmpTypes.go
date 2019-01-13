@@ -15,8 +15,5 @@ type SnmpManager struct {
 	User               string `json:"user"`
 	Privacy_passphrase string `json:"privacy_passphrase"`
 	Auth_passphrase    string `json:"auth_passphrase"`
-}
-
-type SnmpEngine struct {
-	Engine_id string `json:"engine_id"`
+	Engine_id          string `json:"engine_id"`
 }

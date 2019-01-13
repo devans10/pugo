@@ -53,6 +53,7 @@ type Client struct {
 	Pods             *PodService
 	Alerts           *AlertService
 	Messages         *MessageService
+	Snmp             *SnmpService
 }
 
 // Type supported is used for retrieving the support API versions from the Flash Array
@@ -181,6 +182,7 @@ func NewClient(target string, username string, password string, api_token string
 	c.Pods = &PodService{client: c}
 	c.Alerts = &AlertService{client: c}
 	c.Messages = &MessageService{client: c}
+	c.Snmp = &SnmpService{client: c}
 
 	return c, err
 }
