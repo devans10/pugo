@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+// PodService struct for pod API endpoints
 type PodService struct {
 	client *Client
 }

@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestAccAerts(t *testing.T) {
+func TestAccAlerts(t *testing.T) {
 	testAccPreChecks(t)
 	c := testAccGenerateClient(t)
 	address := "test@example.com"

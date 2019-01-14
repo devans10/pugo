@@ -4,6 +4,7 @@
 
 package flasharray
 
+// Protectiongroup struct for object returned by array
 type Protectiongroup struct {
 	Name               string                   `json:"name,omitempty"`
 	Hgroups            []string                 `json:"hgroups,omitempty"`
@@ -27,6 +28,7 @@ type Protectiongroup struct {
 	TargetPerDay       int                      `json:"target_per_day,omitempty"`
 }
 
+// ProtectiongroupSnapshot struct for object returned by array
 type ProtectiongroupSnapshot struct {
 	Source  string `json:"source"`
 	Name    string `json:"name"`

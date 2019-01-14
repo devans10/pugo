@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+// SnmpService struct for snmp API endpoints
 type SnmpService struct {
 	client *Client
 }

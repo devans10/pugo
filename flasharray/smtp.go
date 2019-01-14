@@ -4,19 +4,20 @@
 
 package flasharray
 
-type SmtpService struct {
+// SMTPService struct for smtp API endpoints
+type SMTPService struct {
 	client *Client
 }
 
-// GetSmtp Get the attributes of the current smtp server configuration
-func (s *SmtpService) GetSmtp() (*Smtp, error) {
+// GetSMTP Get the attributes of the current smtp server configuration
+func (s *SMTPService) GetSMTP() (*SMTP, error) {
 
 	req, err := s.client.NewRequest("GET", "smtp", nil, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	m := &Smtp{}
+	m := &SMTP{}
 	if _, err = s.client.Do(req, m, false); err != nil {
 		return nil, err
 	}
@@ -24,15 +25,15 @@ func (s *SmtpService) GetSmtp() (*Smtp, error) {
 	return m, err
 }
 
-// SetSmtp Set the attributes of the current smtp server configuration
-func (s *SmtpService) SetSmtp(data interface{}) (*Smtp, error) {
+// SetSMTP Set the attributes of the current smtp server configuration
+func (s *SMTPService) SetSMTP(data interface{}) (*SMTP, error) {
 
 	req, err := s.client.NewRequest("POST", "smtp", nil, data)
 	if err != nil {
 		return nil, err
 	}
 
-	m := &Smtp{}
+	m := &SMTP{}
 	if _, err = s.client.Do(req, m, false); err != nil {
 		return nil, err
 	}

@@ -12,7 +12,7 @@ func TestAccGetSmtp(t *testing.T) {
 	testAccPreChecks(t)
 	c := testAccGenerateClient(t)
 
-	_, err := c.Smtp.GetSmtp()
+	_, err := c.SMTP.GetSMTP()
 	if err != nil {
 		t.Fatalf("error getting Smtp: %s", err)
 	}

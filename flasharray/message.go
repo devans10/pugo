@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+// MessageService struct for the message API endpoints
 type MessageService struct {
 	client *Client
 }

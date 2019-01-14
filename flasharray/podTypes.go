@@ -4,6 +4,7 @@
 
 package flasharray
 
+// Pod struct for object returned by array
 type Pod struct {
 	Name               string   `json:"name,omitempty"`
 	Source             string   `json:"source,omitempty"`

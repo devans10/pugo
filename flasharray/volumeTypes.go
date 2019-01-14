@@ -4,6 +4,7 @@
 
 package flasharray
 
+// Volume struct for object returned by array
 type Volume struct {
 	Name    string `json:"name,omitempty"`
 	Source  string `json:"source,omitempty"`
@@ -12,11 +13,13 @@ type Volume struct {
 	Created string `json:"created,omitempty"`
 }
 
+// VolumePgroup struct for object returned by array
 type VolumePgroup struct {
 	Name   string `json:"name"`
 	Pgroup string `json:"protection_group"`
 }
 
+// Connection struct for object returned by array
 type Connection struct {
 	Name   string `json:"name,omitempty"`
 	Host   string `json:"host,omitempty"`
@@ -25,7 +28,8 @@ type Connection struct {
 	Size   int    `json:"size,omitempty"`
 }
 
+// Block struct for object returned by array
 type Block struct {
 	Length int `json:"length,omitempty"`
-	Offset int `json:offset,omitempty"`
+	Offset int `json:"offset,omitempty"`
 }

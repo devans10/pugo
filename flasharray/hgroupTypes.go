@@ -4,16 +4,19 @@
 
 package flasharray
 
+// Hostgroup struct for data returned by array
 type Hostgroup struct {
 	Name  string   `json:"name,omitempty"`
-	Hosts []string `json:"hosts"`
+	Hosts []string `json:"hosts,omitempty"`
 }
 
+// HostgroupPgroup struct for data returned by array
 type HostgroupPgroup struct {
 	Name   string `json:"name,omitempty"`
-	Pgroup string `json:"protection_group"`
+	Pgroup string `json:"protection_group,omitempty"`
 }
 
+// HostgroupConnection struct for data returned by array
 type HostgroupConnection struct {
 	Name string `json:"name,omitempty"`
 	Vol  string `json:"vol,omitempty"`

@@ -4,10 +4,12 @@
 
 package flasharray
 
+// Drive struct for data returned by array
 type Drive struct {
 	Name string `json:"name"`
 }
 
+// Component struct for data returned by arrayl
 type Component struct {
 	Name string `json:"name"`
 }

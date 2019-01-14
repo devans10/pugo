@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+// UserService struct for user API endpoints
 type UserService struct {
 	client *Client
 }
@@ -30,7 +31,7 @@ func (n *UserService) listUsers(data interface{}) ([]User, error) {
 	return m, err
 }
 
-// List Admins
+// ListAdmins lists attributes for Admins
 func (n *UserService) ListAdmins() ([]User, error) {
 
 	m, err := n.listUsers(nil)
@@ -41,7 +42,7 @@ func (n *UserService) ListAdmins() ([]User, error) {
 	return m, err
 }
 
-// Create Admin
+// CreateAdmin creates an Admin
 func (n *UserService) CreateAdmin(name string) (*User, error) {
 
 	path := fmt.Sprintf("admin/%s", name)
@@ -59,7 +60,7 @@ func (n *UserService) CreateAdmin(name string) (*User, error) {
 	return m, err
 }
 
-// Delete Admin
+// DeleteAdmin deletes an Admin
 func (n *UserService) DeleteAdmin(name string) (*User, error) {
 
 	path := fmt.Sprintf("admin/%s", name)
@@ -77,7 +78,7 @@ func (n *UserService) DeleteAdmin(name string) (*User, error) {
 	return m, err
 }
 
-// Set Admin Attribute
+// SetAdmin modifies Admin Attributes
 func (n *UserService) SetAdmin(name string, data interface{}) (*User, error) {
 
 	path := fmt.Sprintf("admin/%s", name)
@@ -95,7 +96,7 @@ func (n *UserService) SetAdmin(name string, data interface{}) (*User, error) {
 	return m, err
 }
 
-// Get Admin
+// GetAdmin lists attributes for specified Admin
 func (n *UserService) GetAdmin(name string) (*User, error) {
 
 	path := fmt.Sprintf("admin/%s", name)
@@ -113,8 +114,8 @@ func (n *UserService) GetAdmin(name string) (*User, error) {
 	return m, err
 }
 
-// Create API Token
-func (n *UserService) CreateApiToken(name string) (*ApiToken, error) {
+// CreateAPIToken creates an API Token
+func (n *UserService) CreateAPIToken(name string) (*Token, error) {
 
 	path := fmt.Sprintf("admin/%s/apitoken", name)
 	req, err := n.client.NewRequest("POST", path, nil, nil)
@@ -122,7 +123,7 @@ func (n *UserService) CreateApiToken(name string) (*ApiToken, error) {
 		return nil, err
 	}
 
-	m := &ApiToken{}
+	m := &Token{}
 	_, err = n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
@@ -131,8 +132,8 @@ func (n *UserService) CreateApiToken(name string) (*ApiToken, error) {
 	return m, err
 }
 
-// Delete API Token
-func (n *UserService) DeleteApiToken(name string) (*ApiToken, error) {
+// DeleteAPIToken deletes an  API Token
+func (n *UserService) DeleteAPIToken(name string) (*Token, error) {
 
 	path := fmt.Sprintf("admin/%s/apitoken", name)
 	req, err := n.client.NewRequest("DELETE", path, nil, nil)
@@ -140,7 +141,7 @@ func (n *UserService) DeleteApiToken(name string) (*ApiToken, error) {
 		return nil, err
 	}
 
-	m := &ApiToken{}
+	m := &Token{}
 	_, err = n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
@@ -149,7 +150,7 @@ func (n *UserService) DeleteApiToken(name string) (*ApiToken, error) {
 	return m, err
 }
 
-// Return a list of public keys
+// ListPublicKeys returns a list of public keys
 func (n *UserService) ListPublicKeys() ([]User, error) {
 
 	data := map[string]bool{"publickey": true}
@@ -161,8 +162,8 @@ func (n *UserService) ListPublicKeys() ([]User, error) {
 	return m, err
 }
 
-// Return a list of API Tokens
-func (n *UserService) ListApiTokens() ([]User, error) {
+// ListAPITokens returns a list of API Tokens
+func (n *UserService) ListAPITokens() ([]User, error) {
 
 	data := map[string]bool{"api_token": true}
 	m, err := n.listUsers(data)
@@ -173,7 +174,7 @@ func (n *UserService) ListApiTokens() ([]User, error) {
 	return m, err
 }
 
-// Refresh the admin permission cache for the specified admin
+// RefreshAdmin refreshes the admin permission cache for the specified admin
 func (n *UserService) RefreshAdmin(name string) (*User, error) {
 
 	data := map[string]string{"action": "refresh"}
@@ -185,7 +186,7 @@ func (n *UserService) RefreshAdmin(name string) (*User, error) {
 	return m, err
 }
 
-// Clear the admin permission cache.
+// RefreshAdmins clear the admin permission cache.
 func (n *UserService) RefreshAdmins() (*User, error) {
 	data := make(map[string]interface{})
 	data["action"] = "refresh"
@@ -204,7 +205,7 @@ func (n *UserService) RefreshAdmins() (*User, error) {
 	return m, err
 }
 
-// Set public key for the specified admin
+// SetPublicKey modifies public key for the specified admin
 func (n *UserService) SetPublicKey(name string, key string) (*User, error) {
 
 	data := map[string]string{"publickey": key}
@@ -216,10 +217,10 @@ func (n *UserService) SetPublicKey(name string, key string) (*User, error) {
 	return m, err
 }
 
-// Set the password for the specified admin
-func (n *UserService) SetPassword(name string, new_password string, old_password string) (*User, error) {
+// SetPassword sets the password for the specified admin
+func (n *UserService) SetPassword(name string, newPassword string, oldPassword string) (*User, error) {
 
-	data := map[string]string{"password": new_password, "old_password": old_password}
+	data := map[string]string{"password": newPassword, "old_password": oldPassword}
 	m, err := n.SetAdmin(name, data)
 	if err != nil {
 		return nil, err
@@ -228,7 +229,7 @@ func (n *UserService) SetPassword(name string, new_password string, old_password
 	return m, err
 }
 
-// Return a map describing the existing global admin attributes
+// GetGlobalAdminAttr returns a map describing the existing global admin attributes
 func (n *UserService) GetGlobalAdminAttr() (*GlobalAdmin, error) {
 
 	req, err := n.client.NewRequest("GET", "admin/settings", nil, nil)
@@ -245,7 +246,7 @@ func (n *UserService) GetGlobalAdminAttr() (*GlobalAdmin, error) {
 	return m, err
 }
 
-// Set global admin attributes
+// SetGlobalAdminAttr modifies global admin attributes
 func (n *UserService) SetGlobalAdminAttr(data interface{}) (*GlobalAdmin, error) {
 
 	req, err := n.client.NewRequest("PUT", "admin/settings", nil, data)
@@ -262,7 +263,7 @@ func (n *UserService) SetGlobalAdminAttr(data interface{}) (*GlobalAdmin, error)
 	return m, err
 }
 
-// Return a map describing lockout information for locked out admins
+// ListAdminUser return a map describing lockout information for locked out admins
 func (n *UserService) ListAdminUser() ([]User, error) {
 
 	data := map[string]bool{"lockout": true}
@@ -274,7 +275,7 @@ func (n *UserService) ListAdminUser() ([]User, error) {
 	return m, err
 }
 
-// Return a map describing lockout information specified admins
+// GetAdminUser return a map describing lockout information specified admins
 func (n *UserService) GetAdminUser(name string) (*User, error) {
 
 	path := fmt.Sprintf("admin/%s", name)
@@ -293,7 +294,7 @@ func (n *UserService) GetAdminUser(name string) (*User, error) {
 	return m, err
 }
 
-// Unlocks an admin
+// UnlockAdmin unlocks an admin
 func (n *UserService) UnlockAdmin(name string) (*User, error) {
 
 	path := fmt.Sprintf("admin/%s/lockout", name)

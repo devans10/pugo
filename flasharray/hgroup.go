@@ -8,11 +8,12 @@ import (
 	"fmt"
 )
 
+// HostgroupService struct for hgroup API endpoints
 type HostgroupService struct {
 	client *Client
 }
 
-// Connect a Volume to a hostgroup
+// ConnectHostgroup connects a Volume to a hostgroup
 func (h *HostgroupService) ConnectHostgroup(hgroup string, volume string, data interface{}) (*ConnectedVolume, error) {
 
 	path := fmt.Sprintf("hgroup/%s/volume/%s", hgroup, volume)
@@ -26,7 +27,7 @@ func (h *HostgroupService) ConnectHostgroup(hgroup string, volume string, data i
 	return m, err
 }
 
-// Create a new hostgroup
+// CreateHostgroup creates a new hostgroup
 func (h *HostgroupService) CreateHostgroup(name string, data interface{}) (*Hostgroup, error) {
 
 	path := fmt.Sprintf("hgroup/%s", name)
@@ -44,7 +45,7 @@ func (h *HostgroupService) CreateHostgroup(name string, data interface{}) (*Host
 	return m, err
 }
 
-// Delete a hostgroup
+// DeleteHostgroup deletes a hostgroup
 func (h *HostgroupService) DeleteHostgroup(name string) (*Hostgroup, error) {
 
 	path := fmt.Sprintf("hgroup/%s", name)
@@ -62,7 +63,7 @@ func (h *HostgroupService) DeleteHostgroup(name string) (*Hostgroup, error) {
 	return m, err
 }
 
-// Disconnect a volume from a hostgroup
+// DisconnectHostgroup disconnects a volume from a hostgroup
 func (h *HostgroupService) DisconnectHostgroup(hgroup string, volume string) (*ConnectedVolume, error) {
 
 	path := fmt.Sprintf("hgroup/%s/volume/%s", hgroup, volume)
@@ -76,7 +77,7 @@ func (h *HostgroupService) DisconnectHostgroup(hgroup string, volume string) (*C
 	return m, err
 }
 
-// Return a map of the hostgroup attributes
+// GetHostgroup returns a map of the hostgroup attributes
 // see API reference on array for list of valid parameters
 func (h *HostgroupService) GetHostgroup(name string, params map[string]string) (*Hostgroup, error) {
 
@@ -95,7 +96,7 @@ func (h *HostgroupService) GetHostgroup(name string, params map[string]string) (
 	return m, err
 }
 
-// Add a hostgroup to a Protection Group
+// AddHostgroup adds a hostgroup to a Protection Group
 func (h *HostgroupService) AddHostgroup(hgroup string, pgroup string) (*HostgroupPgroup, error) {
 
 	path := fmt.Sprintf("hgroup/%s/pgroup/%s", hgroup, pgroup)
@@ -109,7 +110,7 @@ func (h *HostgroupService) AddHostgroup(hgroup string, pgroup string) (*Hostgrou
 	return m, err
 }
 
-// Remove a hostgroup from a protection group.
+// RemoveHostgroup removes a hostgroup from a protection group.
 func (h *HostgroupService) RemoveHostgroup(hgroup string, pgroup string) (*HostgroupPgroup, error) {
 
 	path := fmt.Sprintf("hgroup/%s/pgroup/%s", hgroup, pgroup)
@@ -123,7 +124,7 @@ func (h *HostgroupService) RemoveHostgroup(hgroup string, pgroup string) (*Hostg
 	return m, err
 }
 
-// List the hostgroup connections
+// ListHostgroupConnections lists the hostgroup volume connections
 func (h *HostgroupService) ListHostgroupConnections(hgroup string) ([]HostgroupConnection, error) {
 
 	path := fmt.Sprintf("hgroup/%s/volume", hgroup)
@@ -137,7 +138,7 @@ func (h *HostgroupService) ListHostgroupConnections(hgroup string) ([]HostgroupC
 	return m, err
 }
 
-// List hostgroups
+// ListHostgroups lists hostgroups
 func (h *HostgroupService) ListHostgroups(params map[string]string) ([]Hostgroup, error) {
 
 	req, err := h.client.NewRequest("GET", "hgroup", params, nil)
@@ -150,7 +151,7 @@ func (h *HostgroupService) ListHostgroups(params map[string]string) ([]Hostgroup
 	return m, err
 }
 
-// Rename a hostgroup
+// RenameHostgroup renames a hostgroup
 func (h *HostgroupService) RenameHostgroup(hgroup string, name string) (*Hostgroup, error) {
 
 	data := map[string]string{"name": name}
@@ -162,7 +163,7 @@ func (h *HostgroupService) RenameHostgroup(hgroup string, name string) (*Hostgro
 	return m, err
 }
 
-// Set the hostgroup attributes
+// SetHostgroup modifies the specified hostgroup's attributes
 func (h *HostgroupService) SetHostgroup(name string, data interface{}) (*Hostgroup, error) {
 
 	path := fmt.Sprintf("hgroup/%s", name)

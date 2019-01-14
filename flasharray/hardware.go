@@ -8,11 +8,12 @@ import (
 	"fmt"
 )
 
+// HardwareService struct for hardware API endpoints
 type HardwareService struct {
 	client *Client
 }
 
-// Get Drive attributes
+// GetDrive lists drive attributes for specified drive
 func (n *HardwareService) GetDrive(name string) (*Drive, error) {
 
 	path := fmt.Sprintf("drive/%s", name)
@@ -30,7 +31,7 @@ func (n *HardwareService) GetDrive(name string) (*Drive, error) {
 	return m, err
 }
 
-// List Drives
+// ListDrives lists all drive attributes
 func (n *HardwareService) ListDrives() ([]Drive, error) {
 
 	req, err := n.client.NewRequest("GET", "drive", nil, nil)
@@ -47,7 +48,7 @@ func (n *HardwareService) ListDrives() ([]Drive, error) {
 	return m, err
 }
 
-// Get Hardware attributes
+// GetHardware lists attributes for specified hardware device
 func (n *HardwareService) GetHardware(name string) (*Component, error) {
 
 	path := fmt.Sprintf("hardware/%s", name)
@@ -65,7 +66,7 @@ func (n *HardwareService) GetHardware(name string) (*Component, error) {
 	return m, err
 }
 
-// List Hardware
+// ListHardware lists hardware device attributes
 func (n *HardwareService) ListHardware() ([]Component, error) {
 
 	req, err := n.client.NewRequest("GET", "hardware", nil, nil)
@@ -82,7 +83,7 @@ func (n *HardwareService) ListHardware() ([]Component, error) {
 	return m, err
 }
 
-// Set hardware attributes
+// SetHardware modifies an attribute for a specified hardware device
 func (n *HardwareService) SetHardware(name string, data interface{}) (*Component, error) {
 
 	path := fmt.Sprintf("hardware/%s", name)
