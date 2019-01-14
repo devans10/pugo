@@ -19,7 +19,7 @@ func TestAccArrayConsoleLock(t *testing.T) {
 
 func testAccEnableConsoleLock(c *Client) func(t *testing.T) {
 	return func(t *testing.T) {
-		err := c.Array.enable_console_lock()
+		err := c.Array.EnableConsoleLock()
 		if err != nil {
 			t.Fatalf("error enabling console lock: %s", err)
 		}
@@ -28,11 +28,11 @@ func testAccEnableConsoleLock(c *Client) func(t *testing.T) {
 
 func testAccGetConsoleLock(c *Client) func(t *testing.T) {
 	return func(t *testing.T) {
-		lock, err := c.Array.get_console_lock()
+		lock, err := c.Array.GetConsoleLock()
 		if err != nil {
 			t.Fatalf("error getting console lock: %s", err)
 		}
-		if lock.Console_lock != "enabled" {
+		if lock.ConsoleLock != "enabled" {
 			t.Fatalf("console lock disabled")
 		}
 	}
@@ -40,7 +40,7 @@ func testAccGetConsoleLock(c *Client) func(t *testing.T) {
 
 func testAccDisableConsoleLock(c *Client) func(t *testing.T) {
 	return func(t *testing.T) {
-		err := c.Array.disable_console_lock()
+		err := c.Array.DisableConsoleLock()
 		if err != nil {
 			t.Fatalf("error disabling console lock: %s", err)
 		}

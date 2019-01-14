@@ -4,6 +4,7 @@
 
 package flasharray
 
+// Alert is a struct for the json data returned by the array
 type Alert struct {
 	Name    string `json:"name,omitempty"`
 	Enabled bool   `json:"enabled,omitempty"`

@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+// AlertService is a struct for the alert endpoints
 type AlertService struct {
 	client *Client
 }

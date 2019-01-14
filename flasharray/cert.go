@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+// CertService struct for the cert endpoints
 type CertService struct {
 	client *Client
 }

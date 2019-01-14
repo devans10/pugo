@@ -4,18 +4,20 @@
 
 package flasharray
 
+// Certificate is a struct for the cert endpoint data
+// returned by the array
 type Certificate struct {
 	Status      string `json:"status,omitempty"`
-	Issued_to   string `json:"issued_to,omitempty"`
-	Valid_from  string `json:"valid_from,omitempty"`
+	IssuedTo    string `json:"issued_to,omitempty"`
+	ValidFrom   string `json:"valid_from,omitempty"`
 	Name        string `json:"name,omitempty"`
 	Locality    string `json:"locality,omitempty"`
 	Country     string `json:"country,omitempty"`
-	Issued_by   string `json:"issued_by,omitempty"`
-	Valid_to    string `json:"valid_to,omitempty"`
+	IssuedBy    string `json:"issued_by,omitempty"`
+	ValidTo     string `json:"valid_to,omitempty"`
 	State       string `json:"state,omitempty"`
-	Key_size    int    `json:"key_size,omitempty"`
-	Org_unit    string `json:"organizational_unit,omitempty"`
+	KeySize     int    `json:"key_size,omitempty"`
+	OrgUnit     string `json:"organizational_unit,omitempty"`
 	Org         string `json:"organization,omitempty"`
 	Email       string `json:"email,omitempty"`
 	Certificate string `json:"certificate,omitempty"`

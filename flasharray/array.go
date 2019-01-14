@@ -11,7 +11,7 @@ type ArrayService struct {
 }
 
 // set_console_lock is a helper function used to set the console lock
-func (v *ArrayService) set_console_lock(b bool) (*Console_lock, error) {
+func (v *ArrayService) setConsoleLock(b bool) (*ConsoleLock, error) {
 
 	data := map[string]bool{"enabled": b}
 	req, err := v.client.NewRequest("PUT", "array/console_lock", nil, data)
@@ -19,7 +19,7 @@ func (v *ArrayService) set_console_lock(b bool) (*Console_lock, error) {
 		return nil, err
 	}
 
-	m := &Console_lock{}
+	m := &ConsoleLock{}
 	_, err = v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
@@ -28,37 +28,37 @@ func (v *ArrayService) set_console_lock(b bool) (*Console_lock, error) {
 	return m, err
 }
 
-// enable_console_lock enables root lockout from the array at the physical console.
+// EnableConsoleLock enables root lockout from the array at the physical console.
 // returns A dictionary mapping "console_lock" to "enabled".
-func (v *ArrayService) enable_console_lock() error {
+func (v *ArrayService) EnableConsoleLock() error {
 
-	_, err := v.set_console_lock(true)
+	_, err := v.setConsoleLock(true)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// disable_console_lock disables root lockout from the array at the physical console.
+// DisableConsoleLock disables root lockout from the array at the physical console.
 // returns A dictionary mapping "console_lock" to "disabled".
-func (v *ArrayService) disable_console_lock() error {
+func (v *ArrayService) DisableConsoleLock() error {
 
-	_, err := v.set_console_lock(false)
+	_, err := v.setConsoleLock(false)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// get_console_lock returns an object giving the console_lock status
-func (v *ArrayService) get_console_lock() (*Console_lock, error) {
+// GetConsoleLock returns an object giving the console_lock status
+func (v *ArrayService) GetConsoleLock() (*ConsoleLock, error) {
 
 	req, err := v.client.NewRequest("GET", "array/console_lock", nil, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	m := &Console_lock{}
+	m := &ConsoleLock{}
 	_, err = v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
@@ -143,7 +143,7 @@ func (v *ArrayService) setRemoteAssist(data interface{}) (*RemoteAssist, error) 
 	return m, err
 }
 
-// Disable hourly phonehome
+// DisablePhoneHome disables hourly phonehome
 func (v *ArrayService) DisablePhoneHome() (*Phonehome, error) {
 
 	data := map[string]bool{"enabled": false}
@@ -155,7 +155,7 @@ func (v *ArrayService) DisablePhoneHome() (*Phonehome, error) {
 	return m, err
 }
 
-// Disable Remote Assist
+// DisableRemoteAssist disables Remote Assist
 func (v *ArrayService) DisableRemoteAssist() (*RemoteAssist, error) {
 
 	data := map[string]string{"action": "disconnect"}
@@ -167,7 +167,7 @@ func (v *ArrayService) DisableRemoteAssist() (*RemoteAssist, error) {
 	return m, err
 }
 
-// Enable hourly phonehome
+// EnablePhoneHome enables hourly phonehome
 func (v *ArrayService) EnablePhoneHome() (*Phonehome, error) {
 
 	data := map[string]bool{"enabled": true}
@@ -179,7 +179,7 @@ func (v *ArrayService) EnablePhoneHome() (*Phonehome, error) {
 	return m, err
 }
 
-// Enable Remote Assist
+// EnableRemoteAssist enables Remote Assist
 func (v *ArrayService) EnableRemoteAssist() (*RemoteAssist, error) {
 
 	data := map[string]string{"action": "connect"}
@@ -191,7 +191,7 @@ func (v *ArrayService) EnableRemoteAssist() (*RemoteAssist, error) {
 	return m, err
 }
 
-// Get manual phone home status
+// GetManualPhoneHome lists manual phone home status
 func (v *ArrayService) GetManualPhoneHome() (*Phonehome, error) {
 
 	req, err := v.client.NewRequest("GET", "array/phoneome", nil, nil)
@@ -208,7 +208,7 @@ func (v *ArrayService) GetManualPhoneHome() (*Phonehome, error) {
 	return m, err
 }
 
-// Get Phonehome status
+// GetPhoneHome lists Phonehome status
 func (v *ArrayService) GetPhoneHome() (*Array, error) {
 
 	data := map[string]bool{"phonehome": true}
@@ -220,7 +220,7 @@ func (v *ArrayService) GetPhoneHome() (*Array, error) {
 	return m, err
 }
 
-// Get Remote Status
+// GetRemoteAssist lists Remote assist status
 func (v *ArrayService) GetRemoteAssist() (*RemoteAssist, error) {
 
 	req, err := v.client.NewRequest("GET", "array/remoteassist", nil, nil)
@@ -237,7 +237,7 @@ func (v *ArrayService) GetRemoteAssist() (*RemoteAssist, error) {
 	return m, err
 }
 
-// Manually initiate or cancel phonehome
+// Phonehome Manually initiates or cancels phonehome
 //
 // Parameters
 // action
