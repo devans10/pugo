@@ -5,7 +5,8 @@ IMPROVEMENTS:
 * Added AlertService
 * Added MessageService
 * Added SnmpService(#4)
-* Added CertService(#3)
+* Added CertService(#2)
+* Added SmtpService(#3)
 
 FIXES:
 * Fixed the Enable/Disable RemoteAssist functions

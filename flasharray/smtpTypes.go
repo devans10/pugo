@@ -4,9 +4,9 @@
 
 package flasharray
 
-type smtp struct {
-	Password      string `json:"password"`
-	User_name     string `json:"user_name"`
-	Relay_host    string `json:"relay_host"`
-	Sender_domain string `json:"sender_domain"`
+type Smtp struct {
+	Password      string `json:"password,omitempty"`
+	User_name     string `json:"user_name,omitempty"`
+	Relay_host    string `json:"relay_host,omitempty"`
+	Sender_domain string `json:"sender_domain,omitempty"`
 }
