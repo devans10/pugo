@@ -30,14 +30,14 @@ func testAccGenerateClient(t *testing.T) *Client {
 
 	username := os.Getenv("PURE_USERNAME")
 	password := os.Getenv("PURE_PASSWORD")
-	api_token := os.Getenv("PURE_APITOKEN")
-	rest_version := ""
+	apiToken := os.Getenv("PURE_APITOKEN")
+	restVersion := ""
 	target := os.Getenv("PURE_TARGET")
-	verify_https := false
-	ssl_cert := false
-	user_agent := ""
+	verifyHTTPS := false
+	sslCert := false
+	userAgent := ""
 
-	c, err := NewClient(target, username, password, api_token, rest_version, verify_https, ssl_cert, user_agent, nil)
+	c, err := NewClient(target, username, password, apiToken, restVersion, verifyHTTPS, sslCert, userAgent, nil)
 	if err != nil {
 		t.Fatalf("error setting up client: %s", err)
 	}
@@ -70,7 +70,7 @@ func TestNewClientAllAuth(t *testing.T) {
 // Test that NewRequest returns an http.Request object
 func TestNewRequest(t *testing.T) {
 
-	c := &Client{Target: "flasharray.example.com", Username: "", Password: "", Api_token: "apitoken", Rest_version: "1.0", User_agent: "", Request_kwargs: nil}
+	c := &Client{Target: "flasharray.example.com", Username: "", Password: "", APIToken: "apitoken", RestVersion: "1.0", UserAgent: "", RequestKwargs: nil}
 
 	req, err := c.NewRequest("GET", "array", nil, nil)
 

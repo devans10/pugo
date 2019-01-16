@@ -20,20 +20,20 @@ func TestAccHosts(t *testing.T) {
 	c.Volumes.CreateVolume(testvol, 1024000000)
 	c.Protectiongroups.CreateProtectiongroup(testpgroup, nil)
 
-	t.Run("CreateHost_basic", testAccCreateHost_basic(c))
+	t.Run("CreateHost_basic", testAccCreateHostBasic(c))
 	t.Run("GetHost", testAccGetHost(c))
-	t.Run("GetHost_withParams", testAccGetHost_withParams(c))
+	t.Run("GetHost_withParams", testAccGetHostWithParams(c))
 	t.Run("DeleteHost", testAccDeleteHost(c))
 
 	wwns := []string{"0000999900009999"}
 	wwnlist := map[string][]string{"wwnlist": wwns}
-	t.Run("CreateHostWithWWN", testAccCreateHost_withWWN(c, wwnlist))
+	t.Run("CreateHostWithWWN", testAccCreateHostWithWWN(c, wwnlist))
 	t.Run("ConnectVolumeToHost", testAccConnectVolumeToHost(c, testvol))
 	t.Run("AddHostToProtectionGroup", testAccAddHost(c, testpgroup))
 	t.Run("RemoveHostFromProtectionGroup", testAccRemoveHost(c, testpgroup))
 	t.Run("ListHostConnections", testAccListHostConnections(c))
 	t.Run("ListHosts", testAccListHosts(c))
-	t.Run("ListHosts_withParams", testAccListHosts_withParams(c))
+	t.Run("ListHosts_withParams", testAccListHostsWithParams(c))
 	t.Run("RenameHost", testAccRenameHost(c, "testAcchostnew"))
 	c.Hosts.RenameHost("testAcchostnew", testAccHostName)
 	t.Run("RemoveVolumeFromHost", testAccDisconnectVolumeFromHost(c, testvol))
@@ -45,7 +45,7 @@ func TestAccHosts(t *testing.T) {
 	c.Protectiongroups.EradicateProtectiongroup(testpgroup)
 }
 
-func testAccCreateHost_basic(c *Client) func(*testing.T) {
+func testAccCreateHostBasic(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		h, err := c.Hosts.CreateHost(testAccHostName, nil)
 		if err != nil {
@@ -71,7 +71,7 @@ func testAccGetHost(c *Client) func(*testing.T) {
 	}
 }
 
-func testAccGetHost_withParams(c *Client) func(*testing.T) {
+func testAccGetHostWithParams(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		h, err := c.Hosts.GetHost(testAccHostName, map[string]string{"personality": "true"})
 		if err != nil {
@@ -83,7 +83,7 @@ func testAccGetHost_withParams(c *Client) func(*testing.T) {
 		}
 	}
 }
-func testAccCreateHost_withWWN(c *Client, wwnlist map[string][]string) func(*testing.T) {
+func testAccCreateHostWithWWN(c *Client, wwnlist map[string][]string) func(*testing.T) {
 	return func(t *testing.T) {
 		h, err := c.Hosts.CreateHost(testAccHostName, wwnlist)
 		if err != nil {
@@ -142,7 +142,7 @@ func testAccListHosts(c *Client) func(*testing.T) {
 	}
 }
 
-func testAccListHosts_withParams(c *Client) func(*testing.T) {
+func testAccListHostsWithParams(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		_, err := c.Hosts.ListHosts(map[string]string{"personality": "true"})
 		if err != nil {

@@ -4,6 +4,7 @@
 
 package flasharray
 
+// Host struct for the host object returned from the array
 type Host struct {
 	Name           string   `json:"name,omitempty"`
 	Wwn            []string `json:"wwn,omitempty"`
@@ -18,6 +19,7 @@ type Host struct {
 	Hgroup         string   `json:"hgroup,omitempty"`
 }
 
+// ConnectedVolume struct for object returned from the array
 type ConnectedVolume struct {
 	Vol    string `json:"vol,omitempty"`
 	Name   string `json:"name,omitempty"`
@@ -25,6 +27,7 @@ type ConnectedVolume struct {
 	Hgroup string `json:"hgroup,omitempty"`
 }
 
+// HostPgroup struct for object returned from the array
 type HostPgroup struct {
 	Name   string `json:"name,omitempty"`
 	Pgroup string `json:"protection_group,omitempty"`

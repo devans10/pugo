@@ -8,14 +8,15 @@ import (
 	"fmt"
 )
 
+// OffloadService struct for offload API endpoints
 type OffloadService struct {
 	client *Client
 }
 
-// Connect to NFS Offload
-func (o *OffloadService) ConnectNFSOffload(name string, address string, mount_point string) (*NFSOffload, error) {
+// ConnectNFSOffload connects array to NFS Offload server
+func (o *OffloadService) ConnectNFSOffload(name string, address string, mountPoint string) (*NFSOffload, error) {
 
-	data := map[string]string{"name": name, "address": address, "mount_point": mount_point}
+	data := map[string]string{"name": name, "address": address, "mount_point": mountPoint}
 	path := fmt.Sprintf("nfs_offload/%s", name)
 	req, err := o.client.NewRequest("POST", path, nil, data)
 	m := &NFSOffload{}
@@ -27,7 +28,7 @@ func (o *OffloadService) ConnectNFSOffload(name string, address string, mount_po
 	return m, err
 }
 
-// Disconnect an NFS Offload
+// DisconnectNFSOffload disconnects array from an NFS Offload server
 func (o *OffloadService) DisconnectNFSOffload(name string) (*NFSOffload, error) {
 
 	path := fmt.Sprintf("nfs_offload/%s", name)
@@ -41,7 +42,7 @@ func (o *OffloadService) DisconnectNFSOffload(name string) (*NFSOffload, error) 
 	return m, err
 }
 
-// Get NFS offload attributes
+// GetNFSOffload lists NFS offload attributes
 func (o *OffloadService) GetNFSOffload(name string) (*NFSOffload, error) {
 
 	path := fmt.Sprintf("nfs_offload/%s", name)

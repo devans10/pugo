@@ -1,3 +1,16 @@
+## 0.2.0
+
+IMPROVEMENTS:
+* Added PodService
+* Added AlertService
+* Added MessageService
+* Added SnmpService(#4)
+* Added CertService(#2)
+* Added SmtpService(#3)
+
+FIXES:
+* Fixed the Enable/Disable RemoteAssist functions
+
 ## 0.1.4
 
 IMPROVEMENTS:

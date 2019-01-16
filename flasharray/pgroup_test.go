@@ -22,9 +22,9 @@ func TestAccProtectiongroups(t *testing.T) {
 	c.Volumes.CreateVolume(testvol, 1024000000)
 	c.Hostgroups.CreateHostgroup(testhgroup, nil)
 
-	t.Run("CreateProtectiongroup_basic", testAccCreateProtectiongroup_basic(c))
+	t.Run("CreateProtectiongroup_basic", testAccCreateProtectiongroupBasic(c))
 	t.Run("GetProtectiongroup", testAccGetProtectiongroup(c))
-	t.Run("GetProtectiongroup_withParams", testAccGetProtectiongroup_withParams(c))
+	t.Run("GetProtectiongroup_withParams", testAccGetProtectiongroupWithParams(c))
 	t.Run("EnablePgroupReplication", testAccEnablePgroupReplication(c))
 	t.Run("DisablePgroupReplication", testAccDisablePgroupReplication(c))
 	t.Run("EnablePgroupSnapshots", testAccEnablePgroupSnapshots(c))
@@ -36,9 +36,9 @@ func TestAccProtectiongroups(t *testing.T) {
 
 	testhosts := []string{testhost1}
 	hostlist := map[string][]string{"hostlist": testhosts}
-	t.Run("CreateProtectiongroup_withHosts", testAccCreateProtectiongroup_withHosts(c, hostlist))
+	t.Run("CreateProtectiongroup_withHosts", testAccCreateProtectiongroupWithHosts(c, hostlist))
 	t.Run("ListProtectiongroups", testAccListProtectiongroups(c))
-	t.Run("ListProtectiongroups_withParams", testAccListProtectiongroups_withParams(c))
+	t.Run("ListProtectiongroups_withParams", testAccListProtectiongroupsWithParams(c))
 	t.Run("RenameProtectiongroup", testAccRenameProtectiongroup(c, "testaccpgroupnew"))
 	c.Protectiongroups.RenameProtectiongroup("testaccpgroupnew", testAccProtectiongroupName)
 	t.Run("DeleteProtectiongroup", testAccDeleteProtectiongroup(c))
@@ -46,13 +46,13 @@ func TestAccProtectiongroups(t *testing.T) {
 
 	testvols := []string{testvol}
 	vollist := map[string][]string{"vollist": testvols}
-	t.Run("CreateProtectiongroup_withVolumes", testAccCreateProtectiongroup_withVolumes(c, vollist))
+	t.Run("CreateProtectiongroup_withVolumes", testAccCreateProtectiongroupWithVolumes(c, vollist))
 	t.Run("DeleteProtectiongroup", testAccDeleteProtectiongroup(c))
 	t.Run("EradicateProtectiongroup", testAccEradicateProtectiongroup(c))
 
 	testhgroups := []string{testhgroup}
 	hgrouplist := map[string][]string{"hgrouplist": testhgroups}
-	t.Run("CreateProtectiongroup_withHostgroups", testAccCreateProtectiongroup_withHostgroups(c, hgrouplist))
+	t.Run("CreateProtectiongroup_withHostgroups", testAccCreateProtectiongroupWithHostgroups(c, hgrouplist))
 	t.Run("DeleteProtectiongroup", testAccDeleteProtectiongroup(c))
 	t.Run("EradicateProtectiongroup", testAccEradicateProtectiongroup(c))
 
@@ -62,7 +62,7 @@ func TestAccProtectiongroups(t *testing.T) {
 	c.Hostgroups.DeleteHostgroup(testpgroup)
 }
 
-func testAccCreateProtectiongroup_basic(c *Client) func(*testing.T) {
+func testAccCreateProtectiongroupBasic(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		h, err := c.Protectiongroups.CreateProtectiongroup(testAccProtectiongroupName, nil)
 		if err != nil {
@@ -88,7 +88,7 @@ func testAccGetProtectiongroup(c *Client) func(*testing.T) {
 	}
 }
 
-func testAccGetProtectiongroup_withParams(c *Client) func(*testing.T) {
+func testAccGetProtectiongroupWithParams(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		params := map[string]string{"space": "true"}
 		h, err := c.Protectiongroups.GetProtectiongroup(testAccProtectiongroupName, params)
@@ -154,7 +154,7 @@ func testAccDisablePgroupSnapshots(c *Client) func(*testing.T) {
 	}
 }
 
-func testAccCreateProtectiongroup_withHosts(c *Client, hostlist map[string][]string) func(*testing.T) {
+func testAccCreateProtectiongroupWithHosts(c *Client, hostlist map[string][]string) func(*testing.T) {
 	return func(t *testing.T) {
 		h, err := c.Protectiongroups.CreateProtectiongroup(testAccProtectiongroupName, hostlist)
 		if err != nil {
@@ -167,7 +167,7 @@ func testAccCreateProtectiongroup_withHosts(c *Client, hostlist map[string][]str
 	}
 }
 
-func testAccCreateProtectiongroup_withVolumes(c *Client, vollist map[string][]string) func(*testing.T) {
+func testAccCreateProtectiongroupWithVolumes(c *Client, vollist map[string][]string) func(*testing.T) {
 	return func(t *testing.T) {
 		h, err := c.Protectiongroups.CreateProtectiongroup(testAccProtectiongroupName, vollist)
 		if err != nil {
@@ -180,7 +180,7 @@ func testAccCreateProtectiongroup_withVolumes(c *Client, vollist map[string][]st
 	}
 }
 
-func testAccCreateProtectiongroup_withHostgroups(c *Client, hgrouplist map[string][]string) func(*testing.T) {
+func testAccCreateProtectiongroupWithHostgroups(c *Client, hgrouplist map[string][]string) func(*testing.T) {
 	return func(t *testing.T) {
 		h, err := c.Protectiongroups.CreateProtectiongroup(testAccProtectiongroupName, hgrouplist)
 		if err != nil {
@@ -202,7 +202,7 @@ func testAccListProtectiongroups(c *Client) func(*testing.T) {
 	}
 }
 
-func testAccListProtectiongroups_withParams(c *Client) func(*testing.T) {
+func testAccListProtectiongroupsWithParams(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		params := map[string]string{"space": "true"}
 		_, err := c.Protectiongroups.ListProtectiongroups(params)

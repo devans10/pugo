@@ -8,11 +8,12 @@ import (
 	"fmt"
 )
 
+// NetworkService struct for network API endpoints
 type NetworkService struct {
 	client *Client
 }
 
-// Disable a network interface.
+// DisableNetworkInterface disables a network interface.
 // param: iface: Name of network interface to be disabled.
 // Returns an object describing the interface.
 func (n *NetworkService) DisableNetworkInterface(iface string) (*NetworkInterface, error) {
@@ -26,7 +27,7 @@ func (n *NetworkService) DisableNetworkInterface(iface string) (*NetworkInterfac
 	return m, err
 }
 
-// Enable a network interface.
+// EnableNetworkInterface enables a network interface.
 // param: iface: Name of network interface to be enabled.
 // Returns an object describing the interface.
 func (n *NetworkService) EnableNetworkInterface(iface string) (*NetworkInterface, error) {
@@ -40,7 +41,7 @@ func (n *NetworkService) EnableNetworkInterface(iface string) (*NetworkInterface
 	return m, err
 }
 
-// Get network interface attributes
+// GetNetworkInterface lists network interface attributes
 func (n *NetworkService) GetNetworkInterface(iface string) (*NetworkInterface, error) {
 
 	path := fmt.Sprintf("network/%s", iface)
@@ -58,7 +59,7 @@ func (n *NetworkService) GetNetworkInterface(iface string) (*NetworkInterface, e
 	return m, err
 }
 
-// List network interfaces
+// ListNetworkInterfaces list the attributes of the network interfaces
 func (n *NetworkService) ListNetworkInterfaces() ([]NetworkInterface, error) {
 
 	req, err := n.client.NewRequest("GET", "network", nil, nil)
@@ -75,7 +76,7 @@ func (n *NetworkService) ListNetworkInterfaces() ([]NetworkInterface, error) {
 	return m, err
 }
 
-// Set network interface attributes
+// SetNetworkInterface modifies network interface attributes
 func (n *NetworkService) SetNetworkInterface(iface string, data interface{}) (*NetworkInterface, error) {
 
 	path := fmt.Sprintf("network/%s", iface)
@@ -93,7 +94,7 @@ func (n *NetworkService) SetNetworkInterface(iface string, data interface{}) (*N
 	return m, err
 }
 
-// Create a subnet
+// CreateSubnet creates a subnet
 // param: subnet - Name of subnet to be created
 // param: prefix - Routing prefix of subnet to be created
 // note:
@@ -117,7 +118,7 @@ func (n *NetworkService) CreateSubnet(subnet string, prefix string) (*Subnet, er
 	return m, err
 }
 
-// Delete a subnet
+// DeleteSubnet deletes a subnet
 // param: subnet - Name of subnet to be deleted
 func (n *NetworkService) DeleteSubnet(subnet string) (*Subnet, error) {
 
@@ -136,7 +137,7 @@ func (n *NetworkService) DeleteSubnet(subnet string) (*Subnet, error) {
 	return m, err
 }
 
-// Disable a subnet
+// DisableSubnet disables a subnet
 // param: subnet: Name of subnet to be disabled.
 // Returns an object describing the subnet
 func (n *NetworkService) DisableSubnet(subnet string) (*Subnet, error) {
@@ -150,7 +151,7 @@ func (n *NetworkService) DisableSubnet(subnet string) (*Subnet, error) {
 	return m, err
 }
 
-// Enable a subnet
+// EnableSubnet enables a subnet
 // param: subnet: Name of subnet to be enabled.
 // Returns an object describing the subnet
 func (n *NetworkService) EnableSubnet(subnet string) (*Subnet, error) {
@@ -164,7 +165,7 @@ func (n *NetworkService) EnableSubnet(subnet string) (*Subnet, error) {
 	return m, err
 }
 
-// Get subnet attributes
+// GetSubnet lists subnet attributes
 func (n *NetworkService) GetSubnet(subnet string) (*Subnet, error) {
 
 	path := fmt.Sprintf("sbunet/%s", subnet)
@@ -182,7 +183,7 @@ func (n *NetworkService) GetSubnet(subnet string) (*Subnet, error) {
 	return m, err
 }
 
-// List Subnets
+// ListSubnets lists attributes of subnets
 func (n *NetworkService) ListSubnets() ([]Subnet, error) {
 
 	req, err := n.client.NewRequest("GET", "subnet", nil, nil)
@@ -199,7 +200,7 @@ func (n *NetworkService) ListSubnets() ([]Subnet, error) {
 	return m, err
 }
 
-// Rename a subnet
+// RenameSubnet renames a subnet
 // param: subnet: Name of subnet to be renamed.
 // param: name: Name to change the subnet to
 // Returns an object describing the subnet
@@ -214,7 +215,7 @@ func (n *NetworkService) RenameSubnet(subnet string, name string) (*Subnet, erro
 	return m, err
 }
 
-// Set subnet attributes
+// SetSubnet modifies subnet attributes
 func (n *NetworkService) SetSubnet(subnet string, data interface{}) (*Subnet, error) {
 
 	path := fmt.Sprintf("subnet/%s", subnet)
@@ -232,7 +233,7 @@ func (n *NetworkService) SetSubnet(subnet string, data interface{}) (*Subnet, er
 	return m, err
 }
 
-// Create a VLAN Interface
+// CreateVlanInterface creates a VLAN Interface
 // param: iface - Name of interface to be created
 // param: subnet - Subnet to be associated with the new interface
 func (n *NetworkService) CreateVlanInterface(iface string, subnet string) (*NetworkInterface, error) {
@@ -253,7 +254,7 @@ func (n *NetworkService) CreateVlanInterface(iface string, subnet string) (*Netw
 	return m, err
 }
 
-// Delete a VLAN Interface
+// DeleteVlanInterface deletes a VLAN Interface
 // param: iface - Name of iface to be deleted
 func (n *NetworkService) DeleteVlanInterface(iface string) (*NetworkInterface, error) {
 
@@ -272,7 +273,7 @@ func (n *NetworkService) DeleteVlanInterface(iface string) (*NetworkInterface, e
 	return m, err
 }
 
-// Get DNS settings
+// GetDNS gets DNS settings
 func (n *NetworkService) GetDNS() (*DNS, error) {
 
 	req, err := n.client.NewRequest("GET", "dns", nil, nil)
@@ -289,7 +290,7 @@ func (n *NetworkService) GetDNS() (*DNS, error) {
 	return m, err
 }
 
-// Set DNS settings
+// SetDNS modifies DNS settings
 func (n *NetworkService) SetDNS(data interface{}) (*DNS, error) {
 
 	req, err := n.client.NewRequest("PUT", "dns", nil, data)
@@ -306,7 +307,7 @@ func (n *NetworkService) SetDNS(data interface{}) (*DNS, error) {
 	return m, err
 }
 
-// List ports
+// ListPorts lists attributes of the ports
 func (n *NetworkService) ListPorts(data interface{}) ([]Port, error) {
 
 	req, err := n.client.NewRequest("GET", "port", nil, data)

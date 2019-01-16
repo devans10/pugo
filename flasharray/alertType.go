@@ -4,8 +4,8 @@
 
 package flasharray
 
-// Vgroup struct for object returned by array
-type Vgroup struct {
-	Name    string   `json:"name"`
-	Volumes []string `json:"volumes"`
+// Alert is a struct for the json data returned by the array
+type Alert struct {
+	Name    string `json:"name,omitempty"`
+	Enabled bool   `json:"enabled,omitempty"`
 }

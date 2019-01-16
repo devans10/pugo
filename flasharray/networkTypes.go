@@ -4,6 +4,7 @@
 
 package flasharray
 
+// NetworkInterface struct for object returned by array
 type NetworkInterface struct {
 	Name     string   `json:"name,omitempty"`
 	Address  string   `json:"address,omitempty"`
@@ -18,6 +19,7 @@ type NetworkInterface struct {
 	Speed    int      `json:"speed,omitempty"`
 }
 
+// Subnet struct for object returned by array
 type Subnet struct {
 	Name    string `json:"name"`
 	Prefix  string `json:"prefix"`
@@ -27,11 +29,13 @@ type Subnet struct {
 	Mtu     int    `json:"mtu"`
 }
 
+// DNS struct for object returned by array
 type DNS struct {
 	Nameservers []string `json:"nameservers"`
 	Domain      string   `json:"domain"`
 }
 
+// Port struct for object returned by array
 type Port struct {
 	Name     string `json:"name"`
 	Portal   string `json:"portal"`

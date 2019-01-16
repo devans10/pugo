@@ -4,11 +4,12 @@
 
 package flasharray
 
+// DirsrvService struct for the dirsrv endpoints
 type DirsrvService struct {
 	client *Client
 }
 
-// Set Directory Service Attributes
+// SetDirectoryService sets attributes for the directory service
 func (n *DirsrvService) SetDirectoryService(data interface{}) (*Dirsrv, error) {
 
 	req, err := n.client.NewRequest("PUT", "directoryservice", nil, data)
@@ -25,7 +26,7 @@ func (n *DirsrvService) SetDirectoryService(data interface{}) (*Dirsrv, error) {
 	return m, err
 }
 
-// Get Directory Service Attributes
+// GetDirectoryService lists the attributes for the directory service
 func (n *DirsrvService) GetDirectoryService() (*Dirsrv, error) {
 
 	req, err := n.client.NewRequest("GET", "directoryservice", nil, nil)
@@ -42,13 +43,13 @@ func (n *DirsrvService) GetDirectoryService() (*Dirsrv, error) {
 	return m, err
 }
 
-// Disable Directory Service
+// DisableDirectoryService disables the directory service
 // if check_peer is true, enables server authenticity enforcement
-func (n *DirsrvService) DisableDirectoryService(check_peer bool) (*Dirsrv, error) {
+func (n *DirsrvService) DisableDirectoryService(checkPeer bool) (*Dirsrv, error) {
 
 	var data map[string]bool
-	if check_peer {
-		data = map[string]bool{"check_peer": check_peer}
+	if checkPeer {
+		data = map[string]bool{"check_peer": checkPeer}
 	} else {
 		data = map[string]bool{"enabled": false}
 	}
@@ -61,13 +62,13 @@ func (n *DirsrvService) DisableDirectoryService(check_peer bool) (*Dirsrv, error
 	return m, err
 }
 
-// Enable Directory Service
+// EnableDirectoryService enables the directory service
 // if check_peer is true, enables server authenticity enforcement
-func (n *DirsrvService) EnableDirectoryService(check_peer bool) (*Dirsrv, error) {
+func (n *DirsrvService) EnableDirectoryService(checkPeer bool) (*Dirsrv, error) {
 
 	var data map[string]bool
-	if check_peer {
-		data = map[string]bool{"check_peer": check_peer}
+	if checkPeer {
+		data = map[string]bool{"check_peer": checkPeer}
 	} else {
 		data = map[string]bool{"enabled": true}
 	}
@@ -80,7 +81,7 @@ func (n *DirsrvService) EnableDirectoryService(check_peer bool) (*Dirsrv, error)
 	return m, err
 }
 
-// Test the directory service
+// TestDirectoryService tests the directory service connection
 func (n *DirsrvService) TestDirectoryService() (*DirsrvTest, error) {
 
 	data := map[string]string{"action": "test"}
@@ -98,7 +99,7 @@ func (n *DirsrvService) TestDirectoryService() (*DirsrvTest, error) {
 	return m, err
 }
 
-// Get directory service groups for roles
+// ListDirectoryServiceRoles get directory service groups for roles
 func (n *DirsrvService) ListDirectoryServiceRoles() ([]DirsrvRole, error) {
 
 	req, err := n.client.NewRequest("GET", "directoryservice/role", nil, nil)
@@ -115,7 +116,7 @@ func (n *DirsrvService) ListDirectoryServiceRoles() ([]DirsrvRole, error) {
 	return m, err
 }
 
-// Set directory service groups for roles
+// SetDirectoryServiceRoles sets the groups for roles
 func (n *DirsrvService) SetDirectoryServiceRoles(data interface{}) (*DirsrvRole, error) {
 
 	req, err := n.client.NewRequest("PUT", "directoryservice/role", nil, data)

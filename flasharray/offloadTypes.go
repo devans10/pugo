@@ -4,9 +4,10 @@
 
 package flasharray
 
+// NFSOffload struct is an object returned by the array
 type NFSOffload struct {
-	Name          string `json:"name"`
-	Address       string `json:"address"`
-	Mount_point   string `json:"mount_point"`
-	Mount_options string `json:"mount_options"`
+	Name         string `json:"name"`
+	Address      string `json:"address"`
+	MountPoint   string `json:"mount_point"`
+	MountOptions string `json:"mount_options"`
 }

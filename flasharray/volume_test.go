@@ -24,7 +24,7 @@ func TestAccVolumes(t *testing.T) {
 
 	t.Run("CreateVolume", testAccCreateVolume(c))
 	t.Run("GetVolume", testAccGetVolume(c))
-	t.Run("GetVolume_withParams", testAccGetVolume_withParams(c))
+	t.Run("GetVolume_withParams", testAccGetVolumeWithParams(c))
 	t.Run("CreateSnapshot", testAccCreateSnapshot(c))
 	t.Run("CloneVolume", testAccCloneVolume(c))
 	t.Run("AddVolumeToPgroup", testAccAddVolume(c, testpgroup))
@@ -32,7 +32,7 @@ func TestAccVolumes(t *testing.T) {
 	t.Run("ExtendVolume", testAccExtendVolume(c))
 	t.Run("TruncateVolume", testAccTruncateVolume(c))
 	t.Run("ListVolumes", testAccListVolumes(c))
-	t.Run("ListVolumes_withParams", testAccListVolumes_withParams(c))
+	t.Run("ListVolumes_withParams", testAccListVolumesWithParams(c))
 	t.Run("RenameVolume", testAccRenameVolume(c, "testAccVolnew"))
 	c.Volumes.RenameVolume("testAccVolnew", testAccVolumeName)
 	t.Run("DeleteVolume", testAccDeleteVolume(c))
@@ -74,7 +74,7 @@ func testAccGetVolume(c *Client) func(*testing.T) {
 	}
 }
 
-func testAccGetVolume_withParams(c *Client) func(*testing.T) {
+func testAccGetVolumeWithParams(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		params := map[string]string{"space": "true"}
 		h, err := c.Volumes.GetVolume(testAccVolumeName, params)
@@ -144,7 +144,7 @@ func testAccListVolumes(c *Client) func(*testing.T) {
 	}
 }
 
-func testAccListVolumes_withParams(c *Client) func(*testing.T) {
+func testAccListVolumesWithParams(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		params := map[string]string{"space": "true"}
 		_, err := c.Volumes.ListVolumes(params)

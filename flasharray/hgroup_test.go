@@ -24,20 +24,20 @@ func TestAccHostgroups(t *testing.T) {
 	c.Volumes.CreateVolume(testvol, 1024000000)
 	c.Protectiongroups.CreateProtectiongroup(testpgroup, nil)
 
-	t.Run("CreateHostgroup_basic", testAccCreateHostgroup_basic(c))
+	t.Run("CreateHostgroup_basic", testAccCreateHostgroupBasic(c))
 	t.Run("GetHostgroup", testAccGetHostgroup(c))
-	t.Run("GetHostgroup_withParams", testAccGetHostgroup_withParams(c))
+	t.Run("GetHostgroup_withParams", testAccGetHostgroupWithParams(c))
 	t.Run("DeleteHostgroup", testAccDeleteHostgroup(c))
 
 	testhosts := []string{testhost1, testhost2}
 	hostlist := map[string][]string{"hostlist": testhosts}
-	t.Run("CreateHostgroup_withHosts", testAccCreateHostgroup_withHosts(c, hostlist))
+	t.Run("CreateHostgroup_withHosts", testAccCreateHostgroupWithHosts(c, hostlist))
 	t.Run("ConnectVolumeToHostgroup", testAccConnectVolumeToHostgroup(c, testvol))
 	t.Run("AddHostgroupToPgroup", testAccAddHostgroup(c, testpgroup))
 	t.Run("RemoveHostgroupFromPgroup", testAccRemoveHostgroup(c, testpgroup))
 	t.Run("ListHostgroupConnections", testAccListHostgroupConnections(c))
 	t.Run("ListHostgroups", testAccListHostgroups(c))
-	t.Run("ListHostgroups_withParams", testAccListHostgroups_withParams(c))
+	t.Run("ListHostgroups_withParams", testAccListHostgroupsWithParams(c))
 	t.Run("RenameHostgroup", testAccRenameHostgroup(c, "testacchgroupnew"))
 	c.Hostgroups.RenameHostgroup("testacchgroupnew", testAccHostgroupName)
 	t.Run("DisconnectVolumeFromHostgroup", testAccDisconnectVolumeFromHostgroup(c, testvol))
@@ -54,7 +54,7 @@ func TestAccHostgroups(t *testing.T) {
 	c.Protectiongroups.EradicateProtectiongroup(testpgroup)
 }
 
-func testAccCreateHostgroup_basic(c *Client) func(*testing.T) {
+func testAccCreateHostgroupBasic(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		h, err := c.Hostgroups.CreateHostgroup(testAccHostgroupName, nil)
 		if err != nil {
@@ -80,7 +80,7 @@ func testAccGetHostgroup(c *Client) func(*testing.T) {
 	}
 }
 
-func testAccGetHostgroup_withParams(c *Client) func(*testing.T) {
+func testAccGetHostgroupWithParams(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		params := map[string]string{"space": "true"}
 		h, err := c.Hostgroups.GetHostgroup(testAccHostgroupName, params)
@@ -94,7 +94,7 @@ func testAccGetHostgroup_withParams(c *Client) func(*testing.T) {
 	}
 }
 
-func testAccCreateHostgroup_withHosts(c *Client, hostlist map[string][]string) func(*testing.T) {
+func testAccCreateHostgroupWithHosts(c *Client, hostlist map[string][]string) func(*testing.T) {
 	return func(t *testing.T) {
 		h, err := c.Hostgroups.CreateHostgroup(testAccHostgroupName, hostlist)
 		if err != nil {
@@ -153,7 +153,7 @@ func testAccListHostgroups(c *Client) func(*testing.T) {
 	}
 }
 
-func testAccListHostgroups_withParams(c *Client) func(*testing.T) {
+func testAccListHostgroupsWithParams(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		params := map[string]string{"space": "true"}
 		_, err := c.Hostgroups.ListHostgroups(params)
