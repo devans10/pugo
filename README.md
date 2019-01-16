@@ -63,7 +63,7 @@ import (
 	"github.com/devans10/go-purestorage/flasharray"
 )
 
-client := flasharray.Client{Target: "flasharray.example.com", Username: "pureuser", Password: "password", Api_token: nil, Rest_version: nil, User_agent: nil, Request_kwargs: nil}
+client := flasharray.Client{Target: "flasharray.example.com", Username: "pureuser", Password: "password", APIToken: nil, RestVersion: nil, UserAgent: nil, RequestKwargs: nil}
 ```
 
 ### Array
@@ -71,7 +71,7 @@ client := flasharray.Client{Target: "flasharray.example.com", Username: "pureuse
 Get the array status
 ```go
 array, _ := client.Array.Get(nil)
-fmt.Printf("Array Name: %s", array.Array_name)
+fmt.Printf("Array Name: %s", array.ArrayName)
 fmt.Printf("ID: %s", array.Id)
 ```
 
