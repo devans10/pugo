@@ -13,3 +13,12 @@ type Array struct {
 	Version string `json:"version,omitempty"`
 	AsOf    int    `json:"_as_of,omitempty"`
 }
+
+// Tag type describes the array object returned by the API
+type Tag struct {
+	Key               string            `json:"key,omitempty"`
+	Namespace         string            `json:"namespace,omitempty"`
+	Resource          map[string]string `json:"resource,omitempty"`
+	TagOrganizationID int               `json:"tag_organization_id,omitempty"`
+	Value             string            `json:"value,omitempty"`
+}

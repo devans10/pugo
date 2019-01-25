@@ -29,7 +29,14 @@ type Client struct {
 	client *http.Client
 	token  *pure1Token
 
-	Arrays *ArrayService
+	Arrays              *ArrayService
+	Filesystems         *FilesystemService
+	FilesystemSnapshots *FilesystemSnapshotService
+	Metrics             *MetricsService
+	NetworkInterfaces   *NetworkInterfacesService
+	Pods                *PodService
+	Volumes             *VolumeService
+	VolumeSnapshots     *VolumeSnapshotService
 }
 
 type pure1Token struct {
@@ -66,6 +73,13 @@ func NewClient(appID string, privateKey []byte, restVersion string) (*Client, er
 	c.token = token
 
 	c.Arrays = &ArrayService{client: c}
+	c.Filesystems = &FilesystemService{client: c}
+	c.FilesystemSnapshots = &FilesystemSnapshotService{client: c}
+	c.Metrics = &MetricsService{client: c}
+	c.NetworkInterfaces = &NetworkInterfacesService{client: c}
+	c.Pods = &PodService{client: c}
+	c.Volumes = &VolumeService{client: c}
+	c.VolumeSnapshots = &VolumeSnapshotService{client: c}
 
 	return c, nil
 }
