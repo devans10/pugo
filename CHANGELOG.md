@@ -1,4 +1,4 @@
-## 1.0.0
+## 0.3.0
 IMPROVEMENTS:
 * Added Library for the Pure1 API
 
