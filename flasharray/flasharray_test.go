@@ -1,9 +1,22 @@
 package flasharray
 
 import (
+	"fmt"
+	"net/http"
 	"os"
+	"path/filepath"
+	"reflect"
+	"runtime"
 	"testing"
 )
+
+// RoundTripFunc is for returning a test response to the client
+type RoundTripFunc func(req *http.Request) *http.Response
+
+// RoundTrip is the test http Transport
+func (f RoundTripFunc) RoundTrip(req *http.Request) (*http.Response, error) {
+	return f(req), nil
+}
 
 func testAccPreChecks(t *testing.T) {
 
@@ -49,6 +62,35 @@ func TestAccClient(t *testing.T) {
 	testAccGenerateClient(t)
 }
 
+func testGenerateClient(fn RoundTripFunc) *Client {
+	restVersion := "1.15"
+	c := &Client{Target: "flasharray.example.com",
+		RestVersion: restVersion,
+		UserAgent:   ""}
+
+	c.client = &http.Client{Transport: RoundTripFunc(fn)}
+
+	c.Array = &ArrayService{client: c}
+	c.Volumes = &VolumeService{client: c}
+	c.Hosts = &HostService{client: c}
+	c.Hostgroups = &HostgroupService{client: c}
+	c.Offloads = &OffloadService{client: c}
+	c.Protectiongroups = &ProtectiongroupService{client: c}
+	c.Vgroups = &VgroupService{client: c}
+	c.Networks = &NetworkService{client: c}
+	c.Hardware = &HardwareService{client: c}
+	c.Users = &UserService{client: c}
+	c.Dirsrv = &DirsrvService{client: c}
+	c.Pods = &PodService{client: c}
+	c.Alerts = &AlertService{client: c}
+	c.Messages = &MessageService{client: c}
+	c.Snmp = &SnmpService{client: c}
+	c.Cert = &CertService{client: c}
+	c.SMTP = &SMTPService{client: c}
+
+	return c
+}
+
 // Test that a NewClient call with no authentication returns an error
 func TestNewClientNoAuth(t *testing.T) {
 
@@ -84,5 +126,32 @@ func TestNewRequest(t *testing.T) {
 
 	if req.URL.String() != "https://flasharray.example.com/api/1.0/array" {
 		t.Errorf("Malformed URL returned by NewRequest. Expected: https://flasharray.example.com/api/1.0/array; Got: %s", req.URL.String())
+	}
+}
+
+// assert fails the test if the condition is false.
+func assert(tb testing.TB, condition bool, msg string, v ...interface{}) {
+	if !condition {
+		_, file, line, _ := runtime.Caller(1)
+		fmt.Printf("\033[31m%s:%d: "+msg+"\033[39m\n\n", append([]interface{}{filepath.Base(file), line}, v...)...)
+		tb.FailNow()
+	}
+}
+
+// ok fails the test if an err is not nil.
+func ok(tb testing.TB, err error) {
+	if err != nil {
+		_, file, line, _ := runtime.Caller(1)
+		fmt.Printf("\033[31m%s:%d: unexpected error: %s\033[39m\n\n", filepath.Base(file), line, err.Error())
+		tb.FailNow()
+	}
+}
+
+// equals fails the test if exp is not equal to act.
+func equals(tb testing.TB, exp, act interface{}) {
+	if !reflect.DeepEqual(exp, act) {
+		_, file, line, _ := runtime.Caller(1)
+		fmt.Printf("\033[31m%s:%d:\n\n\texp: %#v\n\n\tgot: %#v\033[39m\n\n", filepath.Base(file), line, exp, act)
+		tb.FailNow()
 	}
 }

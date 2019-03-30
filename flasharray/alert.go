@@ -22,7 +22,7 @@ func (a *AlertService) ListAlerts(params map[string]string) ([]Alert, error) {
 	}
 
 	m := []Alert{}
-	if _, err = a.client.Do(req, m, false); err != nil {
+	if _, err = a.client.Do(req, &m, false); err != nil {
 		return nil, err
 	}
 
