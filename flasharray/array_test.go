@@ -5,8 +5,100 @@
 package flasharray
 
 import (
+	"bytes"
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
 	"testing"
 )
+
+func TestEnableConsoleLock(t *testing.T) {
+
+	testConsoleLock := ConsoleLock{"enabled"}
+	body, _ := json.Marshal(testConsoleLock)
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/array/console_lock")
+		equals(t, req.Method, "PUT")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBuffer(body)),
+			Header:     head,
+		}
+	})
+
+	err := c.Array.EnableConsoleLock()
+	ok(t, err)
+}
+
+func TestDisableConsoleLock(t *testing.T) {
+
+	testConsoleLock := ConsoleLock{"disabled"}
+	body, _ := json.Marshal(testConsoleLock)
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/array/console_lock")
+		equals(t, req.Method, "PUT")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBuffer(body)),
+			Header:     head,
+		}
+	})
+
+	err := c.Array.DisableConsoleLock()
+	ok(t, err)
+}
+
+func TestGetConsoleLock(t *testing.T) {
+
+	testConsoleLock := ConsoleLock{"disabled"}
+	body, _ := json.Marshal(testConsoleLock)
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/array/console_lock")
+		equals(t, req.Method, "GET")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBuffer(body)),
+			Header:     head,
+		}
+	})
+
+	cl, err := c.Array.GetConsoleLock()
+	ok(t, err)
+	equals(t, &testConsoleLock, cl)
+}
+
+func TestGet(t *testing.T) {
+
+	testArray := Array{ID: "b75f8356-604b-431d-af5c-64c3ca303749",
+		ArrayName: "pure01",
+		Version:   "5.0.0",
+		Revision:  "201712160033+517009f"}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/array")
+		equals(t, req.Method, "GET")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArray("1.15"))),
+			Header:     head,
+		}
+	})
+
+	array, err := c.Array.Get(nil)
+	ok(t, err)
+	equals(t, &testArray, array)
+}
 
 func TestAccArrayConsoleLock(t *testing.T) {
 	testAccPreChecks(t)
