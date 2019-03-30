@@ -182,9 +182,37 @@ func (v *VolumeService) ExtendVolume(name string, size int) (*Volume, error) {
 func (v *VolumeService) GetVolume(name string, params map[string]string) (*Volume, error) {
 
 	path := fmt.Sprintf("volume/%s", name)
+	if params["action"] == "monitor" {
+		m, err := v.MonitorVolume(name, params)
+		if err != nil {
+			return nil, err
+		}
+		vol := m[0]
+		return &vol, nil
+	}
 	req, err := v.client.NewRequest("GET", path, params, nil)
 	m := &Volume{}
 	_, err = v.client.Do(req, m, false)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
+}
+
+// MonitorVolume returns metrics of the specified volume.  This is similar to GetVolume when
+// params = {"action": "monitor"}, but that endpoint returns an array instead of a single
+// Volume struct.
+func (v *VolumeService) MonitorVolume(name string, params map[string]string) ([]Volume, error) {
+
+	path := fmt.Sprintf("volume/%s", name)
+	p := map[string]string{"action": "monitor"}
+	for k, v := range params {
+		p[k] = v
+	}
+	req, err := v.client.NewRequest("GET", path, p, nil)
+	m := []Volume{}
+	_, err = v.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}

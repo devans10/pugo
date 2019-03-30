@@ -24,7 +24,8 @@ func TestAccVolumes(t *testing.T) {
 
 	t.Run("CreateVolume", testAccCreateVolume(c))
 	t.Run("GetVolume", testAccGetVolume(c))
-	t.Run("GetVolume_withParams", testAccGetVolumeWithParams(c))
+	t.Run("GetVolume_withParamSpace", testAccGetVolumeWithParamSpace(c))
+	t.Run("GetVolume_withParamAction", testAccGetVolumeWithParamAction(c))
 	t.Run("CreateSnapshot", testAccCreateSnapshot(c))
 	t.Run("CloneVolume", testAccCloneVolume(c))
 	t.Run("AddVolumeToPgroup", testAccAddVolume(c, testpgroup))
@@ -74,7 +75,7 @@ func testAccGetVolume(c *Client) func(*testing.T) {
 	}
 }
 
-func testAccGetVolumeWithParams(c *Client) func(*testing.T) {
+func testAccGetVolumeWithParamSpace(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
 		params := map[string]string{"space": "true"}
 		h, err := c.Volumes.GetVolume(testAccVolumeName, params)
@@ -84,6 +85,25 @@ func testAccGetVolumeWithParams(c *Client) func(*testing.T) {
 
 		if h.Name != testAccVolumeName {
 			t.Fatalf("expected: %s; got %s", testAccVolumeName, h.Name)
+		}
+		if h.Size != testvolsize {
+			t.Fatalf("expected: %d; got %d", testvolsize, h.Size)
+		}
+	}
+}
+
+func testAccGetVolumeWithParamAction(c *Client) func(*testing.T) {
+	return func(t *testing.T) {
+		h, err := c.Volumes.GetVolume(testAccVolumeName, map[string]string{"action": "monitor"})
+		if err != nil {
+			t.Fatalf("error getting volume %s: %s", testAccVolumeName, err)
+		}
+
+		if h.Name != testAccVolumeName {
+			t.Fatalf("expected: %s; got %s", testAccVolumeName, h.Name)
+		}
+		if h.Time == "" {
+			t.Fatalf("time property did not exist; got: %+v", h)
 		}
 	}
 }

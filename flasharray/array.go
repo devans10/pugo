@@ -11,9 +11,9 @@ type ArrayService struct {
 }
 
 // set_console_lock is a helper function used to set the console lock
-func (v *ArrayService) setConsoleLock(b bool) (*ConsoleLock, error) {
+func (v *ArrayService) setConsoleLock(b string) (*ConsoleLock, error) {
 
-	data := map[string]bool{"enabled": b}
+	data := map[string]string{"enabled": b}
 	req, err := v.client.NewRequest("PUT", "array/console_lock", nil, data)
 	if err != nil {
 		return nil, err
@@ -32,7 +32,7 @@ func (v *ArrayService) setConsoleLock(b bool) (*ConsoleLock, error) {
 // returns A dictionary mapping "console_lock" to "enabled".
 func (v *ArrayService) EnableConsoleLock() error {
 
-	_, err := v.setConsoleLock(true)
+	_, err := v.setConsoleLock("true")
 	if err != nil {
 		return err
 	}
@@ -43,7 +43,7 @@ func (v *ArrayService) EnableConsoleLock() error {
 // returns A dictionary mapping "console_lock" to "disabled".
 func (v *ArrayService) DisableConsoleLock() error {
 
-	_, err := v.setConsoleLock(false)
+	_, err := v.setConsoleLock("false")
 	if err != nil {
 		return err
 	}

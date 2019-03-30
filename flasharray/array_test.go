@@ -12,9 +12,7 @@ func TestAccArrayConsoleLock(t *testing.T) {
 	testAccPreChecks(t)
 	c := testAccGenerateClient(t)
 
-	t.Run("EnableConsoleLock", testAccEnableConsoleLock(c))
 	t.Run("GetConsoleLock", testAccGetConsoleLock(c))
-	t.Run("DisableConsoleLock", testAccGetConsoleLock(c))
 }
 
 func testAccEnableConsoleLock(c *Client) func(t *testing.T) {

@@ -23,6 +23,7 @@ func TestAccHosts(t *testing.T) {
 	t.Run("CreateHost_basic", testAccCreateHostBasic(c))
 	t.Run("GetHost", testAccGetHost(c))
 	t.Run("GetHost_withParams", testAccGetHostWithParams(c))
+	t.Run("GetHost_withAction", testAccGetHostWithParamAction(c))
 	t.Run("DeleteHost", testAccDeleteHost(c))
 
 	wwns := []string{"0000999900009999"}
@@ -83,6 +84,23 @@ func testAccGetHostWithParams(c *Client) func(*testing.T) {
 		}
 	}
 }
+
+func testAccGetHostWithParamAction(c *Client) func(*testing.T) {
+	return func(t *testing.T) {
+		h, err := c.Hosts.GetHost(testAccHostName, map[string]string{"action": "monitor"})
+		if err != nil {
+			t.Fatalf("error getting host %s: %s", testAccHostName, err)
+		}
+
+		if h.Name != testAccHostName {
+			t.Fatalf("expected: %s; got %s", testAccHostName, h.Name)
+		}
+		if h.Time == "" {
+			t.Fatalf("time property did not exist")
+		}
+	}
+}
+
 func testAccCreateHostWithWWN(c *Client, wwnlist map[string][]string) func(*testing.T) {
 	return func(t *testing.T) {
 		h, err := c.Hosts.CreateHost(testAccHostName, wwnlist)
