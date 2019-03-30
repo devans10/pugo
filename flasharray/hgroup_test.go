@@ -27,6 +27,7 @@ func TestAccHostgroups(t *testing.T) {
 	t.Run("CreateHostgroup_basic", testAccCreateHostgroupBasic(c))
 	t.Run("GetHostgroup", testAccGetHostgroup(c))
 	t.Run("GetHostgroup_withParams", testAccGetHostgroupWithParams(c))
+	t.Run("GetHostgroup_withAction", testAccGetHostgroupWithParamAction(c))
 	t.Run("DeleteHostgroup", testAccDeleteHostgroup(c))
 
 	testhosts := []string{testhost1, testhost2}
@@ -90,6 +91,22 @@ func testAccGetHostgroupWithParams(c *Client) func(*testing.T) {
 
 		if h.Name != testAccHostgroupName {
 			t.Fatalf("expected: %s; got %s", testAccHostgroupName, h.Name)
+		}
+	}
+}
+
+func testAccGetHostgroupWithParamAction(c *Client) func(*testing.T) {
+	return func(t *testing.T) {
+		h, err := c.Hostgroups.GetHostgroup(testAccHostgroupName, map[string]string{"action": "monitor"})
+		if err != nil {
+			t.Fatalf("error getting host %s: %s", testAccHostgroupName, err)
+		}
+
+		if h.Name != testAccHostgroupName {
+			t.Fatalf("expected: %s; got %s", testAccHostgroupName, h.Name)
+		}
+		if h.Time == "" {
+			t.Fatalf("time property did not exist")
 		}
 	}
 }

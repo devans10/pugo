@@ -187,11 +187,8 @@ func (v *VolumeService) GetVolume(name string, params map[string]string) (*Volum
 		if err != nil {
 			return nil, err
 		}
-		if len(m) > 0 {
-			vol := m[0]
-			return &vol, nil
-		}
-		return nil, nil
+		vol := m[0]
+		return &vol, nil
 	}
 	req, err := v.client.NewRequest("GET", path, params, nil)
 	m := &Volume{}
@@ -210,6 +207,9 @@ func (v *VolumeService) MonitorVolume(name string, params map[string]string) ([]
 
 	path := fmt.Sprintf("volume/%s", name)
 	p := map[string]string{"action": "monitor"}
+	for k, v := range params {
+		p[k] = v
+	}
 	req, err := v.client.NewRequest("GET", path, p, nil)
 	m := []Volume{}
 	_, err = v.client.Do(req, &m, false)

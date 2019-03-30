@@ -94,17 +94,16 @@ func testAccGetVolumeWithParamSpace(c *Client) func(*testing.T) {
 
 func testAccGetVolumeWithParamAction(c *Client) func(*testing.T) {
 	return func(t *testing.T) {
-		h, err := c.Volumes.MonitorVolume(testAccVolumeName, nil)
+		h, err := c.Volumes.GetVolume(testAccVolumeName, map[string]string{"action": "monitor"})
 		if err != nil {
 			t.Fatalf("error getting volume %s: %s", testAccVolumeName, err)
 		}
 
-		vol := h[0]
-		if vol.Name != testAccVolumeName {
-			t.Fatalf("expected: %s; got %s", testAccVolumeName, vol.Name)
+		if h.Name != testAccVolumeName {
+			t.Fatalf("expected: %s; got %s", testAccVolumeName, h.Name)
 		}
-		if vol.Time == "" {
-			t.Fatalf("time property did not exist")
+		if h.Time == "" {
+			t.Fatalf("time property did not exist; got: %+v", h)
 		}
 	}
 }
