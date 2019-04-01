@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/devans10/go-purestorage.svg?branch=master)](https://travis-ci.com/devans10/go-purestorage) [![Go Report Card](https://goreportcard.com/badge/github.com/devans10/go-purestorage)](https://goreportcard.com/report/github.com/devans10/go-purestorage) [![GoDoc](https://godoc.org/github.com/devans10/go-purestorage?status.svg)](https://godoc.org/github.com/devans10/go-purestorage)
+[![Build Status](https://travis-ci.com/devans10/go-purestorage.svg?branch=master)](https://travis-ci.com/devans10/go-purestorage) [![Go Report Card](https://goreportcard.com/badge/github.com/devans10/go-purestorage)](https://goreportcard.com/report/github.com/devans10/go-purestorage) [![codecov](https://codecov.io/gh/devans10/go-purestorage/branch/master/graph/badge.svg)](https://codecov.io/gh/devans10/go-purestorage) [![GoDoc](https://godoc.org/github.com/devans10/go-purestorage?status.svg)](https://godoc.org/github.com/devans10/go-purestorage)
 
 # Pure Storage REST client for Go
 This library is designed to provide a simple interface for issuing commands to a Pure Storage Flash Array using a REST API. 
