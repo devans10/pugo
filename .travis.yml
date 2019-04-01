@@ -3,6 +3,10 @@ sudo: required
 language: go
 go:
 - 1.11
+- tip
+
+before_install:
+- go get -t -v ./...
 
 install:
 # This script is used by the Travis build to install a cookie for
@@ -21,3 +25,6 @@ script:
 branches:
   only:
   - master
+  
+after_success:
+- bash <(curl -s https://codecov.io/bash)
