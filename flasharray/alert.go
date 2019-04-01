@@ -65,7 +65,24 @@ func (a *AlertService) CreateAlert(alert string, data interface{}) (*Alert, erro
 }
 
 // TestAlert Tests the ability of the array to send alert messages to all of the designated email addresses.
-func (a *AlertService) TestAlert() (*Alert, error) {
+func (a *AlertService) TestAlert(address string) (*Alert, error) {
+
+	path := fmt.Sprintf("alert/%s", address)
+	req, err := a.client.NewRequest("PUT", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	m := &Alert{}
+	if _, err = a.client.Do(req, m, false); err != nil {
+		return nil, err
+	}
+
+	return m, err
+}
+
+// TestAlerts Tests the ability of the array to send alert messages to all of the designated email addresses.
+func (a *AlertService) TestAlerts() (*Alert, error) {
 
 	req, err := a.client.NewRequest("PUT", "alert", nil, nil)
 	if err != nil {

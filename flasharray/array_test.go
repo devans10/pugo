@@ -6,7 +6,6 @@ package flasharray
 
 import (
 	"bytes"
-	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"testing"
@@ -14,8 +13,7 @@ import (
 
 func TestEnableConsoleLock(t *testing.T) {
 
-	testConsoleLock := ConsoleLock{"enabled"}
-	body, _ := json.Marshal(testConsoleLock)
+	restVersion := "1.15"
 	head := make(http.Header)
 	head.Add("Content-Type", "application/json")
 
@@ -24,7 +22,7 @@ func TestEnableConsoleLock(t *testing.T) {
 		equals(t, req.Method, "PUT")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(body)),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayConsoleLock(restVersion))),
 			Header:     head,
 		}
 	})
@@ -35,8 +33,7 @@ func TestEnableConsoleLock(t *testing.T) {
 
 func TestDisableConsoleLock(t *testing.T) {
 
-	testConsoleLock := ConsoleLock{"disabled"}
-	body, _ := json.Marshal(testConsoleLock)
+	restVersion := "1.15"
 	head := make(http.Header)
 	head.Add("Content-Type", "application/json")
 
@@ -45,7 +42,7 @@ func TestDisableConsoleLock(t *testing.T) {
 		equals(t, req.Method, "PUT")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(body)),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayConsoleLock(restVersion))),
 			Header:     head,
 		}
 	})
@@ -56,8 +53,8 @@ func TestDisableConsoleLock(t *testing.T) {
 
 func TestGetConsoleLock(t *testing.T) {
 
+	restVersion := "1.15"
 	testConsoleLock := ConsoleLock{"disabled"}
-	body, _ := json.Marshal(testConsoleLock)
 	head := make(http.Header)
 	head.Add("Content-Type", "application/json")
 
@@ -66,7 +63,7 @@ func TestGetConsoleLock(t *testing.T) {
 		equals(t, req.Method, "GET")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(body)),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArrayConsoleLock(restVersion))),
 			Header:     head,
 		}
 	})
@@ -78,6 +75,7 @@ func TestGetConsoleLock(t *testing.T) {
 
 func TestGet(t *testing.T) {
 
+	restVersion := "1.15"
 	testArray := Array{ID: "b75f8356-604b-431d-af5c-64c3ca303749",
 		ArrayName: "pure01",
 		Version:   "5.0.0",
@@ -90,7 +88,7 @@ func TestGet(t *testing.T) {
 		equals(t, req.Method, "GET")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArray("1.15"))),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArray(restVersion))),
 			Header:     head,
 		}
 	})
@@ -98,6 +96,180 @@ func TestGet(t *testing.T) {
 	array, err := c.Array.Get(nil)
 	ok(t, err)
 	equals(t, &testArray, array)
+}
+
+func TestGetSpace(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/array?space=true")
+		equals(t, req.Method, "GET")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArraySpace(restVersion))),
+			Header:     head,
+		}
+	})
+
+	params := map[string]bool{"space": true}
+	_, err := c.Array.Get(params)
+	ok(t, err)
+}
+
+func TestGetMonitor(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/array?action=monitor")
+		equals(t, req.Method, "GET")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArrayMonitor(restVersion))),
+			Header:     head,
+		}
+	})
+
+	params := map[string]string{"action": "monitor"}
+	_, err := c.Array.Get(params)
+	ok(t, err)
+}
+
+func TestDisablePhoneHome(t *testing.T) {
+
+	restVersion := "1.15"
+	testPhonehome := Phonehome{"enabled", "", ""}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/array/phonehome")
+		equals(t, req.Method, "PUT")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
+			Header:     head,
+		}
+	})
+
+	ph, err := c.Array.DisablePhoneHome()
+	ok(t, err)
+	equals(t, &testPhonehome, ph)
+}
+
+func TestEnablePhoneHome(t *testing.T) {
+
+	restVersion := "1.15"
+	testPhonehome := Phonehome{"enabled", "", ""}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/array/phonehome")
+		equals(t, req.Method, "PUT")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
+			Header:     head,
+		}
+	})
+
+	ph, err := c.Array.EnablePhoneHome()
+	ok(t, err)
+	equals(t, &testPhonehome, ph)
+}
+
+func TestGetManualPhoneHome(t *testing.T) {
+
+	restVersion := "1.15"
+	testPhonehome := Phonehome{"enabled", "", ""}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/array/phonehome")
+		equals(t, req.Method, "GET")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
+			Header:     head,
+		}
+	})
+
+	ph, err := c.Array.GetManualPhoneHome()
+	ok(t, err)
+	equals(t, &testPhonehome, ph)
+}
+
+func TestEnableRemoteAssist(t *testing.T) {
+
+	restVersion := "1.15"
+	testRemoteAssist := RemoteAssist{"enabled", "pure01-ct0", "pure01-ct0.example.com-11679"}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/array/remoteassist")
+		equals(t, req.Method, "PUT")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
+			Header:     head,
+		}
+	})
+
+	ra, err := c.Array.EnableRemoteAssist()
+	ok(t, err)
+	equals(t, &testRemoteAssist, ra)
+}
+
+func TestDisableRemoteAssist(t *testing.T) {
+
+	restVersion := "1.15"
+	testRemoteAssist := RemoteAssist{"enabled", "pure01-ct0", "pure01-ct0.example.com-11679"}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/array/remoteassist")
+		equals(t, req.Method, "PUT")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
+			Header:     head,
+		}
+	})
+
+	ra, err := c.Array.DisableRemoteAssist()
+	ok(t, err)
+	equals(t, &testRemoteAssist, ra)
+}
+
+func TestGetRemoteAssist(t *testing.T) {
+
+	restVersion := "1.15"
+	testRemoteAssist := RemoteAssist{"enabled", "pure01-ct0", "pure01-ct0.example.com-11679"}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/array/remoteassist")
+		equals(t, req.Method, "GET")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
+			Header:     head,
+		}
+	})
+
+	ra, err := c.Array.GetRemoteAssist()
+	ok(t, err)
+	equals(t, &testRemoteAssist, ra)
 }
 
 func TestAccArrayConsoleLock(t *testing.T) {

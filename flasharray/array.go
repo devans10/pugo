@@ -194,7 +194,7 @@ func (v *ArrayService) EnableRemoteAssist() (*RemoteAssist, error) {
 // GetManualPhoneHome lists manual phone home status
 func (v *ArrayService) GetManualPhoneHome() (*Phonehome, error) {
 
-	req, err := v.client.NewRequest("GET", "array/phoneome", nil, nil)
+	req, err := v.client.NewRequest("GET", "array/phonehome", nil, nil)
 	if err != nil {
 		return nil, err
 	}

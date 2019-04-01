@@ -6,7 +6,6 @@ package flasharray
 
 import (
 	"bytes"
-	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"testing"
@@ -14,8 +13,8 @@ import (
 
 func TestListAlerts(t *testing.T) {
 
-	testAlert := []Alert{Alert{"Test", true}}
-	body, _ := json.Marshal(testAlert)
+	restVersion := "1.15"
+	testAlert := []Alert{Alert{"flasharray-alerts@purestorage.com", false}}
 	head := make(http.Header)
 	head.Add("Content-Type", "application/json")
 
@@ -24,7 +23,7 @@ func TestListAlerts(t *testing.T) {
 		equals(t, req.Method, "GET")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(body)),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetAlert(restVersion))),
 			Header:     head,
 		}
 	})
@@ -36,154 +35,154 @@ func TestListAlerts(t *testing.T) {
 
 func TestGetAlert(t *testing.T) {
 
-	testAlert := Alert{"Test", true}
-	body, _ := json.Marshal(testAlert)
+	restVersion := "1.15"
+	testAlert := Alert{"flasharray-alerts@purestorage.com", false}
 	head := make(http.Header)
 	head.Add("Content-Type", "application/json")
 
 	c := testGenerateClient(func(req *http.Request) *http.Response {
-		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/Test")
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/flasharray-alerts@purestorage.com")
 		equals(t, req.Method, "GET")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(body)),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
 
-	alert, err := c.Alerts.GetAlert("Test")
+	alert, err := c.Alerts.GetAlert("flasharray-alerts@purestorage.com")
 	ok(t, err)
 	equals(t, &testAlert, alert)
 }
 
 func TestCreateAlert(t *testing.T) {
 
-	testAlert := Alert{"Test", true}
-	body, _ := json.Marshal(testAlert)
+	restVersion := "1.15"
+	testAlert := Alert{"admin@example.com", true}
 	head := make(http.Header)
 	head.Add("Content-Type", "application/json")
 
 	c := testGenerateClient(func(req *http.Request) *http.Response {
-		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/Test")
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
 		equals(t, req.Method, "POST")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(body)),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
 
-	alert, err := c.Alerts.CreateAlert("Test", testAlert)
+	alert, err := c.Alerts.CreateAlert("admin@example.com", testAlert)
 	ok(t, err)
 	equals(t, &testAlert, alert)
 }
 
 func TestTestAlert(t *testing.T) {
 
-	testAlert := Alert{"Test", true}
-	body, _ := json.Marshal(testAlert)
+	restVersion := "1.15"
+	testAlert := Alert{"admin@example.com", false}
 	head := make(http.Header)
 	head.Add("Content-Type", "application/json")
 
 	c := testGenerateClient(func(req *http.Request) *http.Response {
-		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert")
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
 		equals(t, req.Method, "PUT")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(body)),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
 
-	alert, err := c.Alerts.TestAlert()
+	alert, err := c.Alerts.TestAlert("admin@example.com")
 	ok(t, err)
 	equals(t, &testAlert, alert)
 }
 
 func TestSetAlert(t *testing.T) {
 
-	testAlert := Alert{"Test", true}
-	body, _ := json.Marshal(testAlert)
+	restVersion := "1.15"
+	testAlert := Alert{"admin@example.com", false}
 	head := make(http.Header)
 	head.Add("Content-Type", "application/json")
 
 	c := testGenerateClient(func(req *http.Request) *http.Response {
-		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/Test")
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
 		equals(t, req.Method, "PUT")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(body)),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
 
-	alert, err := c.Alerts.SetAlert("Test", testAlert)
+	alert, err := c.Alerts.SetAlert("admin@example.com", testAlert)
 	ok(t, err)
 	equals(t, &testAlert, alert)
 }
 
 func TestEnableAlert(t *testing.T) {
 
-	testAlert := Alert{"Test", true}
-	body, _ := json.Marshal(testAlert)
+	restVersion := "1.15"
+	testAlert := Alert{"admin@example.com", false}
 	head := make(http.Header)
 	head.Add("Content-Type", "application/json")
 
 	c := testGenerateClient(func(req *http.Request) *http.Response {
-		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/Test")
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
 		equals(t, req.Method, "PUT")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(body)),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
 
-	alert, err := c.Alerts.EnableAlert("Test")
+	alert, err := c.Alerts.EnableAlert("admin@example.com")
 	ok(t, err)
 	equals(t, &testAlert, alert)
 }
 
 func TestDisableAlert(t *testing.T) {
 
-	testAlert := Alert{"Test", false}
-	body, _ := json.Marshal(testAlert)
+	restVersion := "1.15"
+	testAlert := Alert{"admin@example.com", false}
 	head := make(http.Header)
 	head.Add("Content-Type", "application/json")
 
 	c := testGenerateClient(func(req *http.Request) *http.Response {
-		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/Test")
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
 		equals(t, req.Method, "PUT")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(body)),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
 
-	alert, err := c.Alerts.DisableAlert("Test")
+	alert, err := c.Alerts.DisableAlert("admin@example.com")
 	ok(t, err)
 	equals(t, &testAlert, alert)
 }
 
 func TestDeleteAlert(t *testing.T) {
 
-	testAlert := Alert{"Test", true}
-	body, _ := json.Marshal(testAlert)
+	restVersion := "1.15"
+	testAlert := Alert{"admin@example.com", false}
 	head := make(http.Header)
 	head.Add("Content-Type", "application/json")
 
 	c := testGenerateClient(func(req *http.Request) *http.Response {
-		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/Test")
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
 		equals(t, req.Method, "DELETE")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(body)),
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
 
-	alert, err := c.Alerts.DeleteAlert("Test")
+	alert, err := c.Alerts.DeleteAlert("admin@example.com")
 	ok(t, err)
 	equals(t, &testAlert, alert)
 }

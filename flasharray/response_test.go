@@ -26,7 +26,7 @@ func respGetAlertaddress(restVersion string) string {
 
 func respPostAlertaddress(restVersion string) string {
 	resp := make(map[string]string)
-	resp["1.15"] = `{l
+	resp["1.15"] = `{
 						"enabled": true,
 						"name": "admin@example.com"
 					}`
@@ -466,7 +466,7 @@ func respPutVolumevolSize(restVersion string) string {
 func respPutVolumevolName(restVersion string) string {
 	resp := make(map[string]string)
 	resp["1.15"] = `{
-						"name": "v5_renamed",
+						"name": "v5_renamed"
 					}`
 	return resp[restVersion]
 }
@@ -474,7 +474,7 @@ func respPutVolumevolName(restVersion string) string {
 func respDeleteVolumevol(restVersion string) string {
 	resp := make(map[string]string)
 	resp["1.15"] = `{
-						"name": "v5",
+						"name": "v5"
 					}`
 	return resp[restVersion]
 }
