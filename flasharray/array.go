@@ -10,6 +10,83 @@ type ArrayService struct {
 	client *Client
 }
 
+// Get points to GetArray for compatibility
+func (v *ArrayService) Get(data interface{}) (*Array, error) {
+	return v.GetArray(nil, data)
+}
+
+// GetArray returns and object describing the flash array
+func (v *ArrayService) GetArray(params map[string]string, data interface{}) (*Array, error) {
+
+	req, err := v.client.NewRequest("GET", "array", params, data)
+	if err != nil {
+		return nil, err
+	}
+
+	m := &Array{}
+	_, err = v.client.Do(req, m, false)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
+}
+
+// GetArraySpace returns and object describing the flash array
+func (v *ArrayService) GetArraySpace(params map[string]string) ([]Array, error) {
+
+	p := make(map[string]string)
+	p["space"] = "true"
+	req, err := v.client.NewRequest("GET", "array", p, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	m := []Array{}
+	_, err = v.client.Do(req, &m, false)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
+}
+
+// GetArrayMonitor returns and object describing the flash array
+func (v *ArrayService) GetArrayMonitor(params map[string]string) ([]Array, error) {
+
+	p := make(map[string]string)
+	p["action"] = "monitor"
+	req, err := v.client.NewRequest("GET", "array", p, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	m := []Array{}
+	_, err = v.client.Do(req, &m, false)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
+}
+
+// Set will change the parameter on the array that is passed in the data map
+func (v *ArrayService) Set(data interface{}) (*Array, error) {
+
+	req, err := v.client.NewRequest("PUT", "array", nil, data)
+	if err != nil {
+		return nil, err
+	}
+
+	m := &Array{}
+	_, err = v.client.Do(req, m, false)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, err
+}
+
 // set_console_lock is a helper function used to set the console lock
 func (v *ArrayService) setConsoleLock(b string) (*ConsoleLock, error) {
 
@@ -59,40 +136,6 @@ func (v *ArrayService) GetConsoleLock() (*ConsoleLock, error) {
 	}
 
 	m := &ConsoleLock{}
-	_, err = v.client.Do(req, m, false)
-	if err != nil {
-		return nil, err
-	}
-
-	return m, err
-}
-
-// Get returns and object describing the flash array
-func (v *ArrayService) Get(data interface{}) (*Array, error) {
-
-	req, err := v.client.NewRequest("GET", "array", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
-	m := &Array{}
-	_, err = v.client.Do(req, m, false)
-	if err != nil {
-		return nil, err
-	}
-
-	return m, err
-}
-
-// Set will change the parameter on the array that is passed in the data map
-func (v *ArrayService) Set(data interface{}) (*Array, error) {
-
-	req, err := v.client.NewRequest("PUT", "array", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
-	m := &Array{}
 	_, err = v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
