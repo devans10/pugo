@@ -33,6 +33,28 @@ func TestListAlerts(t *testing.T) {
 	equals(t, testAlert, alert)
 }
 
+func TestListAlertsError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert")
+		equals(t, req.Method, "GET")
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetAlert(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Alerts.ListAlerts(nil)
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
+}
+
 func TestGetAlert(t *testing.T) {
 
 	restVersion := "1.15"
@@ -53,6 +75,28 @@ func TestGetAlert(t *testing.T) {
 	alert, err := c.Alerts.GetAlert("flasharray-alerts@purestorage.com")
 	ok(t, err)
 	equals(t, &testAlert, alert)
+}
+
+func TestGetAlertError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/flasharray-alerts@purestorage.com")
+		equals(t, req.Method, "GET")
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetAlertaddress(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Alerts.GetAlert("flasharray-alerts@purestorage.com")
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
 }
 
 func TestCreateAlert(t *testing.T) {
@@ -77,6 +121,29 @@ func TestCreateAlert(t *testing.T) {
 	equals(t, &testAlert, alert)
 }
 
+func TestCreateAlertError(t *testing.T) {
+
+	restVersion := "1.15"
+	testAlert := Alert{"admin@example.com", true}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
+		equals(t, req.Method, "POST")
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostAlertaddress(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Alerts.CreateAlert("admin@example.com", testAlert)
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
+}
+
 func TestTestAlert(t *testing.T) {
 
 	restVersion := "1.15"
@@ -97,6 +164,28 @@ func TestTestAlert(t *testing.T) {
 	alert, err := c.Alerts.TestAlert("admin@example.com")
 	ok(t, err)
 	equals(t, &testAlert, alert)
+}
+
+func TestTestAlertError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
+		equals(t, req.Method, "PUT")
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Alerts.TestAlert("admin@example.com")
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
 }
 
 func TestSetAlert(t *testing.T) {
@@ -121,6 +210,29 @@ func TestSetAlert(t *testing.T) {
 	equals(t, &testAlert, alert)
 }
 
+func TestSetAlertError(t *testing.T) {
+
+	restVersion := "1.15"
+	testAlert := Alert{"admin@example.com", false}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
+		equals(t, req.Method, "PUT")
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Alerts.SetAlert("admin@example.com", testAlert)
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
+}
+
 func TestEnableAlert(t *testing.T) {
 
 	restVersion := "1.15"
@@ -141,6 +253,28 @@ func TestEnableAlert(t *testing.T) {
 	alert, err := c.Alerts.EnableAlert("admin@example.com")
 	ok(t, err)
 	equals(t, &testAlert, alert)
+}
+
+func TestEnableAlertError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
+		equals(t, req.Method, "PUT")
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Alerts.EnableAlert("admin@example.com")
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
 }
 
 func TestDisableAlert(t *testing.T) {
@@ -165,6 +299,28 @@ func TestDisableAlert(t *testing.T) {
 	equals(t, &testAlert, alert)
 }
 
+func TestDisableAlertError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
+		equals(t, req.Method, "PUT")
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Alerts.DisableAlert("admin@example.com")
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
+}
+
 func TestDeleteAlert(t *testing.T) {
 
 	restVersion := "1.15"
@@ -185,6 +341,28 @@ func TestDeleteAlert(t *testing.T) {
 	alert, err := c.Alerts.DeleteAlert("admin@example.com")
 	ok(t, err)
 	equals(t, &testAlert, alert)
+}
+
+func TestDeleteAlertError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
+		equals(t, req.Method, "DELETE")
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteAlertaddress(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Alerts.DeleteAlert("admin@example.com")
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
 }
 
 func TestAccAlerts(t *testing.T) {
