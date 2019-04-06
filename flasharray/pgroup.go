@@ -191,7 +191,7 @@ func (p *ProtectiongroupService) ListProtectiongroups(params map[string]string) 
 	if err != nil {
 		return nil, err
 	}
-	
+
 	m := []Protectiongroup{}
 	_, err = p.client.Do(req, &m, false)
 	if err != nil {

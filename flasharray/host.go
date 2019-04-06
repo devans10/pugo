@@ -164,7 +164,7 @@ func (h *HostService) ListHosts(params map[string]string) ([]Host, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	m := []Host{}
 	_, err = h.client.Do(req, &m, false)
 	if err != nil {
