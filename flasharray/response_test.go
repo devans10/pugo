@@ -537,22 +537,18 @@ func restGetHostMonitor(restVersion string) string {
 	return resp[restVersion]
 }
 
-func restGetHosthost(restVersion string) string {
+func respGetHosthost(restVersion string) string {
 	resp := make(map[string]string)
 	resp["1.15"] = `{
-						"data_reduction": 1.0,
-						"name": "h1",
-						"size": 1073741824,
-						"snapshots": 0,
-						"thin_provisioning": 1.0,
-						"total": 0,
-						"total_reduction": 1.0,
-						"volumes": 0
+						"hgroup": null,
+						"iqn": [],
+						"name": "h3",
+						"wwn": []
 					}`
 	return resp[restVersion]
 }
 
-func restGetHosthostChap(restVersion string) string {
+func respGetHosthostChap(restVersion string) string {
 	resp := make(map[string]string)
 	resp["1.15"] = `{
 						"host_password": null,
@@ -675,7 +671,7 @@ func respPutHosthost(restVersion string) string {
 func respPutHosthostRename(restVersion string) string {
 	resp := make(map[string]string)
 	resp["1.15"] = `{
-						"name": "h4_renamed",
+						"name": "h4_renamed"
 					}`
 	return resp[restVersion]
 }
@@ -692,7 +688,7 @@ func respDeleteHosthostVolumevol(restVersion string) string {
 func respDeleteHosthost(restVersion string) string {
 	resp := make(map[string]string)
 	resp["1.15"] = `{
-						"name": "h5",
+						"name": "h5"
 					}`
 	return resp[restVersion]
 }
