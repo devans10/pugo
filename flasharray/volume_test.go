@@ -5,7 +5,10 @@
 package flasharray
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"testing"
 )
 
@@ -226,4 +229,505 @@ func testAccEradicateVolume(c *Client) func(t *testing.T) {
 			t.Fatalf("error eradicating volume: %s", err)
 		}
 	}
+}
+
+func TestSetVolume(t *testing.T) {
+	restVersion := "1.15"
+	testVolume := Volume{Name: "v5_renamed"}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v5", req.URL.String())
+		equals(t, "PUT", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutVolumevolName(restVersion))),
+			Header:     head,
+		}
+	})
+
+	data := map[string]string{"name": "v5_renamed"}
+	vol, err := c.Volumes.SetVolume("v5", data)
+	ok(t, err)
+	equals(t, &testVolume, vol)
+}
+
+func TestCreateSnapshot(t *testing.T) {
+	restVersion := "1.15"
+	testVolume := Volume{Name: "v5.1",
+		Source:  "v5",
+		Serial:  "B75F8356604B431D00011020",
+		Size:    5368709120,
+		Created: "2017-12-16T05:12:53Z",
+	}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume", req.URL.String())
+		equals(t, "POST", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostVolume(restVersion))),
+			Header:     head,
+		}
+	})
+
+	vol, err := c.Volumes.CreateSnapshot("v5", "1")
+	ok(t, err)
+	equals(t, &testVolume, vol)
+}
+
+func TestCreateSnapshots(t *testing.T) {
+	restVersion := "1.15"
+	testVolume := []Volume{Volume{Name: "v5.1",
+		Source:  "v5",
+		Serial:  "B75F8356604B431D00011020",
+		Size:    5368709120,
+		Created: "2017-12-16T05:12:53Z",
+	},
+		Volume{Name: "v6.4129",
+			Source:  "v6",
+			Serial:  "B75F8356604B431D00011021",
+			Size:    1073741824,
+			Created: "2017-12-16T05:12:53Z",
+		},
+	}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume", req.URL.String())
+		equals(t, "POST", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostVolume(restVersion))),
+			Header:     head,
+		}
+	})
+
+	vol, err := c.Volumes.CreateSnapshots([]string{"v5", "v6"}, "")
+	ok(t, err)
+	equals(t, testVolume, vol)
+}
+
+func TestCreateVolume(t *testing.T) {
+	restVersion := "1.15"
+	testVolume := Volume{Name: "v5",
+		Source:  "",
+		Serial:  "B75F8356604B431D0001101D",
+		Size:    5368709120,
+		Created: "2017-12-16T05:12:52Z",
+	}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v5", req.URL.String())
+		equals(t, "POST", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostVolumevol(restVersion))),
+			Header:     head,
+		}
+	})
+
+	vol, err := c.Volumes.CreateVolume("v5", 5368709120)
+	ok(t, err)
+	equals(t, &testVolume, vol)
+}
+
+//TODO
+func TestCreateConglomerateVolume(t *testing.T) {}
+
+func TestCopyVolume(t *testing.T) {
+	restVersion := "1.15"
+	testVolume := Volume{Name: "v5",
+		Source:  "",
+		Serial:  "B75F8356604B431D0001101D",
+		Size:    5368709120,
+		Created: "2017-12-16T05:12:52Z",
+	}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v5", req.URL.String())
+		equals(t, "POST", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostVolumevol(restVersion))),
+			Header:     head,
+		}
+	})
+
+	vol, err := c.Volumes.CopyVolume("v5", "v6", false)
+	ok(t, err)
+	equals(t, &testVolume, vol)
+}
+
+func TestDeleteVolume(t *testing.T) {
+	restVersion := "1.15"
+	testVolume := Volume{Name: "v5"}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v5", req.URL.String())
+		equals(t, "DELETE", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteVolumevol(restVersion))),
+			Header:     head,
+		}
+	})
+
+	vol, err := c.Volumes.DeleteVolume("v5")
+	ok(t, err)
+	equals(t, &testVolume, vol)
+}
+
+func TestEradicateVolume(t *testing.T) {
+	restVersion := "1.15"
+	testVolume := Volume{Name: "v5"}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v5", req.URL.String())
+		equals(t, "DELETE", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteVolumevol(restVersion))),
+			Header:     head,
+		}
+	})
+
+	vol, err := c.Volumes.EradicateVolume("v5")
+	ok(t, err)
+	equals(t, &testVolume, vol)
+}
+
+func TestExtendVolume(t *testing.T) {
+	restVersion := "1.15"
+	testVolume := Volume{Name: "v5", Size: 1073741824}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v5", req.URL.String())
+		equals(t, "PUT", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutVolumevolSize(restVersion))),
+			Header:     head,
+		}
+	})
+
+	vol, err := c.Volumes.ExtendVolume("v5", 1073741824)
+	ok(t, err)
+	equals(t, &testVolume, vol)
+}
+
+func TestGetVolume(t *testing.T) {
+	restVersion := "1.15"
+	testVolume := Volume{Name: "v1",
+		Created: "2017-12-16T05:12:38Z",
+		Serial:  "B75F8356604B431D00011010",
+		Size:    1073741824,
+		Source:  "",
+	}
+
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v1", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetVolumevol(restVersion))),
+			Header:     head,
+		}
+	})
+
+	vol, err := c.Volumes.GetVolume("v1", nil)
+	ok(t, err)
+	equals(t, &testVolume, vol)
+}
+
+//TODO: Figure out how to compare this.
+func TestMonitorVolume(t *testing.T) {
+	restVersion := "1.15"
+	/*testVolume := Volume{Name: "v3",
+		InputPerSec:       &int{0},
+		OutputPerSec:      &int{0},
+		ReadsPerSec:       &int{0},
+		SanUsecPerReadOp:  &int{0},
+		SanUsecPerWriteOp: &int{0},
+		Time:              "2017-12-16T05:12:51Z",
+		UsecPerReadOp:     &int{0},
+		UsecPerWriteOp:    &int{0},
+		WritesPerSec:      &int{0},
+	}*/
+
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v3?action=monitor", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetVolumevolMonitor(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Volumes.MonitorVolume("v3", nil)
+	ok(t, err)
+	//equals(t, testVolume, vol)
+}
+
+//TODO: Get Output Sample
+func TestAddVolume(t *testing.T) {
+	restVersion := "1.15"
+	//testVolume := Volume
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v3/pgroup/pg1", req.URL.String())
+		equals(t, "POST", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostVolumevol(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Volumes.AddVolume("v3", "pg1")
+	ok(t, err)
+	//equals(t, testVolume, vol)
+}
+
+//TODO: Get Output Sample
+func TestRemoveVolume(t *testing.T) {
+	restVersion := "1.15"
+	//testVolume := Volume
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v3/pgroup/pg1", req.URL.String())
+		equals(t, "DELETE", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostVolumevol(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Volumes.RemoveVolume("v3", "pg1")
+	ok(t, err)
+	//equals(t, testVolume, vol)
+}
+
+func TestListVolumeBlockDiff(t *testing.T) {
+	restVersion := "1.15"
+	testBlock := []Block{Block{Length: 20480, Offset: 0}, Block{Length: 2139095040, Offset: 8388608}}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v3/diff", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetVolumevolDiff(restVersion))),
+			Header:     head,
+		}
+	})
+
+	block, err := c.Volumes.ListVolumeBlockDiff("v3", nil)
+	ok(t, err)
+	equals(t, testBlock, block)
+}
+
+func TestListVolumePrivateConnections(t *testing.T) {
+	restVersion := "1.15"
+	testConnection := []Connection{Connection{
+		Host: "h2",
+		Lun:  7,
+		Name: "v3",
+		Size: 3221225472,
+	}}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v3/host", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetVolumevolHost(restVersion))),
+			Header:     head,
+		}
+	})
+
+	conn, err := c.Volumes.ListVolumePrivateConnections("v3")
+	ok(t, err)
+	equals(t, testConnection, conn)
+}
+
+func TestListVolumeSharedConnections(t *testing.T) {
+	restVersion := "1.15"
+	testConnection := []Connection{Connection{
+		Hgroup: "hg2",
+		Host:   "",
+		Lun:    15,
+		Name:   "v2",
+		Size:   2147483648,
+	}}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v2/hgroup", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetVolumevolHgroup(restVersion))),
+			Header:     head,
+		}
+	})
+
+	conn, err := c.Volumes.ListVolumeSharedConnections("v2")
+	ok(t, err)
+	equals(t, testConnection, conn)
+}
+
+func TestListVolumes(t *testing.T) {
+	restVersion := "1.15"
+	testVolume := []Volume{Volume{Name: "v1",
+		Source:  "",
+		Serial:  "B75F8356604B431D00011010",
+		Size:    1073741824,
+		Created: "2017-12-16T05:12:38Z",
+	},
+		Volume{Name: "v2",
+			Source:  "",
+			Serial:  "B75F8356604B431D00011011",
+			Size:    2147483648,
+			Created: "2017-12-16T05:12:38Z",
+		},
+		Volume{Name: "v3",
+			Source:  "",
+			Serial:  "B75F8356604B431D00011012",
+			Size:    3221225472,
+			Created: "2017-12-16T05:12:39Z",
+		},
+	}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetVolume(restVersion))),
+			Header:     head,
+		}
+	})
+
+	vol, err := c.Volumes.ListVolumes(nil)
+	ok(t, err)
+	equals(t, testVolume, vol)
+}
+
+func TestRenameVolume(t *testing.T) {
+	restVersion := "1.15"
+	testVolume := Volume{Name: "v5_renamed"}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v5", req.URL.String())
+		equals(t, "PUT", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutVolumevolName(restVersion))),
+			Header:     head,
+		}
+	})
+
+	vol, err := c.Volumes.RenameVolume("v5", "v5_renamed")
+	ok(t, err)
+	equals(t, &testVolume, vol)
+}
+
+func TestRecoverVolume(t *testing.T) {
+	restVersion := "1.15"
+	testVolume := Volume{Name: "v5_renamed"}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v5_renamed?action=recover", req.URL.String())
+		equals(t, "PUT", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutVolumevolName(restVersion))),
+			Header:     head,
+		}
+	})
+
+	vol, err := c.Volumes.RecoverVolume("v5_renamed")
+	ok(t, err)
+	equals(t, &testVolume, vol)
+}
+
+func TestTruncateVolume(t *testing.T) {
+	restVersion := "1.15"
+	testVolume := Volume{Name: "v5", Size: 1073741824}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v5", req.URL.String())
+		equals(t, "PUT", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutVolumevolSize(restVersion))),
+			Header:     head,
+		}
+	})
+
+	vol, err := c.Volumes.TruncateVolume("v5", 1073741824)
+	ok(t, err)
+	equals(t, &testVolume, vol)
+}
+
+//TODO: Get Sample Output
+func TestMoveVolume(t *testing.T) {
+	restVersion := "1.15"
+	testVolume := Volume{Name: "v5", Size: 1073741824}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/volume/v5", req.URL.String())
+		equals(t, "PUT", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutVolumevolSize(restVersion))),
+			Header:     head,
+		}
+	})
+
+	vol, err := c.Volumes.MoveVolume("v5", "c1")
+	ok(t, err)
+	equals(t, &testVolume, vol)
 }

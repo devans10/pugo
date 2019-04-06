@@ -315,8 +315,11 @@ func (v *VolumeService) RenameVolume(volume string, name string) (*Volume, error
 // RecoverVolume recovers a deleted volume
 func (v *VolumeService) RecoverVolume(volume string) (*Volume, error) {
 
-	data := map[string]string{"action": "recover"}
-	m, err := v.SetVolume(volume, data)
+	params := map[string]string{"action": "recover"}
+	path := fmt.Sprintf("volume/%s", volume)
+	req, err := v.client.NewRequest("PUT", path, params, nil)
+	m := &Volume{}
+	_, err = v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}

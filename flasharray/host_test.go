@@ -5,6 +5,9 @@
 package flasharray
 
 import (
+	"bytes"
+	"io/ioutil"
+	"net/http"
 	"testing"
 )
 
@@ -195,4 +198,242 @@ func testAccDeleteHost(c *Client) func(t *testing.T) {
 			t.Fatalf("error deleting host: %s", err)
 		}
 	}
+}
+
+func TestConnectHost(t *testing.T) {
+	restVersion := "1.15"
+	testConn := ConnectedVolume{Vol: "v5_renamed", Name: "h4", Lun: 1}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/host/h4/volume/v5_renamed", req.URL.String())
+		equals(t, "POST", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostHosthostVolumevol(restVersion))),
+			Header:     head,
+		}
+	})
+
+	conn, err := c.Hosts.ConnectHost("h4", "v5_renamed", nil)
+	ok(t, err)
+	equals(t, &testConn, conn)
+}
+
+func TestCreateHost(t *testing.T) {
+	restVersion := "1.15"
+	testHost := Host{Name: "h4", Wwn: []string{"0000999900009999"}, Iqn: []string{}}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/host/h4", req.URL.String())
+		equals(t, "POST", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostHosthost(restVersion))),
+			Header:     head,
+		}
+	})
+
+	host, err := c.Hosts.CreateHost("h4", testHost)
+	ok(t, err)
+	equals(t, &testHost, host)
+}
+
+func TestDeleteHost(t *testing.T) {
+	restVersion := "1.15"
+	testHost := Host{Name: "h5"}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/host/h5", req.URL.String())
+		equals(t, "DELETE", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteHosthost(restVersion))),
+			Header:     head,
+		}
+	})
+
+	host, err := c.Hosts.DeleteHost("h5")
+	ok(t, err)
+	equals(t, &testHost, host)
+}
+
+func TestDisconnectHost(t *testing.T) {
+	restVersion := "1.15"
+	testConn := ConnectedVolume{Vol: "v5_renamed", Name: "h5"}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/host/h5/volume/v5_renamed", req.URL.String())
+		equals(t, "DELETE", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteHosthostVolumevol(restVersion))),
+			Header:     head,
+		}
+	})
+
+	conn, err := c.Hosts.DisconnectHost("h5", "v5_renamed")
+	ok(t, err)
+	equals(t, &testConn, conn)
+}
+
+func TestGetHost(t *testing.T) {
+	restVersion := "1.15"
+	testHost := Host{Name: "h3", Wwn: []string{}, Iqn: []string{}}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/host/h3", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHosthost(restVersion))),
+			Header:     head,
+		}
+	})
+
+	host, err := c.Hosts.GetHost("h3", nil)
+	ok(t, err)
+	equals(t, &testHost, host)
+}
+
+//TODO: get response
+/*
+func TestAddHost(t *testing.T) {
+	restVersion := "1.15"
+	testHost := Host{Name: "h3", Wwn: []string{}, Iqn: []string{}}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/host/h3", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostHosthostPgrouppgroup(restVersion))),
+			Header:     head,
+		}
+	})
+
+	host, err := c.Hosts.AddHost("h3", "pg1")
+	ok(t, err)
+	equals(t, &testHost, host)
+}*/
+
+//TODO: get response
+/*
+func TestRemoveHost(t *testing.T) {
+	restVersion := "1.15"
+	testHost := Host{Name: "h3", Wwn: []string{}, Iqn: []string{}}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/host/h3", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteHosthostPgrouppgroup(restVersion))),
+			Header:     head,
+		}
+	})
+
+	host, err := c.Hosts.RemoveHost("h3", "pg1")
+	ok(t, err)
+	equals(t, &testHost, host)
+}*/
+
+func TestListHostConnections(t *testing.T) {
+	restVersion := "1.15"
+	testConn := []ConnectedVolume{ConnectedVolume{Name: "h2", Vol: "v3", Lun: 7}}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/host/h2/volume", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHosthostVolumePrivate(restVersion))),
+			Header:     head,
+		}
+	})
+
+	conn, err := c.Hosts.ListHostConnections("h2", nil)
+	ok(t, err)
+	equals(t, testConn, conn)
+}
+
+func TestListHosts(t *testing.T) {
+	restVersion := "1.15"
+	testHost := []Host{Host{Hgroup: "hg1", Iqn: []string{}, Name: "h1", Wwn: []string{"0000111122223333"}},
+		Host{Hgroup: "hg1", Iqn: []string{}, Name: "h2", Wwn: []string{}},
+		Host{Name: "h3", Wwn: []string{}, Iqn: []string{}},
+	}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/host", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHost(restVersion))),
+			Header:     head,
+		}
+	})
+
+	host, err := c.Hosts.ListHosts(nil)
+	ok(t, err)
+	equals(t, testHost, host)
+}
+
+func TestRenameHost(t *testing.T) {
+	restVersion := "1.15"
+	testHost := Host{Name: "h4_renamed"}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/host/h4", req.URL.String())
+		equals(t, "PUT", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutHosthostRename(restVersion))),
+			Header:     head,
+		}
+	})
+
+	host, err := c.Hosts.RenameHost("h4", "h4_renamed")
+	ok(t, err)
+	equals(t, &testHost, host)
+}
+
+func TestSetHost(t *testing.T) {
+	restVersion := "1.15"
+	testHost := Host{Name: "h4", Wwn: []string{"1111222233334444", "2222333344445555", "4444333322221111", "5555444433332222"}, Iqn: []string{}}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/host/h4", req.URL.String())
+		equals(t, "PUT", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutHosthost(restVersion))),
+			Header:     head,
+		}
+	})
+
+	host, err := c.Hosts.SetHost("h4", testHost)
+	ok(t, err)
+	equals(t, &testHost, host)
 }

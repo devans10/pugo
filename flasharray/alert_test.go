@@ -5,8 +5,187 @@
 package flasharray
 
 import (
+	"bytes"
+	"io/ioutil"
+	"net/http"
 	"testing"
 )
+
+func TestListAlerts(t *testing.T) {
+
+	restVersion := "1.15"
+	testAlert := []Alert{Alert{"flasharray-alerts@purestorage.com", false}}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert")
+		equals(t, req.Method, "GET")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetAlert(restVersion))),
+			Header:     head,
+		}
+	})
+
+	alert, err := c.Alerts.ListAlerts(nil)
+	ok(t, err)
+	equals(t, testAlert, alert)
+}
+
+func TestGetAlert(t *testing.T) {
+
+	restVersion := "1.15"
+	testAlert := Alert{"flasharray-alerts@purestorage.com", false}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/flasharray-alerts@purestorage.com")
+		equals(t, req.Method, "GET")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetAlertaddress(restVersion))),
+			Header:     head,
+		}
+	})
+
+	alert, err := c.Alerts.GetAlert("flasharray-alerts@purestorage.com")
+	ok(t, err)
+	equals(t, &testAlert, alert)
+}
+
+func TestCreateAlert(t *testing.T) {
+
+	restVersion := "1.15"
+	testAlert := Alert{"admin@example.com", true}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
+		equals(t, req.Method, "POST")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostAlertaddress(restVersion))),
+			Header:     head,
+		}
+	})
+
+	alert, err := c.Alerts.CreateAlert("admin@example.com", testAlert)
+	ok(t, err)
+	equals(t, &testAlert, alert)
+}
+
+func TestTestAlert(t *testing.T) {
+
+	restVersion := "1.15"
+	testAlert := Alert{"admin@example.com", false}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
+		equals(t, req.Method, "PUT")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Header:     head,
+		}
+	})
+
+	alert, err := c.Alerts.TestAlert("admin@example.com")
+	ok(t, err)
+	equals(t, &testAlert, alert)
+}
+
+func TestSetAlert(t *testing.T) {
+
+	restVersion := "1.15"
+	testAlert := Alert{"admin@example.com", false}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
+		equals(t, req.Method, "PUT")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Header:     head,
+		}
+	})
+
+	alert, err := c.Alerts.SetAlert("admin@example.com", testAlert)
+	ok(t, err)
+	equals(t, &testAlert, alert)
+}
+
+func TestEnableAlert(t *testing.T) {
+
+	restVersion := "1.15"
+	testAlert := Alert{"admin@example.com", false}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
+		equals(t, req.Method, "PUT")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Header:     head,
+		}
+	})
+
+	alert, err := c.Alerts.EnableAlert("admin@example.com")
+	ok(t, err)
+	equals(t, &testAlert, alert)
+}
+
+func TestDisableAlert(t *testing.T) {
+
+	restVersion := "1.15"
+	testAlert := Alert{"admin@example.com", false}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
+		equals(t, req.Method, "PUT")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Header:     head,
+		}
+	})
+
+	alert, err := c.Alerts.DisableAlert("admin@example.com")
+	ok(t, err)
+	equals(t, &testAlert, alert)
+}
+
+func TestDeleteAlert(t *testing.T) {
+
+	restVersion := "1.15"
+	testAlert := Alert{"admin@example.com", false}
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, req.URL.String(), "https://flasharray.example.com/api/1.15/alert/admin@example.com")
+		equals(t, req.Method, "DELETE")
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteAlertaddress(restVersion))),
+			Header:     head,
+		}
+	})
+
+	alert, err := c.Alerts.DeleteAlert("admin@example.com")
+	ok(t, err)
+	equals(t, &testAlert, alert)
+}
 
 func TestAccAlerts(t *testing.T) {
 	testAccPreChecks(t)
