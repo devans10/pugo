@@ -18,6 +18,9 @@ func (h *HostgroupService) ConnectHostgroup(hgroup string, volume string, data i
 
 	path := fmt.Sprintf("hgroup/%s/volume/%s", hgroup, volume)
 	req, err := h.client.NewRequest("POST", path, nil, data)
+	if err != nil {
+		return nil, err
+	}
 	m := &ConnectedVolume{}
 	_, err = h.client.Do(req, m, false)
 	if err != nil {
@@ -68,6 +71,9 @@ func (h *HostgroupService) DisconnectHostgroup(hgroup string, volume string) (*C
 
 	path := fmt.Sprintf("hgroup/%s/volume/%s", hgroup, volume)
 	req, err := h.client.NewRequest("DELETE", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
 	m := &ConnectedVolume{}
 	_, err = h.client.Do(req, m, false)
 	if err != nil {
@@ -101,6 +107,10 @@ func (h *HostgroupService) AddHostgroup(hgroup string, pgroup string) (*Hostgrou
 
 	path := fmt.Sprintf("hgroup/%s/pgroup/%s", hgroup, pgroup)
 	req, err := h.client.NewRequest("POST", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := &HostgroupPgroup{}
 	_, err = h.client.Do(req, m, false)
 	if err != nil {
@@ -115,6 +125,10 @@ func (h *HostgroupService) RemoveHostgroup(hgroup string, pgroup string) (*Hostg
 
 	path := fmt.Sprintf("hgroup/%s/pgroup/%s", hgroup, pgroup)
 	req, err := h.client.NewRequest("DELETE", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := &HostgroupPgroup{}
 	_, err = h.client.Do(req, m, false)
 	if err != nil {
@@ -129,6 +143,10 @@ func (h *HostgroupService) ListHostgroupConnections(hgroup string) ([]HostgroupC
 
 	path := fmt.Sprintf("hgroup/%s/volume", hgroup)
 	req, err := h.client.NewRequest("GET", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := []HostgroupConnection{}
 	_, err = h.client.Do(req, &m, false)
 	if err != nil {
@@ -142,6 +160,10 @@ func (h *HostgroupService) ListHostgroupConnections(hgroup string) ([]HostgroupC
 func (h *HostgroupService) ListHostgroups(params map[string]string) ([]Hostgroup, error) {
 
 	req, err := h.client.NewRequest("GET", "hgroup", params, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := []Hostgroup{}
 	_, err = h.client.Do(req, &m, false)
 	if err != nil {

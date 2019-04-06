@@ -191,6 +191,10 @@ func (v *VolumeService) GetVolume(name string, params map[string]string) (*Volum
 		return &vol, nil
 	}
 	req, err := v.client.NewRequest("GET", path, params, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := &Volume{}
 	_, err = v.client.Do(req, m, false)
 	if err != nil {
@@ -211,6 +215,10 @@ func (v *VolumeService) MonitorVolume(name string, params map[string]string) ([]
 		p[k] = v
 	}
 	req, err := v.client.NewRequest("GET", path, p, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := []Volume{}
 	_, err = v.client.Do(req, &m, false)
 	if err != nil {
@@ -225,6 +233,10 @@ func (v *VolumeService) AddVolume(volume string, pgroup string) (*VolumePgroup, 
 
 	path := fmt.Sprintf("volume/%s/pgroup/%s", volume, pgroup)
 	req, err := v.client.NewRequest("POST", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := &VolumePgroup{}
 	_, err = v.client.Do(req, m, false)
 	if err != nil {
@@ -239,6 +251,10 @@ func (v *VolumeService) RemoveVolume(volume string, pgroup string) (*VolumePgrou
 
 	path := fmt.Sprintf("volume/%s/pgroup/%s", volume, pgroup)
 	req, err := v.client.NewRequest("DELETE", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := &VolumePgroup{}
 	_, err = v.client.Do(req, m, false)
 	if err != nil {
@@ -252,6 +268,10 @@ func (v *VolumeService) RemoveVolume(volume string, pgroup string) (*VolumePgrou
 func (v *VolumeService) ListVolumeBlockDiff(name string, params map[string]string) ([]Block, error) {
 	path := fmt.Sprintf("volume/%s/diff", name)
 	req, err := v.client.NewRequest("GET", path, params, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := []Block{}
 	_, err = v.client.Do(req, &m, false)
 	if err != nil {
@@ -265,6 +285,10 @@ func (v *VolumeService) ListVolumeBlockDiff(name string, params map[string]strin
 func (v *VolumeService) ListVolumePrivateConnections(name string) ([]Connection, error) {
 	path := fmt.Sprintf("volume/%s/host", name)
 	req, err := v.client.NewRequest("GET", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := []Connection{}
 	_, err = v.client.Do(req, &m, false)
 	if err != nil {
@@ -278,6 +302,10 @@ func (v *VolumeService) ListVolumePrivateConnections(name string) ([]Connection,
 func (v *VolumeService) ListVolumeSharedConnections(name string) ([]Connection, error) {
 	path := fmt.Sprintf("volume/%s/hgroup", name)
 	req, err := v.client.NewRequest("GET", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := []Connection{}
 	_, err = v.client.Do(req, &m, false)
 	if err != nil {
@@ -291,6 +319,10 @@ func (v *VolumeService) ListVolumeSharedConnections(name string) ([]Connection, 
 func (v *VolumeService) ListVolumes(params map[string]string) ([]Volume, error) {
 
 	req, err := v.client.NewRequest("GET", "volume", params, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := []Volume{}
 	_, err = v.client.Do(req, &m, false)
 	if err != nil {
@@ -318,6 +350,10 @@ func (v *VolumeService) RecoverVolume(volume string) (*Volume, error) {
 	params := map[string]string{"action": "recover"}
 	path := fmt.Sprintf("volume/%s", volume)
 	req, err := v.client.NewRequest("PUT", path, params, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := &Volume{}
 	_, err = v.client.Do(req, m, false)
 	if err != nil {

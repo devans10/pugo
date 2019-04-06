@@ -18,6 +18,10 @@ func (h *HostService) ConnectHost(host string, volume string, data interface{}) 
 
 	path := fmt.Sprintf("host/%s/volume/%s", host, volume)
 	req, err := h.client.NewRequest("POST", path, nil, data)
+	if err != nil {
+		return nil, err
+	}
+
 	m := &ConnectedVolume{}
 	_, err = h.client.Do(req, m, false)
 	if err != nil {
@@ -68,6 +72,10 @@ func (h *HostService) DisconnectHost(host string, volume string) (*ConnectedVolu
 
 	path := fmt.Sprintf("host/%s/volume/%s", host, volume)
 	req, err := h.client.NewRequest("DELETE", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := &ConnectedVolume{}
 	_, err = h.client.Do(req, m, false)
 	if err != nil {
@@ -100,6 +108,10 @@ func (h *HostService) AddHost(host string, pgroup string) (*HostPgroup, error) {
 
 	path := fmt.Sprintf("host/%s/pgroup/%s", host, pgroup)
 	req, err := h.client.NewRequest("POST", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := &HostPgroup{}
 	_, err = h.client.Do(req, m, false)
 	if err != nil {
@@ -114,6 +126,10 @@ func (h *HostService) RemoveHost(host string, pgroup string) (*HostPgroup, error
 
 	path := fmt.Sprintf("host/%s/pgroup/%s", host, pgroup)
 	req, err := h.client.NewRequest("DELETE", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := &HostPgroup{}
 	_, err = h.client.Do(req, m, false)
 	if err != nil {
@@ -128,6 +144,10 @@ func (h *HostService) ListHostConnections(host string, params map[string]string)
 
 	path := fmt.Sprintf("host/%s/volume", host)
 	req, err := h.client.NewRequest("GET", path, params, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := []ConnectedVolume{}
 	_, err = h.client.Do(req, &m, false)
 	if err != nil {
@@ -141,6 +161,10 @@ func (h *HostService) ListHostConnections(host string, params map[string]string)
 func (h *HostService) ListHosts(params map[string]string) ([]Host, error) {
 
 	req, err := h.client.NewRequest("GET", "host", params, nil)
+	if err != nil {
+		return nil, err
+	}
+	
 	m := []Host{}
 	_, err = h.client.Do(req, &m, false)
 	if err != nil {

@@ -19,6 +19,10 @@ func (o *OffloadService) ConnectNFSOffload(name string, address string, mountPoi
 	data := map[string]string{"name": name, "address": address, "mount_point": mountPoint}
 	path := fmt.Sprintf("nfs_offload/%s", name)
 	req, err := o.client.NewRequest("POST", path, nil, data)
+	if err != nil {
+		return nil, err
+	}
+
 	m := &NFSOffload{}
 	_, err = o.client.Do(req, m, false)
 	if err != nil {
@@ -33,6 +37,10 @@ func (o *OffloadService) DisconnectNFSOffload(name string) (*NFSOffload, error) 
 
 	path := fmt.Sprintf("nfs_offload/%s", name)
 	req, err := o.client.NewRequest("DELETE", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := &NFSOffload{}
 	_, err = o.client.Do(req, m, false)
 	if err != nil {
@@ -47,6 +55,10 @@ func (o *OffloadService) GetNFSOffload(name string) (*NFSOffload, error) {
 
 	path := fmt.Sprintf("nfs_offload/%s", name)
 	req, err := o.client.NewRequest("GET", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := &NFSOffload{}
 	_, err = o.client.Do(req, m, false)
 	if err != nil {

@@ -107,7 +107,7 @@ func NewClient(target string, username string, password string, apiToken string,
 	restVersion string, verifyHTTPS bool, sslCert bool,
 	userAgent string, requestKwargs map[string]string) (*Client, error) {
 
-	//log.Printf("[debug] flasharray.NewClient: checking auth paramters")
+	//log.Printf("[debug] flasharray.NewClient: checking auth parameters")
 	if apiToken == "" && (username == "" && password == "") {
 		err := errors.New("[error] Must specify API token or both username and password")
 		return nil, err
@@ -316,6 +316,9 @@ func checkRestVersion(v string, t string) error {
 	}
 	s := &supported{}
 	err = getJSON(checkURL.String(), s)
+	if err != nil {
+		return err
+	}
 
 	var arraySupported bool
 	for _, n := range s.Versions {
@@ -379,6 +382,10 @@ func (c *Client) getAPIToken() error {
 	jsonValue, _ := json.Marshal(data)
 	fmt.Println(bytes.NewBuffer(jsonValue))
 	req, err := http.NewRequest("POST", authURL.String(), bytes.NewBuffer(jsonValue))
+	if err != nil {
+		return err
+	}
+
 	req.Header.Add("content-type", "application/json; charset=utf-8")
 	req.Header.Add("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")

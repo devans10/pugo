@@ -13,7 +13,7 @@ type AlertService struct {
 	client *Client
 }
 
-// ListAlerts Lists the email recipients that are designated to recieve Purity alert messages
+// ListAlerts Lists the email recipients that are designated to receive Purity alert messages
 func (a *AlertService) ListAlerts(params map[string]string) ([]Alert, error) {
 
 	req, err := a.client.NewRequest("GET", "alert", params, nil)
