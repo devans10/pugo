@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.com/devans10/go-purestorage.svg?branch=master)](https://travis-ci.com/devans10/go-purestorage) [![Go Report Card](https://goreportcard.com/badge/github.com/devans10/go-purestorage)](https://goreportcard.com/report/github.com/devans10/go-purestorage) [![codecov](https://codecov.io/gh/devans10/go-purestorage/branch/master/graph/badge.svg)](https://codecov.io/gh/devans10/go-purestorage) [![GoDoc](https://godoc.org/github.com/devans10/go-purestorage?status.svg)](https://godoc.org/github.com/devans10/go-purestorage)
 
 # Pure Storage REST client for Go
-This library is designed to provide a simple interface for issuing commands to a Pure Storage Flash Array using a REST API. 
+This library is designed to provide a simple interface for issuing commands to a Pure Storage FlashArray using a REST API. 
 It communicates with the array using the golang http library, and returns the data into types defined within the library.
 
 This is not designed to be a standalone program.  It is just meant to provide functions and communication within another progrom.
@@ -29,8 +29,8 @@ You should have a working Go environment setup.  If not check out the Go [gettin
 
 # Capabilities
 
-### Flasharray
-The flasharray library contains all functionality provided by version 1.16 of the Purity//FA REST API.
+### FlashArray
+The FlashArray library contains all functionality provided by version 1.16 of the Purity//FA REST API.
 
 Note that different versions of the REST API offer different functionality, and some operations may be unusable except on certain 
 versions of the REST API. For example, functionality relating to FlashRecover and protection groups (pgroups) requires the use of 
@@ -41,7 +41,7 @@ The pure1 library contains all functionality provided by version 1.0 of the Pure
 
 # Installation
 
-### Flasharray
+### FlashArray
 ```sh
 $ go get github.com/devans10/go-purestorage/flasharray
 ```
