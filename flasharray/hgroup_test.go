@@ -431,10 +431,10 @@ func TestGetHostgroupError(t *testing.T) {
 	}
 }
 
-//TODO: get ouput
+//TODO: get output
 //func TestAddHostgroup(t *testing.T) {}
 
-//TODO: get ouput
+//TODO: get output
 //func TestRemoveHostgroup(t *testing.T) {}
 
 func TestGetHostgroupConnections(t *testing.T) {
