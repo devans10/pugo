@@ -395,13 +395,12 @@ func TestGetSubnet(t *testing.T) {
 
 	restVersion := "1.15"
 	testSubnet := Subnet{
-		Enabled:  true,
-		Gateway:  "",
-		Mtu:      1500,
-		Name:     "subnet100",
-		Prefix:   "192.168.0.0/24",
-		Services: []string{},
-		Vlan:     100,
+		Enabled: true,
+		Gateway: "",
+		Mtu:     1500,
+		Name:    "subnet100",
+		Prefix:  "192.168.0.0/24",
+		Vlan:    100,
 	}
 	head := make(http.Header)
 	head.Add("Content-Type", "application/json")
@@ -712,7 +711,6 @@ func TestCreateVlanInterface(t *testing.T) {
 		Netmask:  "255.255.255.0",
 		Services: []string{"iscsi", "management"},
 		Speed:    10000000000,
-		Slaves:   []string{},
 		Subnet:   "subnet100",
 	}
 	head := make(http.Header)
