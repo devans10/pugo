@@ -22,7 +22,7 @@ func (c *CertService) ListCert() ([]Certificate, error) {
 	}
 
 	m := []Certificate{}
-	if _, err = c.client.Do(req, m, false); err != nil {
+	if _, err = c.client.Do(req, &m, false); err != nil {
 		return nil, err
 	}
 
