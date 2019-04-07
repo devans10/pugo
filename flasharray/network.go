@@ -45,53 +45,41 @@ func (n *NetworkService) EnableNetworkInterface(iface string) (*NetworkInterface
 func (n *NetworkService) GetNetworkInterface(iface string) (*NetworkInterface, error) {
 
 	path := fmt.Sprintf("network/%s", iface)
-	req, err := n.client.NewRequest("GET", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", path, nil, nil)
 	m := &NetworkInterface{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // ListNetworkInterfaces list the attributes of the network interfaces
 func (n *NetworkService) ListNetworkInterfaces() ([]NetworkInterface, error) {
 
-	req, err := n.client.NewRequest("GET", "network", nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", "network", nil, nil)
 	m := []NetworkInterface{}
-	_, err = n.client.Do(req, &m, false)
+	_, err := n.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // SetNetworkInterface modifies network interface attributes
 func (n *NetworkService) SetNetworkInterface(iface string, data interface{}) (*NetworkInterface, error) {
 
 	path := fmt.Sprintf("network/%s", iface)
-	req, err := n.client.NewRequest("PUT", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("PUT", path, nil, data)
 	m := &NetworkInterface{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // CreateSubnet creates a subnet
@@ -104,18 +92,14 @@ func (n *NetworkService) CreateSubnet(subnet string, prefix string) (*Subnet, er
 
 	data := map[string]string{"prefix": prefix}
 	path := fmt.Sprintf("subnet/%s", subnet)
-	req, err := n.client.NewRequest("POST", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("POST", path, nil, data)
 	m := &Subnet{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // DeleteSubnet deletes a subnet
@@ -123,18 +107,14 @@ func (n *NetworkService) CreateSubnet(subnet string, prefix string) (*Subnet, er
 func (n *NetworkService) DeleteSubnet(subnet string) (*Subnet, error) {
 
 	path := fmt.Sprintf("subnet/%s", subnet)
-	req, err := n.client.NewRequest("DELETE", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("DELETE", path, nil, nil)
 	m := &Subnet{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // DisableSubnet disables a subnet
@@ -169,35 +149,27 @@ func (n *NetworkService) EnableSubnet(subnet string) (*Subnet, error) {
 func (n *NetworkService) GetSubnet(subnet string) (*Subnet, error) {
 
 	path := fmt.Sprintf("sbunet/%s", subnet)
-	req, err := n.client.NewRequest("GET", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", path, nil, nil)
 	m := &Subnet{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // ListSubnets lists attributes of subnets
 func (n *NetworkService) ListSubnets() ([]Subnet, error) {
 
-	req, err := n.client.NewRequest("GET", "subnet", nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", "subnet", nil, nil)
 	m := []Subnet{}
-	_, err = n.client.Do(req, &m, false)
+	_, err := n.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // RenameSubnet renames a subnet
@@ -219,18 +191,14 @@ func (n *NetworkService) RenameSubnet(subnet string, name string) (*Subnet, erro
 func (n *NetworkService) SetSubnet(subnet string, data interface{}) (*Subnet, error) {
 
 	path := fmt.Sprintf("subnet/%s", subnet)
-	req, err := n.client.NewRequest("PUT", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("PUT", path, nil, data)
 	m := &Subnet{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // CreateVlanInterface creates a VLAN Interface
@@ -240,18 +208,14 @@ func (n *NetworkService) CreateVlanInterface(iface string, subnet string) (*Netw
 
 	data := map[string]string{"subnet": subnet}
 	path := fmt.Sprintf("network/vif/%s", iface)
-	req, err := n.client.NewRequest("POST", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("POST", path, nil, data)
 	m := &NetworkInterface{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // DeleteVlanInterface deletes a VLAN Interface
@@ -259,47 +223,35 @@ func (n *NetworkService) CreateVlanInterface(iface string, subnet string) (*Netw
 func (n *NetworkService) DeleteVlanInterface(iface string) (*NetworkInterface, error) {
 
 	path := fmt.Sprintf("network/vif/%s", iface)
-	req, err := n.client.NewRequest("DELETE", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("DELETE", path, nil, nil)
 	m := &NetworkInterface{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // GetDNS gets DNS settings
 func (n *NetworkService) GetDNS() (*DNS, error) {
 
-	req, err := n.client.NewRequest("GET", "dns", nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", "dns", nil, nil)
 	m := &DNS{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // SetDNS modifies DNS settings
 func (n *NetworkService) SetDNS(data interface{}) (*DNS, error) {
 
-	req, err := n.client.NewRequest("PUT", "dns", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("PUT", "dns", nil, data)
 	m := &DNS{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
@@ -310,16 +262,12 @@ func (n *NetworkService) SetDNS(data interface{}) (*DNS, error) {
 // ListPorts lists attributes of the ports
 func (n *NetworkService) ListPorts(data interface{}) ([]Port, error) {
 
-	req, err := n.client.NewRequest("GET", "port", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", "port", nil, data)
 	m := []Port{}
-	_, err = n.client.Do(req, &m, false)
+	_, err := n.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }

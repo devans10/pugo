@@ -16,34 +16,26 @@ type MessageService struct {
 // ListMessages Lists alert events, audit records, and user login sessions
 func (a *MessageService) ListMessages(params map[string]string) ([]Message, error) {
 
-	req, err := a.client.NewRequest("GET", "message", params, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := a.client.NewRequest("GET", "message", params, nil)
 	m := []Message{}
-	if _, err = a.client.Do(req, m, false); err != nil {
+	if _, err := a.client.Do(req, m, false); err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // SetMessage Modifies a message
 func (a *MessageService) SetMessage(id int, data interface{}) (*Message, error) {
 
 	path := fmt.Sprintf("message/%d", id)
-	req, err := a.client.NewRequest("PUT", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := a.client.NewRequest("PUT", path, nil, data)
 	m := &Message{}
-	if _, err = a.client.Do(req, m, false); err != nil {
+	if _, err := a.client.Do(req, m, false); err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // FlagMessage Flags a given message

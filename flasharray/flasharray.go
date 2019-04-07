@@ -107,18 +107,12 @@ func NewClient(target string, username string, password string, apiToken string,
 	restVersion string, verifyHTTPS bool, sslCert bool,
 	userAgent string, requestKwargs map[string]string) (*Client, error) {
 
-	//log.Printf("[debug] flasharray.NewClient: checking auth paramters")
-	if apiToken == "" && (username == "" && password == "") {
-		err := errors.New("[error] Must specify API token or both username and password")
+	// Check proper authentication is provided
+	err := checkAuth(apiToken, username, password)
+	if err != nil {
 		return nil, err
 	}
 
-	if apiToken != "" && (username != "" && password != "") {
-		err := errors.New("specify only API token or both username and password")
-		return nil, err
-	}
-
-	//log.Printf("[debug] flasharray.NewClient: checking request_kwargs")
 	if requestKwargs == nil {
 		requestKwargs = make(map[string]string)
 	}
@@ -132,7 +126,7 @@ func NewClient(target string, username string, password string, apiToken string,
 		}
 	}
 
-	//log.Printf("[debug] flasharray.NewClient: checking rest_version")
+	// Get the REST API version to use
 	if restVersion != "" {
 		err := checkRestVersion(restVersion, target)
 		if err != nil {
@@ -146,9 +140,7 @@ func NewClient(target string, username string, password string, apiToken string,
 		restVersion = r
 	}
 
-	//log.Printf("[debug] flasharray.NewClient: Rest Vesrion: %s", restVersion)
-
-	//log.Printf("[debug] flasharray.NewClient: creating client")
+	// Create a new Client instance
 	cookieJar, _ := cookiejar.New(nil)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -156,20 +148,16 @@ func NewClient(target string, username string, password string, apiToken string,
 	c := &Client{Target: target, Username: username, Password: password, APIToken: apiToken, RestVersion: restVersion, RequestKwargs: requestKwargs}
 	c.client = &http.Client{Transport: tr, Jar: cookieJar}
 
-	//log.Printf("[debug] flasharray.NewClient: Authenticating REST session")
+	// Get an API Token if not provided
 	if apiToken == "" {
 		c.getAPIToken()
 	}
 
-	authURL := c.formatPath("auth/session")
-	data := map[string]string{"api_token": c.APIToken}
-	jsonValue, _ := json.Marshal(data)
-	_, err := c.client.Post(authURL, "application/json", bytes.NewBuffer(jsonValue))
+	// Authenticate to the API and store the session
+	err = c.login()
 	if err != nil {
 		return nil, err
 	}
-	//log.Printf("[debug] Session Auth Response Code: %d", resp.StatusCode)
-	//log.Printf("[debug] flasharray.NewClient: REST session created.")
 
 	c.Array = &ArrayService{client: c}
 	c.Volumes = &VolumeService{client: c}
@@ -190,6 +178,34 @@ func NewClient(target string, username string, password string, apiToken string,
 	c.SMTP = &SMTPService{client: c}
 
 	return c, err
+}
+
+// Authenticate to the API and store the session
+func (c *Client) login() error {
+	authURL := c.formatPath("auth/session")
+	data := map[string]string{"api_token": c.APIToken}
+	jsonValue, _ := json.Marshal(data)
+	_, err := c.client.Post(authURL, "application/json", bytes.NewBuffer(jsonValue))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// checkAuth validates
+func checkAuth(apiToken, username, password string) error {
+
+	if apiToken == "" && (username == "" && password == "") {
+		err := errors.New("[error] Must specify API token or both username and password")
+		return err
+	}
+
+	if apiToken != "" && (username != "" && password != "") {
+		err := errors.New("specify only API token or both username and password")
+		return err
+	}
+
+	return nil
 }
 
 // NewRequest builds and returns a new HTTP request object.
@@ -268,8 +284,6 @@ func (c *Client) Do(req *http.Request, v interface{}, reestablishSession bool) (
 		return nil, err
 	}
 	defer resp.Body.Close()
-	//log.Printf("[debug] URL: %s ", req.URL.String())
-	//log.Printf("[debug] Response code: %v", resp.Status)
 
 	if err := validateResponse(resp); err != nil {
 		return resp, err
@@ -316,6 +330,9 @@ func checkRestVersion(v string, t string) error {
 	}
 	s := &supported{}
 	err = getJSON(checkURL.String(), s)
+	if err != nil {
+		return err
+	}
 
 	var arraySupported bool
 	for _, n := range s.Versions {
@@ -379,6 +396,10 @@ func (c *Client) getAPIToken() error {
 	jsonValue, _ := json.Marshal(data)
 	fmt.Println(bytes.NewBuffer(jsonValue))
 	req, err := http.NewRequest("POST", authURL.String(), bytes.NewBuffer(jsonValue))
+	if err != nil {
+		return err
+	}
+
 	req.Header.Add("content-type", "application/json; charset=utf-8")
 	req.Header.Add("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
@@ -403,7 +424,7 @@ func (c *Client) formatPath(path string) string {
 }
 
 // getJSON is just a helper function that creates and retrieves information
-// from the flash array before the actual session is established.
+// from the Flash Array before the actual session is established.
 // Right now, its just grabbing the supported API versions.  I should
 // probably find a more graceful way to accomplish this.
 func getJSON(uri string, target interface{}) error {

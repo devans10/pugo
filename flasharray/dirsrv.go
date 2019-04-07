@@ -12,35 +12,27 @@ type DirsrvService struct {
 // SetDirectoryService sets attributes for the directory service
 func (n *DirsrvService) SetDirectoryService(data interface{}) (*Dirsrv, error) {
 
-	req, err := n.client.NewRequest("PUT", "directoryservice", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("PUT", "directoryservice", nil, data)
 	m := &Dirsrv{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // GetDirectoryService lists the attributes for the directory service
 func (n *DirsrvService) GetDirectoryService() (*Dirsrv, error) {
 
-	req, err := n.client.NewRequest("GET", "directoryservice", nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", "directoryservice", nil, nil)
 	m := &Dirsrv{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // DisableDirectoryService disables the directory service
@@ -85,50 +77,38 @@ func (n *DirsrvService) EnableDirectoryService(checkPeer bool) (*Dirsrv, error) 
 func (n *DirsrvService) TestDirectoryService() (*DirsrvTest, error) {
 
 	data := map[string]string{"action": "test"}
-	req, err := n.client.NewRequest("PUT", "directoryservice", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("PUT", "directoryservice", nil, data)
 	m := &DirsrvTest{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // ListDirectoryServiceRoles get directory service groups for roles
 func (n *DirsrvService) ListDirectoryServiceRoles() ([]DirsrvRole, error) {
 
-	req, err := n.client.NewRequest("GET", "directoryservice/role", nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", "directoryservice/role", nil, nil)
 	m := []DirsrvRole{}
-	_, err = n.client.Do(req, &m, false)
+	_, err := n.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // SetDirectoryServiceRoles sets the groups for roles
 func (n *DirsrvService) SetDirectoryServiceRoles(data interface{}) (*DirsrvRole, error) {
 
-	req, err := n.client.NewRequest("PUT", "directoryservice/role", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("PUT", "directoryservice/role", nil, data)
 	m := &DirsrvRole{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }

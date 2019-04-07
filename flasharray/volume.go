@@ -19,18 +19,14 @@ type VolumeService struct {
 func (v *VolumeService) SetVolume(name string, data interface{}) (*Volume, error) {
 
 	path := fmt.Sprintf("volume/%s", name)
-	req, err := v.client.NewRequest("PUT", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("PUT", path, nil, data)
 	m := &Volume{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // CreateSnapshot function creates a volume snapshot of the volume passed in the argument.
@@ -52,18 +48,14 @@ func (v *VolumeService) CreateSnapshots(volumes []string, suffix string) ([]Volu
 	data["snap"] = true
 	data["source"] = volumes
 	data["suffix"] = suffix
-	req, err := v.client.NewRequest("POST", "volume", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("POST", "volume", nil, data)
 	m := []Volume{}
-	_, err = v.client.Do(req, &m, false)
+	_, err := v.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // CreateVolume function will create a volume of the given size.  The size is an integer in bytes
@@ -71,18 +63,14 @@ func (v *VolumeService) CreateVolume(name string, size int) (*Volume, error) {
 
 	path := fmt.Sprintf("volume/%s", name)
 	data := map[string]int{"size": size}
-	req, err := v.client.NewRequest("POST", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("POST", path, nil, data)
 	m := &Volume{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // CreateConglomerateVolume creates a conglomerate volume.
@@ -94,18 +82,14 @@ func (v *VolumeService) CreateConglomerateVolume(name string) (*Volume, error) {
 
 	path := fmt.Sprintf("volume/%s", name)
 	data := map[string]bool{"protocol_endpoint": true}
-	req, err := v.client.NewRequest("POST", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("POST", path, nil, data)
 	m := &Volume{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // CopyVolume clones a volume and return a dictionary describing the new volume.
@@ -113,36 +97,28 @@ func (v *VolumeService) CopyVolume(dest string, source string, overwrite bool) (
 
 	path := fmt.Sprintf("volume/%s", dest)
 	data := map[string]interface{}{"source": source, "overwrite": overwrite}
-	req, err := v.client.NewRequest("POST", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("POST", path, nil, data)
 	m := &Volume{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // DeleteVolume deletes an existing volume or snapshot
 func (v *VolumeService) DeleteVolume(name string) (*Volume, error) {
 
 	path := fmt.Sprintf("volume/%s", name)
-	req, err := v.client.NewRequest("DELETE", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("DELETE", path, nil, nil)
 	m := &Volume{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // EradicateVolume eradicates a deleted volume or snapshot
@@ -150,18 +126,14 @@ func (v *VolumeService) EradicateVolume(name string) (*Volume, error) {
 
 	path := fmt.Sprintf("volume/%s", name)
 	data := map[string]bool{"eradicate": true}
-	req, err := v.client.NewRequest("DELETE", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("DELETE", path, nil, data)
 	m := &Volume{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // ExtendVolume increases the size of the volume
@@ -175,7 +147,7 @@ func (v *VolumeService) ExtendVolume(name string, size int) (*Volume, error) {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // GetVolume lists attributes of the specified volume
@@ -190,14 +162,14 @@ func (v *VolumeService) GetVolume(name string, params map[string]string) (*Volum
 		vol := m[0]
 		return &vol, nil
 	}
-	req, err := v.client.NewRequest("GET", path, params, nil)
+	req, _ := v.client.NewRequest("GET", path, params, nil)
 	m := &Volume{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // MonitorVolume returns metrics of the specified volume.  This is similar to GetVolume when
@@ -210,94 +182,94 @@ func (v *VolumeService) MonitorVolume(name string, params map[string]string) ([]
 	for k, v := range params {
 		p[k] = v
 	}
-	req, err := v.client.NewRequest("GET", path, p, nil)
+	req, _ := v.client.NewRequest("GET", path, p, nil)
 	m := []Volume{}
-	_, err = v.client.Do(req, &m, false)
+	_, err := v.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // AddVolume adds a volume to a protection group
 func (v *VolumeService) AddVolume(volume string, pgroup string) (*VolumePgroup, error) {
 
 	path := fmt.Sprintf("volume/%s/pgroup/%s", volume, pgroup)
-	req, err := v.client.NewRequest("POST", path, nil, nil)
+	req, _ := v.client.NewRequest("POST", path, nil, nil)
 	m := &VolumePgroup{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // RemoveVolume removes a volume from a protection group
 func (v *VolumeService) RemoveVolume(volume string, pgroup string) (*VolumePgroup, error) {
 
 	path := fmt.Sprintf("volume/%s/pgroup/%s", volume, pgroup)
-	req, err := v.client.NewRequest("DELETE", path, nil, nil)
+	req, _ := v.client.NewRequest("DELETE", path, nil, nil)
 	m := &VolumePgroup{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // ListVolumeBlockDiff lists Volume Block Differences
 func (v *VolumeService) ListVolumeBlockDiff(name string, params map[string]string) ([]Block, error) {
 	path := fmt.Sprintf("volume/%s/diff", name)
-	req, err := v.client.NewRequest("GET", path, params, nil)
+	req, _ := v.client.NewRequest("GET", path, params, nil)
 	m := []Block{}
-	_, err = v.client.Do(req, &m, false)
+	_, err := v.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // ListVolumePrivateConnections lists Volume Private Connections
 func (v *VolumeService) ListVolumePrivateConnections(name string) ([]Connection, error) {
 	path := fmt.Sprintf("volume/%s/host", name)
-	req, err := v.client.NewRequest("GET", path, nil, nil)
+	req, _ := v.client.NewRequest("GET", path, nil, nil)
 	m := []Connection{}
-	_, err = v.client.Do(req, &m, false)
+	_, err := v.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // ListVolumeSharedConnections lists Volume Shared Connections
 func (v *VolumeService) ListVolumeSharedConnections(name string) ([]Connection, error) {
 	path := fmt.Sprintf("volume/%s/hgroup", name)
-	req, err := v.client.NewRequest("GET", path, nil, nil)
+	req, _ := v.client.NewRequest("GET", path, nil, nil)
 	m := []Connection{}
-	_, err = v.client.Do(req, &m, false)
+	_, err := v.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // ListVolumes lists attributes for volumes
 func (v *VolumeService) ListVolumes(params map[string]string) ([]Volume, error) {
 
-	req, err := v.client.NewRequest("GET", "volume", params, nil)
+	req, _ := v.client.NewRequest("GET", "volume", params, nil)
 	m := []Volume{}
-	_, err = v.client.Do(req, &m, false)
+	_, err := v.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // RenameVolume renames a volume
@@ -317,14 +289,14 @@ func (v *VolumeService) RecoverVolume(volume string) (*Volume, error) {
 
 	params := map[string]string{"action": "recover"}
 	path := fmt.Sprintf("volume/%s", volume)
-	req, err := v.client.NewRequest("PUT", path, params, nil)
+	req, _ := v.client.NewRequest("PUT", path, params, nil)
 	m := &Volume{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // TruncateVolume decreses the size of a volume

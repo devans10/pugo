@@ -90,6 +90,10 @@ func (v *VgroupService) GetVgroup(name string) (*Vgroup, error) {
 func (v *VgroupService) ListVgroups() ([]Vgroup, error) {
 
 	req, err := v.client.NewRequest("GET", "vgroup", nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := []Vgroup{}
 	_, err = v.client.Do(req, &m, false)
 	if err != nil {

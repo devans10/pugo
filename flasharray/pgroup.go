@@ -188,6 +188,10 @@ func (p *ProtectiongroupService) GetProtectiongroup(name string, params map[stri
 func (p *ProtectiongroupService) ListProtectiongroups(params map[string]string) ([]Protectiongroup, error) {
 
 	req, err := p.client.NewRequest("GET", "pgroup", params, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	m := []Protectiongroup{}
 	_, err = p.client.Do(req, &m, false)
 	if err != nil {

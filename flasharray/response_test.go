@@ -855,6 +855,17 @@ func respPutHgrouphgroup(restVersion string) string {
 	return resp[restVersion]
 }
 
+func respPutHgrouphgroupRename(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+						"hosts": [
+							"h3"
+						],
+						"name": "hg4_renamed"
+					}`
+	return resp[restVersion]
+}
+
 func respDeleteHgrouphgroupVolumevol(restVersion string) string {
 	resp := make(map[string]string)
 	resp["1.15"] = `{
