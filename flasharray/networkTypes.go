@@ -21,25 +21,26 @@ type NetworkInterface struct {
 
 // Subnet struct for object returned by array
 type Subnet struct {
-	Name    string `json:"name"`
-	Prefix  string `json:"prefix"`
-	Enabled bool   `json:"enabled"`
-	Vlan    string `json:"vlan"`
-	Gateway string `json:"gateway"`
-	Mtu     int    `json:"mtu"`
+	Name     string   `json:"name,omitempty"`
+	Prefix   string   `json:"prefix,omitempty"`
+	Enabled  bool     `json:"enabled,omitempty"`
+	Vlan     int      `json:"vlan,omitempty"`
+	Gateway  string   `json:"gateway,omitempty"`
+	Services []string `json:"services,omitempty"`
+	Mtu      int      `json:"mtu,omitempty"`
 }
 
 // DNS struct for object returned by array
 type DNS struct {
-	Nameservers []string `json:"nameservers"`
-	Domain      string   `json:"domain"`
+	Nameservers []string `json:"nameservers,omitempty"`
+	Domain      string   `json:"domain,omitempty"`
 }
 
 // Port struct for object returned by array
 type Port struct {
-	Name     string `json:"name"`
-	Portal   string `json:"portal"`
-	Failover string `json:"failover"`
-	Iqn      string `json:"iqn"`
-	Wwn      string `json:"wwn"`
+	Name     string `json:"name,omitempty"`
+	Portal   string `json:"portal,omitempty"`
+	Failover string `json:"failover,omitempty"`
+	Iqn      string `json:"iqn,omitempty"`
+	Wwn      string `json:"wwn,omitempty"`
 }

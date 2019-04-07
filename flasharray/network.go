@@ -148,7 +148,7 @@ func (n *NetworkService) EnableSubnet(subnet string) (*Subnet, error) {
 // GetSubnet lists subnet attributes
 func (n *NetworkService) GetSubnet(subnet string) (*Subnet, error) {
 
-	path := fmt.Sprintf("sbunet/%s", subnet)
+	path := fmt.Sprintf("subnet/%s", subnet)
 	req, _ := n.client.NewRequest("GET", path, nil, nil)
 	m := &Subnet{}
 	_, err := n.client.Do(req, m, false)

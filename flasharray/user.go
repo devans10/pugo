@@ -17,18 +17,14 @@ type UserService struct {
 // which describes remote access
 func (n *UserService) listUsers(data interface{}) ([]User, error) {
 
-	req, err := n.client.NewRequest("GET", "admin", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", "admin", nil, data)
 	m := []User{}
-	_, err = n.client.Do(req, &m, false)
+	_, err := n.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // ListAdmins lists attributes for Admins
@@ -46,108 +42,84 @@ func (n *UserService) ListAdmins() ([]User, error) {
 func (n *UserService) CreateAdmin(name string) (*User, error) {
 
 	path := fmt.Sprintf("admin/%s", name)
-	req, err := n.client.NewRequest("POST", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("POST", path, nil, nil)
 	m := &User{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // DeleteAdmin deletes an Admin
 func (n *UserService) DeleteAdmin(name string) (*User, error) {
 
 	path := fmt.Sprintf("admin/%s", name)
-	req, err := n.client.NewRequest("DELETE", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("DELETE", path, nil, nil)
 	m := &User{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // SetAdmin modifies Admin Attributes
 func (n *UserService) SetAdmin(name string, data interface{}) (*User, error) {
 
 	path := fmt.Sprintf("admin/%s", name)
-	req, err := n.client.NewRequest("PUT", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("PUT", path, nil, data)
 	m := &User{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // GetAdmin lists attributes for specified Admin
 func (n *UserService) GetAdmin(name string) (*User, error) {
 
 	path := fmt.Sprintf("admin/%s", name)
-	req, err := n.client.NewRequest("GET", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", path, nil, nil)
 	m := &User{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // CreateAPIToken creates an API Token
 func (n *UserService) CreateAPIToken(name string) (*Token, error) {
 
 	path := fmt.Sprintf("admin/%s/apitoken", name)
-	req, err := n.client.NewRequest("POST", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("POST", path, nil, nil)
 	m := &Token{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // DeleteAPIToken deletes an  API Token
 func (n *UserService) DeleteAPIToken(name string) (*Token, error) {
 
 	path := fmt.Sprintf("admin/%s/apitoken", name)
-	req, err := n.client.NewRequest("DELETE", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("DELETE", path, nil, nil)
 	m := &Token{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // ListPublicKeys returns a list of public keys
@@ -191,18 +163,14 @@ func (n *UserService) RefreshAdmins() (*User, error) {
 	data := make(map[string]interface{})
 	data["action"] = "refresh"
 	data["clear"] = true
-	req, err := n.client.NewRequest("PUT", "admin", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("PUT", "admin", nil, data)
 	m := &User{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // SetPublicKey modifies public key for the specified admin
@@ -232,35 +200,27 @@ func (n *UserService) SetPassword(name string, newPassword string, oldPassword s
 // GetGlobalAdminAttr returns a map describing the existing global admin attributes
 func (n *UserService) GetGlobalAdminAttr() (*GlobalAdmin, error) {
 
-	req, err := n.client.NewRequest("GET", "admin/settings", nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", "admin/settings", nil, nil)
 	m := &GlobalAdmin{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // SetGlobalAdminAttr modifies global admin attributes
 func (n *UserService) SetGlobalAdminAttr(data interface{}) (*GlobalAdmin, error) {
 
-	req, err := n.client.NewRequest("PUT", "admin/settings", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("PUT", "admin/settings", nil, data)
 	m := &GlobalAdmin{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // ListAdminUser return a map describing lockout information for locked out admins
@@ -280,34 +240,26 @@ func (n *UserService) GetAdminUser(name string) (*User, error) {
 
 	path := fmt.Sprintf("admin/%s", name)
 	data := map[string]bool{"lockout": true}
-	req, err := n.client.NewRequest("GET", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", path, nil, data)
 	m := &User{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // UnlockAdmin unlocks an admin
 func (n *UserService) UnlockAdmin(name string) (*User, error) {
 
 	path := fmt.Sprintf("admin/%s/lockout", name)
-	req, err := n.client.NewRequest("GET", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", path, nil, nil)
 	m := &User{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }

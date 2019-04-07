@@ -1473,7 +1473,7 @@ func respGetSubnetsubnet(restVersion string) string {
 						"mtu": 1500,
 						"name": "subnet100",
 						"prefix": "192.168.0.0/24",
-						"services": [],
+						"services": null,
 						"vlan": 100
 					}`
 	return resp[restVersion]
@@ -1575,7 +1575,7 @@ func respPostNetworkVifintf(restVersion string) string {
 							"iscsi",
 							"management"
 						],
-						"slaves": [],
+						"slaves": null,
 						"speed": 10000000000,
 						"subnet": "subnet100"
 					}`

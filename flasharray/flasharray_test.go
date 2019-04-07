@@ -110,9 +110,15 @@ func TestNewClientAllAuth(t *testing.T) {
 }
 
 // Test that NewRequest returns an http.Request object
-func TestNewRequest(t *testing.T) {
+func TestNewRequestNoParamNoData(t *testing.T) {
 
-	c := &Client{Target: "flasharray.example.com", Username: "", Password: "", APIToken: "apitoken", RestVersion: "1.0", UserAgent: "", RequestKwargs: nil}
+	c := &Client{Target: "flasharray.example.com",
+		Username:      "",
+		Password:      "",
+		APIToken:      "apitoken",
+		RestVersion:   "1.0",
+		UserAgent:     "",
+		RequestKwargs: nil}
 
 	req, err := c.NewRequest("GET", "array", nil, nil)
 
@@ -129,6 +135,102 @@ func TestNewRequest(t *testing.T) {
 	}
 }
 
+func TestNewRequestParamNoData(t *testing.T) {
+
+	c := &Client{Target: "flasharray.example.com",
+		Username:      "",
+		Password:      "",
+		APIToken:      "apitoken",
+		RestVersion:   "1.0",
+		UserAgent:     "",
+		RequestKwargs: nil}
+
+	params := map[string]string{"test": "true"}
+	req, err := c.NewRequest("GET", "array", params, nil)
+
+	if err != nil {
+		t.Errorf("NewRequest function call returned error: %s", err)
+	}
+
+	if req.Method != "GET" {
+		t.Errorf("Request Method: %s; Expected: GET", req.Method)
+	}
+
+	if req.URL.String() != "https://flasharray.example.com/api/1.0/array?test=true" {
+		t.Errorf("Malformed URL returned by NewRequest. Expected: https://flasharray.example.com/api/1.0/array?test=true; Got: %s", req.URL.String())
+	}
+}
+
+func TestNewRequestParamData(t *testing.T) {
+
+	c := &Client{Target: "flasharray.example.com",
+		Username:      "user",
+		Password:      "secret",
+		APIToken:      "",
+		RestVersion:   "1.0",
+		UserAgent:     "",
+		RequestKwargs: nil}
+
+	params := map[string]string{"test": "true"}
+	data := map[string]string{"test": "true"}
+	req, err := c.NewRequest("GET", "array", params, data)
+
+	if err != nil {
+		t.Errorf("NewRequest function call returned error: %s", err)
+	}
+
+	if req.Method != "GET" {
+		t.Errorf("Request Method: %s; Expected: GET", req.Method)
+	}
+
+	if req.URL.String() != "https://flasharray.example.com/api/1.0/array?test=true" {
+		t.Errorf("Malformed URL returned by NewRequest. Expected: https://flasharray.example.com/api/1.0/array?test=true; Got: %s", req.URL.String())
+	}
+
+	body, _ := req.GetBody()
+	if body == nil {
+		t.Errorf("Body not generated")
+	}
+}
+func TestNewRequestNoParamData(t *testing.T) {
+
+	c := &Client{Target: "flasharray.example.com",
+		Username:      "",
+		Password:      "",
+		APIToken:      "apitoken",
+		RestVersion:   "1.0",
+		UserAgent:     "curl",
+		RequestKwargs: map[string]string{"verify": "true"},
+	}
+
+	data := map[string]string{"test": "true"}
+	req, err := c.NewRequest("GET", "array", nil, data)
+
+	if err != nil {
+		t.Errorf("NewRequest function call returned error: %s", err)
+	}
+
+	if req.Method != "GET" {
+		t.Errorf("Request Method: %s; Expected: GET", req.Method)
+	}
+
+	if req.URL.String() != "https://flasharray.example.com/api/1.0/array" {
+		t.Errorf("Malformed URL returned by NewRequest. Expected: https://flasharray.example.com/api/1.0/array; Got: %s", req.URL.String())
+	}
+
+	body, _ := req.GetBody()
+	if body == nil {
+		t.Errorf("Body not generated")
+	}
+}
+
+func TestDecodeResponseNilIntf(t *testing.T) {
+	r := http.Response{}
+	err := decodeResponse(&r, nil)
+	if err == nil {
+		t.Errorf("error not raised for nil interface")
+	}
+}
 func TestCheckAuthAPIToken(t *testing.T) {
 	err := checkAuth("apitoken", "", "")
 	ok(t, err)
