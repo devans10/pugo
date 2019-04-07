@@ -129,6 +129,30 @@ func TestNewRequest(t *testing.T) {
 	}
 }
 
+func TestCheckAuthAPIToken(t *testing.T) {
+	err := checkAuth("apitoken", "", "")
+	ok(t, err)
+}
+
+func TestCheckAuthUserPasswd(t *testing.T) {
+	err := checkAuth("", "username", "password")
+	ok(t, err)
+}
+
+func TestCheckAuthErrorAll(t *testing.T) {
+	err := checkAuth("apitoken", "username", "password")
+	if err == nil {
+		t.Errorf("error not raised when all auth options provided")
+	}
+}
+
+func TestCheckAuthErrorNon(t *testing.T) {
+	err := checkAuth("", "", "")
+	if err == nil {
+		t.Errorf("error not raised when no auth options provided")
+	}
+}
+
 // assert fails the test if the condition is false.
 func assert(tb testing.TB, condition bool, msg string, v ...interface{}) {
 	if !condition {

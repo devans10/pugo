@@ -188,6 +188,9 @@ func TestTestAlertError(t *testing.T) {
 	}
 }
 
+//TODO
+//func TestTestAlerts(t *testing.T) {}
+
 func TestSetAlert(t *testing.T) {
 
 	restVersion := "1.15"

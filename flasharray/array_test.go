@@ -31,6 +31,28 @@ func TestEnableConsoleLock(t *testing.T) {
 	ok(t, err)
 }
 
+func TestEnableConsoleLockError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/array/console_lock", req.URL.String())
+		equals(t, "PUT", req.Method)
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayConsoleLock(restVersion))),
+			Header:     head,
+		}
+	})
+
+	err := c.Array.EnableConsoleLock()
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
+}
+
 func TestDisableConsoleLock(t *testing.T) {
 
 	restVersion := "1.15"
@@ -49,6 +71,27 @@ func TestDisableConsoleLock(t *testing.T) {
 
 	err := c.Array.DisableConsoleLock()
 	ok(t, err)
+}
+func TestDisableConsoleLockError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/array/console_lock", req.URL.String())
+		equals(t, "PUT", req.Method)
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayConsoleLock(restVersion))),
+			Header:     head,
+		}
+	})
+
+	err := c.Array.DisableConsoleLock()
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
 }
 
 func TestGetConsoleLock(t *testing.T) {
@@ -71,6 +114,28 @@ func TestGetConsoleLock(t *testing.T) {
 	cl, err := c.Array.GetConsoleLock()
 	ok(t, err)
 	equals(t, &testConsoleLock, cl)
+}
+
+func TestGetConsoleLockError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/array/console_lock", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArrayConsoleLock(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Array.GetConsoleLock()
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
 }
 
 func TestGet(t *testing.T) {
@@ -98,6 +163,28 @@ func TestGet(t *testing.T) {
 	equals(t, &testArray, array)
 }
 
+func TestGetError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/array", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArray(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Array.Get(nil)
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
+}
+
 func TestGetArray(t *testing.T) {
 
 	restVersion := "1.15"
@@ -123,6 +210,28 @@ func TestGetArray(t *testing.T) {
 	equals(t, &testArray, array)
 }
 
+func TestGetArrayError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/array", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArray(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Array.GetArray(nil, nil)
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
+}
+
 func TestGetArraySpace(t *testing.T) {
 
 	restVersion := "1.15"
@@ -143,6 +252,28 @@ func TestGetArraySpace(t *testing.T) {
 	ok(t, err)
 }
 
+func TestGetArraySpaceError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/array?space=true", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArraySpace(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Array.GetArraySpace(nil)
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
+}
+
 func TestGetMonitor(t *testing.T) {
 
 	restVersion := "1.15"
@@ -161,6 +292,28 @@ func TestGetMonitor(t *testing.T) {
 
 	_, err := c.Array.GetArrayMonitor(nil)
 	ok(t, err)
+}
+
+func TestGetMonitorError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/array?action=monitor", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArrayMonitor(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Array.GetArrayMonitor(nil)
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
 }
 
 func TestDisablePhoneHome(t *testing.T) {
@@ -185,6 +338,28 @@ func TestDisablePhoneHome(t *testing.T) {
 	equals(t, &testPhonehome, ph)
 }
 
+func TestDisablePhoneHomeError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/array/phonehome", req.URL.String())
+		equals(t, "PUT", req.Method)
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Array.DisablePhoneHome()
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
+}
+
 func TestEnablePhoneHome(t *testing.T) {
 
 	restVersion := "1.15"
@@ -205,6 +380,28 @@ func TestEnablePhoneHome(t *testing.T) {
 	ph, err := c.Array.EnablePhoneHome()
 	ok(t, err)
 	equals(t, &testPhonehome, ph)
+}
+
+func TestEnablePhoneHomeError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/array/phonehome", req.URL.String())
+		equals(t, "PUT", req.Method)
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Array.EnablePhoneHome()
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
 }
 
 func TestGetManualPhoneHome(t *testing.T) {
@@ -229,6 +426,28 @@ func TestGetManualPhoneHome(t *testing.T) {
 	equals(t, &testPhonehome, ph)
 }
 
+func TestGetManualPhoneHomeError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/array/phonehome", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Array.GetManualPhoneHome()
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
+}
+
 func TestEnableRemoteAssist(t *testing.T) {
 
 	restVersion := "1.15"
@@ -249,6 +468,28 @@ func TestEnableRemoteAssist(t *testing.T) {
 	ra, err := c.Array.EnableRemoteAssist()
 	ok(t, err)
 	equals(t, &testRemoteAssist, ra)
+}
+
+func TestEnableRemoteAssistError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/array/remoteassist", req.URL.String())
+		equals(t, "PUT", req.Method)
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Array.EnableRemoteAssist()
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
 }
 
 func TestDisableRemoteAssist(t *testing.T) {
@@ -273,6 +514,28 @@ func TestDisableRemoteAssist(t *testing.T) {
 	equals(t, &testRemoteAssist, ra)
 }
 
+func TestDisableRemoteAssistError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/array/remoteassist", req.URL.String())
+		equals(t, "PUT", req.Method)
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Array.DisableRemoteAssist()
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
+}
+
 func TestGetRemoteAssist(t *testing.T) {
 
 	restVersion := "1.15"
@@ -293,6 +556,28 @@ func TestGetRemoteAssist(t *testing.T) {
 	ra, err := c.Array.GetRemoteAssist()
 	ok(t, err)
 	equals(t, &testRemoteAssist, ra)
+}
+
+func TestGetRemoteAssistError(t *testing.T) {
+
+	restVersion := "1.15"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://flasharray.example.com/api/1.15/array/remoteassist", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 500,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Array.GetRemoteAssist()
+	if err == nil {
+		t.Errorf("error not raised on 500 response")
+	}
 }
 
 func TestAccArrayConsoleLock(t *testing.T) {
