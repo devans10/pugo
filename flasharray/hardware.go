@@ -17,86 +17,66 @@ type HardwareService struct {
 func (n *HardwareService) GetDrive(name string) (*Drive, error) {
 
 	path := fmt.Sprintf("drive/%s", name)
-	req, err := n.client.NewRequest("GET", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", path, nil, nil)
 	m := &Drive{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // ListDrives lists all drive attributes
 func (n *HardwareService) ListDrives() ([]Drive, error) {
 
-	req, err := n.client.NewRequest("GET", "drive", nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", "drive", nil, nil)
 	m := []Drive{}
-	_, err = n.client.Do(req, &m, false)
+	_, err := n.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // GetHardware lists attributes for specified hardware device
 func (n *HardwareService) GetHardware(name string) (*Component, error) {
 
 	path := fmt.Sprintf("hardware/%s", name)
-	req, err := n.client.NewRequest("GET", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", path, nil, nil)
 	m := &Component{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // ListHardware lists hardware device attributes
 func (n *HardwareService) ListHardware() ([]Component, error) {
 
-	req, err := n.client.NewRequest("GET", "hardware", nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("GET", "hardware", nil, nil)
 	m := []Component{}
-	_, err = n.client.Do(req, &m, false)
+	_, err := n.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // SetHardware modifies an attribute for a specified hardware device
 func (n *HardwareService) SetHardware(name string, data interface{}) (*Component, error) {
 
 	path := fmt.Sprintf("hardware/%s", name)
-	req, err := n.client.NewRequest("PUT", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := n.client.NewRequest("PUT", path, nil, data)
 	m := &Component{}
-	_, err = n.client.Do(req, m, false)
+	_, err := n.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }

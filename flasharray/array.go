@@ -18,18 +18,14 @@ func (v *ArrayService) Get(data interface{}) (*Array, error) {
 // GetArray returns and object describing the flash array
 func (v *ArrayService) GetArray(params map[string]string, data interface{}) (*Array, error) {
 
-	req, err := v.client.NewRequest("GET", "array", params, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("GET", "array", params, data)
 	m := &Array{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // GetArraySpace returns and object describing the flash array
@@ -37,18 +33,14 @@ func (v *ArrayService) GetArraySpace(params map[string]string) ([]Array, error) 
 
 	p := make(map[string]string)
 	p["space"] = "true"
-	req, err := v.client.NewRequest("GET", "array", p, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("GET", "array", p, nil)
 	m := []Array{}
-	_, err = v.client.Do(req, &m, false)
+	_, err := v.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // GetArrayMonitor returns and object describing the flash array
@@ -56,53 +48,41 @@ func (v *ArrayService) GetArrayMonitor(params map[string]string) ([]Array, error
 
 	p := make(map[string]string)
 	p["action"] = "monitor"
-	req, err := v.client.NewRequest("GET", "array", p, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("GET", "array", p, nil)
 	m := []Array{}
-	_, err = v.client.Do(req, &m, false)
+	_, err := v.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // Set will change the parameter on the array that is passed in the data map
 func (v *ArrayService) Set(data interface{}) (*Array, error) {
 
-	req, err := v.client.NewRequest("PUT", "array", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("PUT", "array", nil, data)
 	m := &Array{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // set_console_lock is a helper function used to set the console lock
 func (v *ArrayService) setConsoleLock(b string) (*ConsoleLock, error) {
 
 	data := map[string]string{"enabled": b}
-	req, err := v.client.NewRequest("PUT", "array/console_lock", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("PUT", "array/console_lock", nil, data)
 	m := &ConsoleLock{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // EnableConsoleLock enables root lockout from the array at the physical console.
@@ -130,18 +110,14 @@ func (v *ArrayService) DisableConsoleLock() error {
 // GetConsoleLock returns an object giving the console_lock status
 func (v *ArrayService) GetConsoleLock() (*ConsoleLock, error) {
 
-	req, err := v.client.NewRequest("GET", "array/console_lock", nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("GET", "array/console_lock", nil, nil)
 	m := &ConsoleLock{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // Rename will change the name of the flash array
@@ -155,35 +131,27 @@ func (v *ArrayService) Rename(name string) (*Array, error) {
 // Set the phonehome service attributes
 func (v *ArrayService) setPhoneHome(data interface{}) (*Phonehome, error) {
 
-	req, err := v.client.NewRequest("PUT", "array/phonehome", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("PUT", "array/phonehome", nil, data)
 	m := &Phonehome{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // Set the remote assist service attributes
 func (v *ArrayService) setRemoteAssist(data interface{}) (*RemoteAssist, error) {
 
-	req, err := v.client.NewRequest("PUT", "array/remoteassist", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("PUT", "array/remoteassist", nil, data)
 	m := &RemoteAssist{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // DisablePhoneHome disables hourly phonehome
@@ -237,18 +205,14 @@ func (v *ArrayService) EnableRemoteAssist() (*RemoteAssist, error) {
 // GetManualPhoneHome lists manual phone home status
 func (v *ArrayService) GetManualPhoneHome() (*Phonehome, error) {
 
-	req, err := v.client.NewRequest("GET", "array/phonehome", nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("GET", "array/phonehome", nil, nil)
 	m := &Phonehome{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // GetPhoneHome lists Phonehome status
@@ -266,18 +230,14 @@ func (v *ArrayService) GetPhoneHome() (*Array, error) {
 // GetRemoteAssist lists Remote assist status
 func (v *ArrayService) GetRemoteAssist() (*RemoteAssist, error) {
 
-	req, err := v.client.NewRequest("GET", "array/remoteassist", nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := v.client.NewRequest("GET", "array/remoteassist", nil, nil)
 	m := &RemoteAssist{}
-	_, err = v.client.Do(req, m, false)
+	_, err := v.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // Phonehome Manually initiates or cancels phonehome
