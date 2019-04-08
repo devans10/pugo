@@ -4,7 +4,7 @@
 This library is designed to provide a simple interface for issuing commands to a Pure Storage FlashArray using a REST API. 
 It communicates with the array using the golang http library, and returns the data into types defined within the library.
 
-This is not designed to be a standalone program.  It is just meant to provide functions and communication within another progrom.
+This is not designed to be a standalone program.  It is just meant to provide functions and communication within another program.
 
 Table of Contents
 =================
