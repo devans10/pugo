@@ -16,34 +16,26 @@ type SnmpService struct {
 // ListSnmp Lists the designated SNMP managers and their communication and security attributes
 func (s *SnmpService) ListSnmp(params map[string]string) ([]SnmpManager, error) {
 
-	req, err := s.client.NewRequest("GET", "snmp", params, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := s.client.NewRequest("GET", "snmp", params, nil)
 	m := []SnmpManager{}
-	if _, err = s.client.Do(req, m, false); err != nil {
+	if _, err := s.client.Do(req, &m, false); err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // GetSnmp Lists communication and security attributes for the specified SNMP manager
 func (s *SnmpService) GetSnmp(name string) (*SnmpManager, error) {
 
 	path := fmt.Sprintf("snmp/%s", name)
-	req, err := s.client.NewRequest("GET", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := s.client.NewRequest("GET", path, nil, nil)
 	m := &SnmpManager{}
-	if _, err = s.client.Do(req, m, false); err != nil {
+	if _, err := s.client.Do(req, m, false); err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // CreateSnmp Creates a Purity SNMP manager object that identifies a host (SNMP manager)
@@ -52,49 +44,37 @@ func (s *SnmpService) GetSnmp(name string) (*SnmpManager, error) {
 func (s *SnmpService) CreateSnmp(name string, data interface{}) (*SnmpManager, error) {
 
 	path := fmt.Sprintf("snmp/%s", name)
-	req, err := s.client.NewRequest("POST", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := s.client.NewRequest("POST", path, nil, data)
 	m := &SnmpManager{}
-	if _, err = s.client.Do(req, m, false); err != nil {
+	if _, err := s.client.Do(req, m, false); err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // SetSnmp Modifies a SNMP manager
 func (s *SnmpService) SetSnmp(name string, data interface{}) (*SnmpManager, error) {
 
 	path := fmt.Sprintf("snmp/%s", name)
-	req, err := s.client.NewRequest("PUT", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := s.client.NewRequest("PUT", path, nil, data)
 	m := &SnmpManager{}
-	if _, err = s.client.Do(req, m, false); err != nil {
+	if _, err := s.client.Do(req, m, false); err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // DeleteSnmp deletes a SNMP Manager
 func (s *SnmpService) DeleteSnmp(name string) (*SnmpManager, error) {
 
 	path := fmt.Sprintf("snmp/%s", name)
-	req, err := s.client.NewRequest("DELETE", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := s.client.NewRequest("DELETE", path, nil, nil)
 	m := &SnmpManager{}
-	if _, err = s.client.Do(req, m, false); err != nil {
+	if _, err := s.client.Do(req, m, false); err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }

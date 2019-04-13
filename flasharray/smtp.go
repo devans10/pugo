@@ -12,31 +12,23 @@ type SMTPService struct {
 // GetSMTP Get the attributes of the current smtp server configuration
 func (s *SMTPService) GetSMTP() (*SMTP, error) {
 
-	req, err := s.client.NewRequest("GET", "smtp", nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := s.client.NewRequest("GET", "smtp", nil, nil)
 	m := &SMTP{}
-	if _, err = s.client.Do(req, m, false); err != nil {
+	if _, err := s.client.Do(req, m, false); err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // SetSMTP Set the attributes of the current smtp server configuration
 func (s *SMTPService) SetSMTP(data interface{}) (*SMTP, error) {
 
-	req, err := s.client.NewRequest("POST", "smtp", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := s.client.NewRequest("POST", "smtp", nil, data)
 	m := &SMTP{}
-	if _, err = s.client.Do(req, m, false); err != nil {
+	if _, err := s.client.Do(req, m, false); err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }

@@ -1294,6 +1294,31 @@ func respGetSnmp(restVersion string) string {
 	return resp[restVersion]
 }
 
+func respGetSnmpsnmp(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+						"auth_passphrase": null,
+						"auth_protocol": null,
+						"community": null,
+						"host": "localhost",
+						"name": "localhost",
+						"notification": null,
+						"privacy_passphrase": null,
+						"privacy_protocol": null,
+						"user": null,
+						"version": "v2c"
+					}`
+	return resp[restVersion]
+}
+
+func respDeleteSnmpsnmp(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+						"name": "localhost"
+					}`
+	return resp[restVersion]
+}
+
 func respGetSnmpEngineID(restVersion string) string {
 	resp := make(map[string]string)
 	resp["1.15"] = `{
@@ -1473,7 +1498,7 @@ func respGetSubnetsubnet(restVersion string) string {
 						"mtu": 1500,
 						"name": "subnet100",
 						"prefix": "192.168.0.0/24",
-						"services": [],
+						"services": null,
 						"vlan": 100
 					}`
 	return resp[restVersion]
@@ -1575,7 +1600,7 @@ func respPostNetworkVifintf(restVersion string) string {
 							"iscsi",
 							"management"
 						],
-						"slaves": [],
+						"slaves": null,
 						"speed": 10000000000,
 						"subnet": "subnet100"
 					}`
@@ -1702,9 +1727,92 @@ func respGetDrivedrive(restVersion string) string {
 	return resp[restVersion]
 }
 
+func respGetAdmin(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `[
+						{
+							"name": "pureuser",
+							"role": "admin",
+							"type": "local"
+						}
+					]`
+	return resp[restVersion]
+}
+
+func respGetAdminadmin(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+							"name": "pureuser",
+							"role": "admin",
+							"type": "local"
+					}`
+	return resp[restVersion]
+}
+
+func respPutAdminadmin(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+							"name": "pureuser",
+							"role": "admin",
+							"type": "local"
+					}`
+	return resp[restVersion]
+}
+
+func respPostAdminadmin(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+							"name": "pureuser",
+							"role": "admin",
+							"type": "local"
+					}`
+	return resp[restVersion]
+}
+
+func respDeleteAdminadmin(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+							"name": "pureuser"
+					}`
+	return resp[restVersion]
+}
+
 func respGetAdminPublicKeys(restVersion string) string {
 	resp := make(map[string]string)
 	resp["1.15"] = `[]`
+	return resp[restVersion]
+}
+
+func respPostAdminadminAPIToken(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+						"api_token": "****",
+						"created": "2017-12-16T05:10:11Z",
+						"expires": null,
+						"name": "pureuser"
+					}`
+
+	return resp[restVersion]
+}
+
+func respGetAdminadminAPIToken(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+						"api_token": "****",
+						"created": "2017-12-16T05:10:11Z",
+						"expires": null,
+						"name": "pureuser"
+					}`
+
+	return resp[restVersion]
+}
+
+func respDeleteAdminadminAPIToken(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+						"name": "pureuser"
+					}`
+
 	return resp[restVersion]
 }
 
@@ -1772,6 +1880,98 @@ func respPutDirectoryservice(restVersion string) string {
 						"uri": [
 							"ldaps://ad1.example.com"
 						]
+					}`
+	return resp[restVersion]
+}
+
+func respGetPod(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `[
+						{
+							"name": "pod1",
+							"source": "flasharray1.example.com",
+							"failover_preference": [
+								"flasharray2.example.com"
+							]
+						}
+					]`
+	return resp[restVersion]
+}
+
+func respGetPodpod(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+						"name": "pod1",
+						"source": "flasharray1.example.com",
+						"failover_preference": [
+							"flasharray2.example.com"
+						]
+					}`
+	return resp[restVersion]
+}
+
+func respPostPodpod(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+						"name": "pod1",
+						"source": "flasharray1.example.com",
+						"failover_preference": [
+							"flasharray2.example.com"
+						]
+					}`
+	return resp[restVersion]
+}
+
+func respPutPodpod(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+						"name": "pod1",
+						"source": "flasharray1.example.com",
+						"failover_preference": [
+							"flasharray2.example.com"
+						]
+					}`
+	return resp[restVersion]
+}
+
+func respPutPodpodRename(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+						"name": "pod_renamed",
+						"source": "flasharray1.example.com",
+						"failover_preference": [
+							"flasharray2.example.com"
+						]
+					}`
+	return resp[restVersion]
+}
+
+func respDeletePodpod(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+						"name": "pod1"
+					}`
+	return resp[restVersion]
+}
+
+func respGetSMTP(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+						"user_name": "mailuser",
+						"password": "****",
+						"relay_host": "mail.example.com",
+						"sender_domain": "fa@example.com"
+					}`
+	return resp[restVersion]
+}
+
+func respSetSMTP(restVersion string) string {
+	resp := make(map[string]string)
+	resp["1.15"] = `{
+						"user_name": "mailuser",
+						"password": "****",
+						"relay_host": "mail.example.com",
+						"sender_domain": "fa@example.com"
 					}`
 	return resp[restVersion]
 }

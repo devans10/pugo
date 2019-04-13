@@ -18,52 +18,40 @@ func (o *OffloadService) ConnectNFSOffload(name string, address string, mountPoi
 
 	data := map[string]string{"name": name, "address": address, "mount_point": mountPoint}
 	path := fmt.Sprintf("nfs_offload/%s", name)
-	req, err := o.client.NewRequest("POST", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := o.client.NewRequest("POST", path, nil, data)
 	m := &NFSOffload{}
-	_, err = o.client.Do(req, m, false)
+	_, err := o.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // DisconnectNFSOffload disconnects array from an NFS Offload server
 func (o *OffloadService) DisconnectNFSOffload(name string) (*NFSOffload, error) {
 
 	path := fmt.Sprintf("nfs_offload/%s", name)
-	req, err := o.client.NewRequest("DELETE", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := o.client.NewRequest("DELETE", path, nil, nil)
 	m := &NFSOffload{}
-	_, err = o.client.Do(req, m, false)
+	_, err := o.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // GetNFSOffload lists NFS offload attributes
 func (o *OffloadService) GetNFSOffload(name string) (*NFSOffload, error) {
 
 	path := fmt.Sprintf("nfs_offload/%s", name)
-	req, err := o.client.NewRequest("GET", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := o.client.NewRequest("GET", path, nil, nil)
 	m := &NFSOffload{}
-	_, err = o.client.Do(req, m, false)
+	_, err := o.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }

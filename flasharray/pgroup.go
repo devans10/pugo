@@ -17,18 +17,14 @@ type ProtectiongroupService struct {
 func (p *ProtectiongroupService) CreateProtectiongroup(name string, data interface{}) (*Protectiongroup, error) {
 
 	path := fmt.Sprintf("pgroup/%s", name)
-	req, err := p.client.NewRequest("POST", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := p.client.NewRequest("POST", path, nil, data)
 	m := &Protectiongroup{}
-	_, err = p.client.Do(req, m, false)
+	_, err := p.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // CreatePgroupSnapshot creates a Protection Group Snapshot
@@ -48,13 +44,9 @@ func (p *ProtectiongroupService) SendPgroupSnapshot(pgroup string) ([]Protection
 	data["action"] = "send"
 	pgroups := []string{pgroup}
 	data["source"] = pgroups
-	req, err := p.client.NewRequest("POST", "pgroup", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := p.client.NewRequest("POST", "pgroup", nil, data)
 	m := []ProtectiongroupSnapshot{}
-	_, err = p.client.Do(req, &m, false)
+	_, err := p.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
@@ -67,36 +59,28 @@ func (p *ProtectiongroupService) CreatePgroupSnapshots(pgroups []string) ([]Prot
 	data := make(map[string]interface{})
 	data["snap"] = true
 	data["source"] = pgroups
-	req, err := p.client.NewRequest("POST", "pgroup", nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := p.client.NewRequest("POST", "pgroup", nil, data)
 	m := []ProtectiongroupSnapshot{}
-	_, err = p.client.Do(req, &m, false)
+	_, err := p.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // DestroyProtectiongroup destroys a Protection group
 func (p *ProtectiongroupService) DestroyProtectiongroup(name string) (*Protectiongroup, error) {
 
 	path := fmt.Sprintf("pgroup/%s", name)
-	req, err := p.client.NewRequest("DELETE", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := p.client.NewRequest("DELETE", path, nil, nil)
 	m := &Protectiongroup{}
-	_, err = p.client.Do(req, m, false)
+	_, err := p.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // DisablePgroupReplication disables Protection Group Replication
@@ -152,13 +136,9 @@ func (p *ProtectiongroupService) EradicateProtectiongroup(pgroup string) (*Prote
 
 	data := map[string]bool{"eradicate": true}
 	path := fmt.Sprintf("pgroup/%s", pgroup)
-	req, err := p.client.NewRequest("DELETE", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := p.client.NewRequest("DELETE", path, nil, data)
 	m := &Protectiongroup{}
-	_, err = p.client.Do(req, m, false)
+	_, err := p.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
@@ -170,35 +150,27 @@ func (p *ProtectiongroupService) EradicateProtectiongroup(pgroup string) (*Prote
 func (p *ProtectiongroupService) GetProtectiongroup(name string, params map[string]string) (*Protectiongroup, error) {
 
 	path := fmt.Sprintf("pgroup/%s", name)
-	req, err := p.client.NewRequest("GET", path, params, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := p.client.NewRequest("GET", path, params, nil)
 	m := &Protectiongroup{}
-	_, err = p.client.Do(req, m, false)
+	_, err := p.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // ListProtectiongroups lists attributes of the Protection groups
 func (p *ProtectiongroupService) ListProtectiongroups(params map[string]string) ([]Protectiongroup, error) {
 
-	req, err := p.client.NewRequest("GET", "pgroup", params, nil)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := p.client.NewRequest("GET", "pgroup", params, nil)
 	m := []Protectiongroup{}
-	_, err = p.client.Do(req, &m, false)
+	_, err := p.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
 
 // RecoverProtectiongroup recovers deleted protection group
@@ -229,16 +201,12 @@ func (p *ProtectiongroupService) RenameProtectiongroup(pgroup string, name strin
 func (p *ProtectiongroupService) SetProtectiongroup(name string, data interface{}) (*Protectiongroup, error) {
 
 	path := fmt.Sprintf("pgroup/%s", name)
-	req, err := p.client.NewRequest("PUT", path, nil, data)
-	if err != nil {
-		return nil, err
-	}
-
+	req, _ := p.client.NewRequest("PUT", path, nil, data)
 	m := &Protectiongroup{}
-	_, err = p.client.Do(req, m, false)
+	_, err := p.client.Do(req, m, false)
 	if err != nil {
 		return nil, err
 	}
 
-	return m, err
+	return m, nil
 }
