@@ -15,9 +15,9 @@ type UserService struct {
 
 // listUsers is the private function for returning dictionaries
 // which describes remote access
-func (n *UserService) listUsers(data interface{}) ([]User, error) {
+func (n *UserService) listUsers(params map[string]string) ([]User, error) {
 
-	req, _ := n.client.NewRequest("GET", "admin", nil, data)
+	req, _ := n.client.NewRequest("GET", "admin", params, nil)
 	m := []User{}
 	_, err := n.client.Do(req, &m, false)
 	if err != nil {
@@ -94,6 +94,20 @@ func (n *UserService) GetAdmin(name string) (*User, error) {
 	return m, nil
 }
 
+// GetAPIToken returns an API Token
+func (n *UserService) GetAPIToken(name string) (*Token, error) {
+
+	path := fmt.Sprintf("admin/%s/apitoken", name)
+	req, _ := n.client.NewRequest("GET", path, nil, nil)
+	m := &Token{}
+	_, err := n.client.Do(req, m, false)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, nil
+}
+
 // CreateAPIToken creates an API Token
 func (n *UserService) CreateAPIToken(name string) (*Token, error) {
 
@@ -125,7 +139,7 @@ func (n *UserService) DeleteAPIToken(name string) (*Token, error) {
 // ListPublicKeys returns a list of public keys
 func (n *UserService) ListPublicKeys() ([]User, error) {
 
-	data := map[string]bool{"publickey": true}
+	data := map[string]string{"publickey": "true"}
 	m, err := n.listUsers(data)
 	if err != nil {
 		return nil, err
@@ -135,10 +149,12 @@ func (n *UserService) ListPublicKeys() ([]User, error) {
 }
 
 // ListAPITokens returns a list of API Tokens
-func (n *UserService) ListAPITokens() ([]User, error) {
+func (n *UserService) ListAPITokens() ([]Token, error) {
 
-	data := map[string]bool{"api_token": true}
-	m, err := n.listUsers(data)
+	params := map[string]string{"api_token": "true"}
+	req, _ := n.client.NewRequest("GET", "admin", params, nil)
+	m := []Token{}
+	_, err := n.client.Do(req, &m, false)
 	if err != nil {
 		return nil, err
 	}
@@ -226,7 +242,7 @@ func (n *UserService) SetGlobalAdminAttr(data interface{}) (*GlobalAdmin, error)
 // ListAdminUser return a map describing lockout information for locked out admins
 func (n *UserService) ListAdminUser() ([]User, error) {
 
-	data := map[string]bool{"lockout": true}
+	data := map[string]string{"lockout": "true"}
 	m, err := n.listUsers(data)
 	if err != nil {
 		return nil, err
@@ -239,8 +255,8 @@ func (n *UserService) ListAdminUser() ([]User, error) {
 func (n *UserService) GetAdminUser(name string) (*User, error) {
 
 	path := fmt.Sprintf("admin/%s", name)
-	data := map[string]bool{"lockout": true}
-	req, _ := n.client.NewRequest("GET", path, nil, data)
+	params := map[string]string{"lockout": "true"}
+	req, _ := n.client.NewRequest("GET", path, params, nil)
 	m := &User{}
 	_, err := n.client.Do(req, m, false)
 	if err != nil {

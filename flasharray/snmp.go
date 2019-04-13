@@ -18,7 +18,7 @@ func (s *SnmpService) ListSnmp(params map[string]string) ([]SnmpManager, error) 
 
 	req, _ := s.client.NewRequest("GET", "snmp", params, nil)
 	m := []SnmpManager{}
-	if _, err := s.client.Do(req, m, false); err != nil {
+	if _, err := s.client.Do(req, &m, false); err != nil {
 		return nil, err
 	}
 

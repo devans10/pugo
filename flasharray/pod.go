@@ -18,7 +18,7 @@ func (p *PodService) ListPods(params map[string]string) ([]Pod, error) {
 
 	req, _ := p.client.NewRequest("GET", "pod", params, nil)
 	m := []Pod{}
-	if _, err := p.client.Do(req, m, false); err != nil {
+	if _, err := p.client.Do(req, &m, false); err != nil {
 		return nil, err
 	}
 
