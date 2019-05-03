@@ -75,7 +75,7 @@ Create a client to connect to the FlashArray
 ```go
 import (
 	"fmt"
-	"github.com/devans10/go-purestorage/flasharray"
+	"github.com/devans10/pugo/flasharray"
 )
 
 client := flasharray.Client{Target: "flasharray.example.com", Username: "pureuser", Password: "password", APIToken: nil, RestVersion: nil, UserAgent: nil, RequestKwargs: nil}
