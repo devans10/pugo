@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.com/devans10/go-purestorage.svg?branch=master)](https://travis-ci.com/devans10/go-purestorage) [![Go Report Card](https://goreportcard.com/badge/github.com/devans10/go-purestorage)](https://goreportcard.com/report/github.com/devans10/go-purestorage) [![codecov](https://codecov.io/gh/devans10/go-purestorage/branch/master/graph/badge.svg)](https://codecov.io/gh/devans10/go-purestorage) [![GoDoc](https://godoc.org/github.com/devans10/go-purestorage?status.svg)](https://godoc.org/github.com/devans10/go-purestorage)
+[![Build Status](https://travis-ci.com/devans10/pugo.svg?branch=master)](https://travis-ci.com/devans10/pugo) [![Go Report Card](https://goreportcard.com/badge/github.com/devans10/pugo)](https://goreportcard.com/report/github.com/devans10/pugo) [![codecov](https://codecov.io/gh/devans10/pugo/branch/master/graph/badge.svg)](https://codecov.io/gh/devans10/pugo) [![GoDoc](https://godoc.org/github.com/devans10/pugo?status.svg)](https://godoc.org/github.com/devans10/pugo)
 
-# Pure Storage REST client for Go
+# PuGo - A Go REST client for Pure Storage 
 This library is designed to provide a simple interface for issuing commands to a Pure Storage FlashArray using a REST API. 
 It communicates with the array using the golang http library, and returns the data into types defined within the library.
 
@@ -67,7 +67,7 @@ The Pure1 tests require a connection to Pure1.  They will require environment va
 # Documentation
 
 ## FlashArray
-https://godoc.org/github.com/devans10/go-purestorage/flasharray
+https://godoc.org/github.com/devans10/pugo/flasharray
 
 ### flasharray.Client
 
@@ -123,7 +123,7 @@ for _, vol := range client.Volumes.ListVolumes(nil) {
 ```
 
 ## Pure1
-https://godoc.org/github.com/devans10/go-purestorage/pure1
+https://godoc.org/github.com/devans10/pugo/pure1
 
 ### Authentication
 The Pure1 REST API authentication requires a public and private certificate.
@@ -154,7 +154,7 @@ Create a client to connect to Pure1
 import (
 	"fmt"
 	"os"
-	"github.com/devans10/go-purestorage/pure1"
+	"github.com/devans10/pugo/pure1"
 )
 
 appID := os.Getenv("PURE1_APPID")
