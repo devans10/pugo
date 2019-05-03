@@ -1,3 +1,7 @@
+## 1.0.0
+Changed Project name to Pugo
+Changed License to Apache 2.0
+
 ## 0.3.0
 IMPROVEMENTS:
 * Added Library for the Pure1 API
