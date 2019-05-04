@@ -26,7 +26,7 @@ import (
 
 	"encoding/json"
 	"errors"
-	"github.com/dgrijalva/jwt-go"
+	jwt "github.com/dgrijalva/jwt-go"
 	"net/http"
 	"net/url"
 	"strings"

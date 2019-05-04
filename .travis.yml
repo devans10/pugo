@@ -3,6 +3,8 @@ sudo: required
 language: go
 go:
 - 1.11
+- 1.12
+- 1.x
 - tip
 
 before_install:
@@ -14,11 +16,9 @@ install:
 # packages that live there.
 # See: https://github.com/golang/go/issues/12933
 - bash scripts/gogetcookie.sh
-- go get github.com/kardianos/govendor
 
 script:
 - make test
-- make vendor-status
 - make vet
 # - make website-test
 

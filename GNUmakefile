@@ -1,6 +1,5 @@
-TEST?=$$(go list ./... |grep -v 'vendor')
-GOFMT_FILES?=$$(find . -name '*.go' |grep -v vendor)
-PKG_NAME=flasharray
+TEST?=./pure1 ./flasharray
+GOFMT_FILES?=$$(find . -name '*.go' |grep -v pkg)
 
 default: build
 
@@ -8,16 +7,14 @@ build: fmtcheck
 	go install
 
 test: fmtcheck
-	go test -i $(TEST) || exit 1
-	echo $(TEST) | \
-		xargs -t -n4 go test $(TESTARGS) -race -coverprofile=coverage.txt -covermode=atomic
+	go test $(TEST) -coverprofile=coverage.txt -covermode=atomic
 
 testacc: fmtcheck
-	PURE_ACC=1 go test $(TEST) -v $(TESTARGS) -timeout 120m -cover
+	PURE_ACC=1 go test $(TEST) -v -timeout 120m -parallel=4 -cover
 
 vet:
 	@echo "go vet ."
-	@go vet $$(go list ./... | grep -v vendor/) ; if [ $$? -eq 1 ]; then \
+	@go vet $(TEST) ; if [ $$? -eq 1 ]; then \
 		echo ""; \
 		echo "Vet found suspicious constructs. Please check the reported constructs"; \
 		echo "and fix them if necessary before submitting the code for review."; \
@@ -33,16 +30,6 @@ fmtcheck:
 errcheck:
 	@sh -c "'$(CURDIR)/scripts/errcheck.sh'"
 
-vendor-status:
-	@govendor status
 
-test-compile:
-	@if [ "$(TEST)" = "./..." ]; then \
-		echo "ERROR: Set TEST to a specific package. For example,"; \
-		echo "  make test-compile TEST=./$(PKG_NAME)"; \
-		exit 1; \
-	fi
-	go test -c $(TEST) $(TESTARGS)
-
-.PHONY: build test testacc vet fmt fmtcheck errcheck vendor-status test-compile website website-test
+.PHONY: build test testacc vet fmt fmtcheck errcheck
 
