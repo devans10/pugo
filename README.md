@@ -47,7 +47,7 @@ $ go get github.com/devans10/pugo/flasharray
 ```
 ### Pure1
 ```sh
-$ go get github.com/devans/pugo/pure1
+$ go get github.com/devans10/pugo/pure1
 ```
 
 # Testing
