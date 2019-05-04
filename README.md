@@ -43,11 +43,11 @@ The pure1 library contains all functionality provided by version 1.0 of the Pure
 
 ### FlashArray
 ```sh
-$ go get github.com/devans10/go-purestorage/flasharray
+$ go get github.com/devans10/pugo/flasharray
 ```
 ### Pure1
 ```sh
-$ go get github.com/devans/go-purestorage/pure1
+$ go get github.com/devans/pugo/pure1
 ```
 
 # Testing
