@@ -176,5 +176,8 @@ fmt.Println("Version: ", array.Version)
 fmt.Println("AsOf: ", array.AsOf)
 ```
 
+## Disclaimer
+
+PuGo and its developer(s) are not affiliated with or sponsored by Pure Storage.  The statements and opinions on this site are those of the developer(s) and do not necessarily represent those of Pure Storage. Pure Storage and the Pure Storage trademarks listed at [https://www.purestorage.com/pure-folio/showcase.html?type=pdf&path=/content/dam/pdf/en/legal/external-trademark-list.pdf](https://www.purestorage.com/pure-folio/showcase.html?type=pdf&path=/content/dam/pdf/en/legal/external-trademark-list.pdf) are trademarks of Pure Storage, Inc.
 
 
