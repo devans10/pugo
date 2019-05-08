@@ -16,17 +16,60 @@
 package pure1
 
 import (
+	"bytes"
+	"io/ioutil"
+	"net/http"
 	"testing"
 )
 
-func TestPure1Metrics(t *testing.T) {
+// Unit Tests
+func TestPure1GetMetrics(t *testing.T) {
+	restVersion := "1.latest"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://api.pure1.purestorage.com/api/1.latest/metrics", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetMetrics(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Metrics.GetMetrics(nil)
+	ok(t, err)
+}
+
+func TestPure1GetMetricsHistory(t *testing.T) {
+	restVersion := "1.latest"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://api.pure1.purestorage.com/api/1.latest/metrics/history?aggregation=avg", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetMetricsHistory(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Metrics.GetMetricHistory("avg", 0, 0, 0, nil)
+	ok(t, err)
+}
+
+// Acceptance Tests
+func TestAccPure1Metrics(t *testing.T) {
 	testAccPreChecks(t)
 	c := testAccGenerateClient(t)
 
-	t.Run("GetMetrics", testPure1GetMetrics(c))
+	t.Run("GetMetrics", testAccPure1GetMetrics(c))
 }
 
-func testPure1GetMetrics(c *Client) func(t *testing.T) {
+func testAccPure1GetMetrics(c *Client) func(t *testing.T) {
 	return func(t *testing.T) {
 		_, err := c.Metrics.GetMetrics(nil)
 		if err != nil {

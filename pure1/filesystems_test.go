@@ -17,17 +17,41 @@
 package pure1
 
 import (
+	"bytes"
+	"io/ioutil"
+	"net/http"
 	"testing"
 )
 
-func TestPure1Filesystems(t *testing.T) {
+// Unit Tests
+func TestPure1GetFilesystems(t *testing.T) {
+	restVersion := "1.latest"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://api.pure1.purestorage.com/api/1.latest/file-systems", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetFilesystems(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Filesystems.GetFilesystems(nil)
+	ok(t, err)
+}
+
+// Acceptance Tests
+func TestAccPure1Filesystems(t *testing.T) {
 	testAccPreChecks(t)
 	c := testAccGenerateClient(t)
 
-	t.Run("GetFilesystems", testPure1GetFilesystems(c))
+	t.Run("GetFilesystems", testAccPure1GetFilesystems(c))
 }
 
-func testPure1GetFilesystems(c *Client) func(t *testing.T) {
+func testAccPure1GetFilesystems(c *Client) func(t *testing.T) {
 	return func(t *testing.T) {
 		_, err := c.Filesystems.GetFilesystems(nil)
 		if err != nil {

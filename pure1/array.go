@@ -16,6 +16,10 @@
 
 package pure1
 
+import (
+	"encoding/json"
+)
+
 // ArrayService type creates a service to expose array endpoints
 type ArrayService struct {
 	client *Client
@@ -28,10 +32,41 @@ func (a *ArrayService) GetArrays(params map[string]string) ([]Array, error) {
 		return nil, err
 	}
 
-	m := []Array{}
-	_, err = a.client.Do(req, &m, false)
+	r := &pure1Response{}
+
+	_, err = a.client.Do(req, r, false)
 	if err != nil {
 		return nil, err
+	}
+
+	m := []Array{}
+
+	for len(m) < r.TotalItems {
+		for _, item := range r.Items {
+			i := Array{}
+			s, _ := json.Marshal(item)
+			json.Unmarshal([]byte(s), &i)
+			m = append(m, i)
+		}
+
+		if len(m) < r.TotalItems {
+			if r.ContinuationToken != nil {
+				if params == nil {
+					params = map[string]string{"continuation_token": r.ContinuationToken.(string)}
+				} else {
+					params["continuation_token"] = r.ContinuationToken.(string)
+				}
+				req, err := a.client.NewRequest("GET", "arrays", params, nil)
+				if err != nil {
+					return nil, err
+				}
+
+				_, err = a.client.Do(req, r, false)
+				if err != nil {
+					return nil, err
+				}
+			}
+		}
 	}
 
 	return m, err
@@ -44,10 +79,40 @@ func (a *ArrayService) GetTags(params map[string]string) ([]Tag, error) {
 		return nil, err
 	}
 
-	m := []Tag{}
-	_, err = a.client.Do(req, &m, false)
+	r := &pure1Response{}
+
+	_, err = a.client.Do(req, r, false)
 	if err != nil {
 		return nil, err
+	}
+
+	m := []Tag{}
+	for len(m) < r.TotalItems {
+		for _, item := range r.Items {
+			i := Tag{}
+			s, _ := json.Marshal(item)
+			json.Unmarshal([]byte(s), &i)
+			m = append(m, i)
+		}
+
+		if len(m) < r.TotalItems {
+			if r.ContinuationToken != nil {
+				if params == nil {
+					params = map[string]string{"continuation_token": r.ContinuationToken.(string)}
+				} else {
+					params["continuation_token"] = r.ContinuationToken.(string)
+				}
+				req, err := a.client.NewRequest("GET", "arrays/tags", params, nil)
+				if err != nil {
+					return nil, err
+				}
+
+				_, err = a.client.Do(req, r, false)
+				if err != nil {
+					return nil, err
+				}
+			}
+		}
 	}
 
 	return m, err
@@ -62,10 +127,34 @@ func (a *ArrayService) DeleteTags(params map[string]string) error {
 		return err
 	}
 
-	m := []Tag{}
-	_, err = a.client.Do(req, &m, false)
+	r := &pure1Response{}
+
+	_, err = a.client.Do(req, r, false)
 	if err != nil {
 		return err
+	}
+
+	m := []Tag{}
+	for len(m) < r.TotalItems {
+		for _, item := range r.Items {
+			i := Tag{}
+			s, _ := json.Marshal(item)
+			json.Unmarshal([]byte(s), &i)
+			m = append(m, i)
+		}
+
+		if r.ContinuationToken != nil {
+			params["continuation_token"] = r.ContinuationToken.(string)
+			req, err := a.client.NewRequest("GET", "arrays/tags", params, nil)
+			if err != nil {
+				return err
+			}
+
+			_, err = a.client.Do(req, r, false)
+			if err != nil {
+				return err
+			}
+		}
 	}
 
 	return err
@@ -80,10 +169,34 @@ func (a *ArrayService) CreateTags(params map[string]string, data interface{}) er
 		return err
 	}
 
-	m := []Tag{}
-	_, err = a.client.Do(req, &m, false)
+	r := &pure1Response{}
+
+	_, err = a.client.Do(req, r, false)
 	if err != nil {
 		return err
+	}
+
+	m := []Tag{}
+	for len(m) < r.TotalItems {
+		for _, item := range r.Items {
+			i := Tag{}
+			s, _ := json.Marshal(item)
+			json.Unmarshal([]byte(s), &i)
+			m = append(m, i)
+		}
+
+		if r.ContinuationToken != nil {
+			params["continuation_token"] = r.ContinuationToken.(string)
+			req, err := a.client.NewRequest("GET", "arrays/tags/batch", params, data)
+			if err != nil {
+				return err
+			}
+
+			_, err = a.client.Do(req, r, false)
+			if err != nil {
+				return err
+			}
+		}
 	}
 
 	return err

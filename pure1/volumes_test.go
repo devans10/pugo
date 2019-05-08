@@ -17,8 +17,33 @@
 package pure1
 
 import (
+	"bytes"
+	"io/ioutil"
+	"net/http"
 	"testing"
 )
+
+// Unit Tests
+func TestPure1GetVolumes(t *testing.T) {
+	restVersion := "1.latest"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://api.pure1.purestorage.com/api/1.latest/volumes", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetVolumes(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Volumes.GetVolumes(nil)
+	ok(t, err)
+}
+
+// Acceptance Tests
 
 func TestPure1Volumes(t *testing.T) {
 	testAccPreChecks(t)

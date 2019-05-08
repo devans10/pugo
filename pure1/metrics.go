@@ -17,6 +17,7 @@
 package pure1
 
 import (
+	"encoding/json"
 	"strconv"
 )
 
@@ -32,10 +33,41 @@ func (s *MetricsService) GetMetrics(params map[string]string) ([]Metric, error) 
 		return nil, err
 	}
 
-	m := []Metric{}
-	_, err = s.client.Do(req, &m, false)
+	r := &pure1Response{}
+
+	_, err = s.client.Do(req, r, false)
 	if err != nil {
 		return nil, err
+	}
+
+	m := []Metric{}
+
+	for len(m) < r.TotalItems {
+		for _, item := range r.Items {
+			i := Metric{}
+			str, _ := json.Marshal(item)
+			json.Unmarshal([]byte(str), &i)
+			m = append(m, i)
+		}
+
+		if len(m) < r.TotalItems {
+			if r.ContinuationToken != nil {
+				if params == nil {
+					params = map[string]string{"continuation_token": r.ContinuationToken.(string)}
+				} else {
+					params["continuation_token"] = r.ContinuationToken.(string)
+				}
+				req, err := s.client.NewRequest("GET", "metrics", params, nil)
+				if err != nil {
+					return nil, err
+				}
+
+				_, err = s.client.Do(req, r, false)
+				if err != nil {
+					return nil, err
+				}
+			}
+		}
 	}
 
 	return m, err
@@ -48,19 +80,55 @@ func (s *MetricsService) GetMetrics(params map[string]string) ([]Metric, error) 
 // resolution: duration between data points, in milliseconds
 // params: ids or names, and resource_ids or resource_names are required
 func (s *MetricsService) GetMetricHistory(aggregation string, startTime int, endTime int, resolution int, params map[string]string) ([]Metric, error) {
-	params["aggregation"] = aggregation
-	params["start_time"] = strconv.Itoa(startTime)
-	params["end_time"] = strconv.Itoa(endTime)
-	params["resolution"] = strconv.Itoa(resolution)
+	if params == nil {
+		params = map[string]string{"aggregation": aggregation}
+	} else {
+		params["aggregation"] = aggregation
+		params["start_time"] = strconv.Itoa(startTime)
+		params["end_time"] = strconv.Itoa(endTime)
+		params["resolution"] = strconv.Itoa(resolution)
+	}
+
 	req, err := s.client.NewRequest("GET", "metrics/history", params, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	m := []Metric{}
-	_, err = s.client.Do(req, &m, false)
+	r := &pure1Response{}
+
+	_, err = s.client.Do(req, r, false)
 	if err != nil {
 		return nil, err
+	}
+
+	m := []Metric{}
+
+	for len(m) < r.TotalItems {
+		for _, item := range r.Items {
+			i := Metric{}
+			str, _ := json.Marshal(item)
+			json.Unmarshal([]byte(str), &i)
+			m = append(m, i)
+		}
+
+		if len(m) < r.TotalItems {
+			if r.ContinuationToken != nil {
+				if params == nil {
+					params = map[string]string{"continuation_token": r.ContinuationToken.(string)}
+				} else {
+					params["continuation_token"] = r.ContinuationToken.(string)
+				}
+				req, err := s.client.NewRequest("GET", "metrics/history", params, nil)
+				if err != nil {
+					return nil, err
+				}
+
+				_, err = s.client.Do(req, r, false)
+				if err != nil {
+					return nil, err
+				}
+			}
+		}
 	}
 
 	return m, err

@@ -16,6 +16,8 @@
 
 package pure1
 
+import "encoding/json"
+
 // VolumeService type creates a service to expose volume endpoints
 type VolumeService struct {
 	client *Client
@@ -28,10 +30,41 @@ func (v *VolumeService) GetVolumes(params map[string]string) ([]Volume, error) {
 		return nil, err
 	}
 
-	m := []Volume{}
-	_, err = v.client.Do(req, &m, false)
+	r := &pure1Response{}
+
+	_, err = v.client.Do(req, r, false)
 	if err != nil {
 		return nil, err
+	}
+
+	m := []Volume{}
+
+	for len(m) < r.TotalItems {
+		for _, item := range r.Items {
+			i := Volume{}
+			str, _ := json.Marshal(item)
+			json.Unmarshal([]byte(str), &i)
+			m = append(m, i)
+		}
+
+		if len(m) < r.TotalItems {
+			if r.ContinuationToken != nil {
+				if params == nil {
+					params = map[string]string{"continuation_token": r.ContinuationToken.(string)}
+				} else {
+					params["continuation_token"] = r.ContinuationToken.(string)
+				}
+				req, err := v.client.NewRequest("GET", "volumes", params, nil)
+				if err != nil {
+					return nil, err
+				}
+
+				_, err = v.client.Do(req, r, false)
+				if err != nil {
+					return nil, err
+				}
+			}
+		}
 	}
 
 	return m, err

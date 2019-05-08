@@ -17,19 +17,43 @@
 package pure1
 
 import (
+	"bytes"
+	"io/ioutil"
+	"net/http"
 	"testing"
 )
 
-func TestPure1NetworkInterfaces(t *testing.T) {
+// Unit Tests
+func TestPure1GetNetworkInterfaces(t *testing.T) {
+	restVersion := "1.latest"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://api.pure1.purestorage.com/api/1.latest/network-interfaces", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetNetworkInterfaces(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.NetworkInterfaces.GetNetworkInterfaces(nil)
+	ok(t, err)
+}
+
+// Acceptance Tests
+func TestAccPure1NetworkInterfaces(t *testing.T) {
 	testAccPreChecks(t)
 	c := testAccGenerateClient(t)
 
-	t.Run("GetNetworkInterfaces", testPure1GetNetworkInterfaces(c))
+	t.Run("GetNetworkInterfaces", testAccPure1GetNetworkInterfaces(c))
 }
 
-func testPure1GetNetworkInterfaces(c *Client) func(t *testing.T) {
+func testAccPure1GetNetworkInterfaces(c *Client) func(t *testing.T) {
 	return func(t *testing.T) {
-		_, err := c.NetworkInterfaces.GetNetworkInterfacess(nil)
+		_, err := c.NetworkInterfaces.GetNetworkInterfaces(nil)
 		if err != nil {
 			t.Fatalf("error getting network interfaces: %s", err)
 		}

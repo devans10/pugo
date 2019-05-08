@@ -26,10 +26,11 @@ import (
 
 	"encoding/json"
 	"errors"
-	jwt "github.com/dgrijalva/jwt-go"
 	"net/http"
 	"net/url"
 	"strings"
+
+	jwt "github.com/dgrijalva/jwt-go"
 )
 
 // Client struct represents the Pure1 API and exposes its endpoints
@@ -49,6 +50,12 @@ type Client struct {
 	Pods                *PodService
 	Volumes             *VolumeService
 	VolumeSnapshots     *VolumeSnapshotService
+}
+
+type pure1Response struct {
+	TotalItems        int           `json:"total_item_count,omitempty"`
+	ContinuationToken interface{}   `json:"continuation_token,omitempty"`
+	Items             []interface{} `json:"items,omitempty"`
 }
 
 type pure1Token struct {
@@ -119,7 +126,7 @@ func getToken(c *Client) (*pure1Token, error) {
 	values.Add("subject_token", tokenStr)
 	values.Add("subject_token_type", "urn:ietf:params:oauth:token-type:jwt")
 
-	pure1URL := fmt.Sprintf("https://api.pure1.purestorage.com/oauth2/%s/token", c.RestVersion)
+	pure1URL := fmt.Sprintf("https://api.pure1.purestorage.com/oauth2/%s/token", "1.0")
 	req, err := http.NewRequest(http.MethodPost, pure1URL, strings.NewReader(values.Encode()))
 	if err != nil {
 		return nil, err
@@ -136,6 +143,10 @@ func getToken(c *Client) (*pure1Token, error) {
 	}
 	defer resp.Body.Close()
 
+	if err := validateResponse(resp); err != nil {
+		return nil, err
+	}
+
 	responseBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
@@ -145,6 +156,8 @@ func getToken(c *Client) (*pure1Token, error) {
 	if err := json.Unmarshal(responseBody, pToken); err != nil {
 		return nil, err
 	}
+
+	// log.Printf("[DEBUG] Access Token: %v", pToken)
 
 	return pToken, nil
 }
@@ -240,17 +253,10 @@ func decodeResponse(r *http.Response, v interface{}) error {
 		return fmt.Errorf("nil interface provided to decodeResponse")
 	}
 
-	type response struct {
-		TotalItems        int         `json:"total_item_count,omitempty"`
-		ContinuationToken interface{} `json:"continuation_token,omitempty"`
-		Items             interface{} `json:"items,omitempty"`
-	}
-
-	resp := &response{}
 	bodyBytes, _ := ioutil.ReadAll(r.Body)
 	bodyString := string(bodyBytes)
-	err := json.Unmarshal([]byte(bodyString), resp)
-	v = resp.Items
+	err := json.Unmarshal([]byte(bodyString), &v)
+
 	return err
 }
 

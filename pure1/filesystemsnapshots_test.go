@@ -17,17 +17,41 @@
 package pure1
 
 import (
+	"bytes"
+	"io/ioutil"
+	"net/http"
 	"testing"
 )
 
-func TestPure1FilesystemSnapshots(t *testing.T) {
+// Unit Tests
+func TestPure1GetFilesystemSnapshots(t *testing.T) {
+	restVersion := "1.latest"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://api.pure1.purestorage.com/api/1.latest/file-system-snapshots", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetFilesystemSnapshots(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.FilesystemSnapshots.GetFilesystemSnapshots(nil)
+	ok(t, err)
+}
+
+// Acceptance Tests
+func TestAccPure1FilesystemSnapshots(t *testing.T) {
 	testAccPreChecks(t)
 	c := testAccGenerateClient(t)
 
-	t.Run("GetFilesystemSnapshots", testPure1GetFilesystemSnapshots(c))
+	t.Run("GetFilesystemSnapshots", testAccPure1GetFilesystemSnapshots(c))
 }
 
-func testPure1GetFilesystemSnapshots(c *Client) func(t *testing.T) {
+func testAccPure1GetFilesystemSnapshots(c *Client) func(t *testing.T) {
 	return func(t *testing.T) {
 		_, err := c.FilesystemSnapshots.GetFilesystemSnapshots(nil)
 		if err != nil {

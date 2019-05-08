@@ -17,8 +17,33 @@
 package pure1
 
 import (
+	"bytes"
+	"io/ioutil"
+	"net/http"
 	"testing"
 )
+
+// Unit Tests
+func TestPure1GetPods(t *testing.T) {
+	restVersion := "1.latest"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://api.pure1.purestorage.com/api/1.latest/pods", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetPods(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Pods.GetPods(nil)
+	ok(t, err)
+}
+
+// Acceptance Test
 
 func TestPure1Pods(t *testing.T) {
 	testAccPreChecks(t)

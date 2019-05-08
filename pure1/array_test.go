@@ -17,18 +17,61 @@
 package pure1
 
 import (
+	"bytes"
+	"io/ioutil"
+	"net/http"
 	"testing"
 )
 
-func TestPure1Array(t *testing.T) {
+// Unit Tests
+func TestPure1GetArrays(t *testing.T) {
+	restVersion := "1.latest"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://api.pure1.purestorage.com/api/1.latest/arrays", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArrays(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Arrays.GetArrays(nil)
+	ok(t, err)
+}
+
+func TestPure1GetTags(t *testing.T) {
+	restVersion := "1.latest"
+	head := make(http.Header)
+	head.Add("Content-Type", "application/json")
+
+	c := testGenerateClient(func(req *http.Request) *http.Response {
+		equals(t, "https://api.pure1.purestorage.com/api/1.latest/arrays/tags", req.URL.String())
+		equals(t, "GET", req.Method)
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArraysTags(restVersion))),
+			Header:     head,
+		}
+	})
+
+	_, err := c.Arrays.GetTags(nil)
+	ok(t, err)
+}
+
+// Acceptance Tests
+func TestAccPure1Array(t *testing.T) {
 	testAccPreChecks(t)
 	c := testAccGenerateClient(t)
 
-	t.Run("GetArrays", testPure1GetArrays(c))
-	t.Run("GetTags", testPure1GetTags(c))
+	t.Run("GetArrays", testAccPure1GetArrays(c))
+	t.Run("GetTags", testAccPure1GetTags(c))
 }
 
-func testPure1GetArrays(c *Client) func(t *testing.T) {
+func testAccPure1GetArrays(c *Client) func(t *testing.T) {
 	return func(t *testing.T) {
 		_, err := c.Arrays.GetArrays(nil)
 		if err != nil {
@@ -37,7 +80,7 @@ func testPure1GetArrays(c *Client) func(t *testing.T) {
 	}
 }
 
-func testPure1GetTags(c *Client) func(t *testing.T) {
+func testAccPure1GetTags(c *Client) func(t *testing.T) {
 	return func(t *testing.T) {
 		_, err := c.Arrays.GetTags(nil)
 		if err != nil {

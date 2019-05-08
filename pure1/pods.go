@@ -16,6 +16,8 @@
 
 package pure1
 
+import "encoding/json"
+
 // PodService type creates a service to expose pods endpoints
 type PodService struct {
 	client *Client
@@ -28,10 +30,41 @@ func (p *PodService) GetPods(params map[string]string) ([]Pod, error) {
 		return nil, err
 	}
 
-	m := []Pod{}
-	_, err = p.client.Do(req, &m, false)
+	r := &pure1Response{}
+
+	_, err = p.client.Do(req, r, false)
 	if err != nil {
 		return nil, err
+	}
+
+	m := []Pod{}
+
+	for len(m) < r.TotalItems {
+		for _, item := range r.Items {
+			i := Pod{}
+			str, _ := json.Marshal(item)
+			json.Unmarshal([]byte(str), &i)
+			m = append(m, i)
+		}
+
+		if len(m) < r.TotalItems {
+			if r.ContinuationToken != nil {
+				if params == nil {
+					params = map[string]string{"continuation_token": r.ContinuationToken.(string)}
+				} else {
+					params["continuation_token"] = r.ContinuationToken.(string)
+				}
+				req, err := p.client.NewRequest("GET", "pods", params, nil)
+				if err != nil {
+					return nil, err
+				}
+
+				_, err = p.client.Do(req, r, false)
+				if err != nil {
+					return nil, err
+				}
+			}
+		}
 	}
 
 	return m, err

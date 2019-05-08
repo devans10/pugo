@@ -16,6 +16,8 @@
 
 package pure1
 
+import "encoding/json"
+
 // FilesystemSnapshotService type creates a service to expose array endpoints
 type FilesystemSnapshotService struct {
 	client *Client
@@ -28,10 +30,40 @@ func (f *FilesystemSnapshotService) GetFilesystemSnapshots(params map[string]str
 		return nil, err
 	}
 
-	m := []FilesystemSnapshot{}
-	_, err = f.client.Do(req, &m, false)
+	r := &pure1Response{}
+
+	_, err = f.client.Do(req, r, false)
 	if err != nil {
 		return nil, err
+	}
+
+	m := []FilesystemSnapshot{}
+	for len(m) < r.TotalItems {
+		for _, item := range r.Items {
+			i := FilesystemSnapshot{}
+			s, _ := json.Marshal(item)
+			json.Unmarshal([]byte(s), &i)
+			m = append(m, i)
+		}
+
+		if len(m) < r.TotalItems {
+			if r.ContinuationToken != nil {
+				if params == nil {
+					params = map[string]string{"continuation_token": r.ContinuationToken.(string)}
+				} else {
+					params["continuation_token"] = r.ContinuationToken.(string)
+				}
+				req, err := f.client.NewRequest("GET", "file-system-snapshots", params, nil)
+				if err != nil {
+					return nil, err
+				}
+
+				_, err = f.client.Do(req, r, false)
+				if err != nil {
+					return nil, err
+				}
+			}
+		}
 	}
 
 	return m, err
