@@ -1,0 +1,8 @@
+{
+    "id": "pugo",
+    "name": "Go SDK",
+    "filter": "devops",
+    "image": "https://code.purestorage.com/images/28_go.png",
+    "featured": 0,
+    "priority": 3
+}
