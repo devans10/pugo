@@ -27,6 +27,37 @@ type Array struct {
 	ArrayName string `json:"array_name,omitempty"`
 	Version   string `json:"version,omitempty"`
 	Revision  string `json:"revision,omitempty"`
+	Time      string `json:"time,omitempty"`
+
+	// Controllers
+	Mode   string `json:"mode,omitempty"`
+	Model  string `json:"model,omitempty"`
+	Name   string `json:"name,omitempty"`
+	Status string `json:"status,omitempty"`
+
+	// Space
+	Capacity         int     `json:"capacity,omitempty"`
+	DataReduction    float64 `json:"data_reduction,omitempty"`
+	Hostname         string  `json:"hostname,omitempty"`
+	Parity           float64 `json:"parity,omitempty"`
+	SharedSpace      int     `json:"shared_space,omitempty"`
+	Snapshots        int     `json:"snapshots,omitempty"`
+	System           int     `json:"system,omitempty"`
+	ThinProvisioning float64 `json:"thin_provisioning,omitempy"`
+	Total            int     `json:"total,omitempty"`
+	TotalReduction   float64 `json:"total_reduction,omitempty"`
+	Volumes          int     `json:"volumes,omitempty"`
+
+	// Monitor
+	SanUsecPerReadOp  int `json:"san_usec_per_read_op,omitempty"`
+	SanUsecPerWriteOp int `json:"san_usec_per_write_op,omitempty"`
+	UsecPerReadOp     int `json:"usec_per_read_op,omitempty"`
+	UsecPerWriteOp    int `json:"usec_per_write_op,omitempty"`
+	QueueDepth        int `json:"queue_depth,omitempty"`
+	ReadsPerSec       int `json:"reads_per_sec,omitempty"`
+	WritesPerSec      int `json:"writes_per_sec,omitempty"`
+	InputPerSec       int `json:"input_per_sec,omitempty"`
+	OutputPerSec      int `json:"output_per_sec,omitempty"`
 }
 
 // Phonehome struct is the information returned by array
