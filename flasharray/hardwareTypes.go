@@ -36,7 +36,7 @@ type Component struct {
 	Index       int    `json:"index,omitempty"`
 	Model       string `json:"model,omitempty"`
 	Serial      string `json:"serial,omitempty"`
-	Slot        string `json:"slot,omitempty"`
+	Slot        int    `json:"slot,omitempty"`
 	Speed       int    `json:"speed,omitempty"`
 	Status      string `json:"status,omitempty"`
 	Temperature int    `json:"temperature,omitempty"`

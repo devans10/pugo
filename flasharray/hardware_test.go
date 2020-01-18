@@ -148,7 +148,7 @@ func TestGetHardware(t *testing.T) {
 		Model:       "",
 		Name:        "SH0.BAY0",
 		Serial:      "",
-		Slot:        "",
+		Slot:        0,
 		Speed:       0,
 		Status:      "ok",
 		Temperature: 0,
@@ -203,7 +203,7 @@ func TestListHardware(t *testing.T) {
 		Model:       "",
 		Name:        "CT0",
 		Serial:      "",
-		Slot:        "",
+		Slot:        0,
 		Speed:       0,
 		Status:      "ok",
 		Temperature: 0,
@@ -256,7 +256,7 @@ func TestSetHardware(t *testing.T) {
 		Identify: "on",
 		Index:    0,
 		Name:     "SH0.BAY0",
-		Slot:     "",
+		Slot:     0,
 	}
 	head := make(http.Header)
 	head.Add("Content-Type", "application/json")
