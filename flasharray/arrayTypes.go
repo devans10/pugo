@@ -58,6 +58,11 @@ type Array struct {
 	WritesPerSec      int `json:"writes_per_sec,omitempty"`
 	InputPerSec       int `json:"input_per_sec,omitempty"`
 	OutputPerSec      int `json:"output_per_sec,omitempty"`
+
+	// Metrics returned if action=monitor,size=true
+	BytesPerRead  int `json:"bytes_per_read,omitempty"`
+	BytesPerWrite int `json:"bytes_per_write,omitempty"`
+	BytesPerOp    int `json:"bytes_per_op,omitempty"`
 }
 
 // Phonehome struct is the information returned by array
