@@ -406,7 +406,6 @@ func (c *Client) getAPIToken() error {
 
 	data := map[string]string{"username": c.Username, "password": c.Password}
 	jsonValue, _ := json.Marshal(data)
-	fmt.Println(bytes.NewBuffer(jsonValue))
 	req, err := http.NewRequest("POST", authURL.String(), bytes.NewBuffer(jsonValue))
 	if err != nil {
 		return err
@@ -423,7 +422,6 @@ func (c *Client) getAPIToken() error {
 	defer r.Body.Close()
 	t := &auth{}
 	err = json.NewDecoder(r.Body).Decode(t)
-	fmt.Println(t)
 	c.APIToken = t.Token
 
 	return err
