@@ -157,7 +157,7 @@ func NewClient(target string, username string, password string, apiToken string,
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
-	c := &Client{Target: target, Username: username, Password: password, APIToken: apiToken, RestVersion: restVersion, RequestKwargs: requestKwargs}
+	c := &Client{Target: target, Username: username, Password: password, APIToken: apiToken, UserAgent: userAgent, RestVersion: restVersion, RequestKwargs: requestKwargs}
 	c.client = &http.Client{Transport: tr, Jar: cookieJar}
 
 	// Get an API Token if not provided
