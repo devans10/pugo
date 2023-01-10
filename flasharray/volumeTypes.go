@@ -21,7 +21,7 @@ type Volume struct {
 	Name    string `json:"name,omitempty"`
 	Source  string `json:"source,omitempty"`
 	Serial  string `json:"serial,omitempty"`
-	Size    int    `json:"size,omitempty"`
+	Size    int64  `json:"size,omitempty"`
 	Created string `json:"created,omitempty"`
 
 	// Metrics returned with the action=monitor flag
