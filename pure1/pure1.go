@@ -20,17 +20,16 @@ package pure1
 
 import (
 	"bytes"
-	"fmt"
-	"io/ioutil"
-	"time"
-
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 // Client struct represents the Pure1 API and exposes its endpoints
@@ -177,7 +176,6 @@ func getToken(c *Client) (*pure1Token, error) {
 // data
 // The data body to be passed in the HTTP request. This will be converted to JSON,
 // then added to the request as bytes.
-//
 func (c *Client) NewRequest(method string, path string, params map[string]string, data interface{}) (*http.Request, error) {
 
 	var fpath string
@@ -225,9 +223,10 @@ func (c *Client) NewRequest(method string, path string, params map[string]string
 // req  The HTTP request object to be executed.
 // v    The data object that will be populated and returned. i.e. Volume struct
 // reestablish_session  A bool that states if the session should be reestablished prior to execution.
-//                      This functionality is NOT implemented yet.  By default the Go HTTP library
-//                      does not set a timeout, I need to set this implicitly.
-//                      However, the array will timeout the session after 30 minutes.
+//
+//	This functionality is NOT implemented yet.  By default the Go HTTP library
+//	does not set a timeout, I need to set this implicitly.
+//	However, the array will timeout the session after 30 minutes.
 func (c *Client) Do(req *http.Request, v interface{}, reestablishSession bool) (*http.Response, error) {
 	resp, err := c.client.Do(req)
 	if err != nil {
