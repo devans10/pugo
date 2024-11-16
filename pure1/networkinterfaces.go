@@ -23,7 +23,7 @@ type NetworkInterfacesService struct {
 	client *Client
 }
 
-// GetNetworkInterfacess returns a list of Filesystem objects
+// GetNetworkInterfaces returns a list of Filesystem objects
 func (n *NetworkInterfacesService) GetNetworkInterfaces(params map[string]string) ([]NetworkInterface, error) {
 	req, err := n.client.NewRequest("GET", "network-interfaces", params, nil)
 	if err != nil {

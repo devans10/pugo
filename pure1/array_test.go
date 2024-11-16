@@ -18,7 +18,7 @@ package pure1
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -34,7 +34,7 @@ func TestPure1GetArrays(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArrays(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetArrays(restVersion))),
 			Header:     head,
 		}
 	})
@@ -53,7 +53,7 @@ func TestPure1GetTags(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArraysTags(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetArraysTags(restVersion))),
 			Header:     head,
 		}
 	})

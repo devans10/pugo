@@ -18,7 +18,7 @@ package pure1
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -34,7 +34,7 @@ func TestPure1GetNetworkInterfaces(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetNetworkInterfaces(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetNetworkInterfaces(restVersion))),
 			Header:     head,
 		}
 	})

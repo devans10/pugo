@@ -18,7 +18,7 @@ package flasharray
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -35,7 +35,7 @@ func TestListMessages(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetMessage(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetMessage(restVersion))),
 			Header:     head,
 		}
 	})
@@ -56,7 +56,7 @@ func TestListMessagesError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetMessage(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetMessage(restVersion))),
 			Header:     head,
 		}
 	})

@@ -20,17 +20,16 @@ package pure1
 
 import (
 	"bytes"
-	"fmt"
-	"io/ioutil"
-	"time"
-
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 // Client struct represents the Pure1 API and exposes its endpoints
@@ -141,13 +140,13 @@ func getToken(c *Client) (*pure1Token, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if err := validateResponse(resp); err != nil {
 		return nil, err
 	}
 
-	responseBody, err := ioutil.ReadAll(resp.Body)
+	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +176,6 @@ func getToken(c *Client) (*pure1Token, error) {
 // data
 // The data body to be passed in the HTTP request. This will be converted to JSON,
 // then added to the request as bytes.
-//
 func (c *Client) NewRequest(method string, path string, params map[string]string, data interface{}) (*http.Request, error) {
 
 	var fpath string
@@ -225,16 +223,17 @@ func (c *Client) NewRequest(method string, path string, params map[string]string
 // req  The HTTP request object to be executed.
 // v    The data object that will be populated and returned. i.e. Volume struct
 // reestablish_session  A bool that states if the session should be reestablished prior to execution.
-//                      This functionality is NOT implemented yet.  By default the Go HTTP library
-//                      does not set a timeout, I need to set this implicitly.
-//                      However, the array will timeout the session after 30 minutes.
+//
+//	This functionality is NOT implemented yet. By default the Go HTTP library
+//	does not set a timeout, I need to set this implicitly.
+//	However, the array will timeout the session after 30 minutes.
 func (c *Client) Do(req *http.Request, v interface{}, reestablishSession bool) (*http.Response, error) {
 	resp, err := c.client.Do(req)
 	if err != nil {
 		fmt.Println("Do request failed")
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 	//log.Printf("[debug] URL: %s ", req.URL.String())
 	//log.Printf("[debug] Response code: %v", resp.Status)
 
@@ -253,7 +252,7 @@ func decodeResponse(r *http.Response, v interface{}) error {
 		return fmt.Errorf("nil interface provided to decodeResponse")
 	}
 
-	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	bodyBytes, _ := io.ReadAll(r.Body)
 	bodyString := string(bodyBytes)
 	err := json.Unmarshal([]byte(bodyString), &v)
 
@@ -262,14 +261,14 @@ func decodeResponse(r *http.Response, v interface{}) error {
 
 // validateResponse checks that the http response is within the 200 range.
 // Some functionality needs to be added here to check for some specific errors,
-// and probably add the equivlents to PureError and PureHTTPError from the Python
+// and probably add the equivalents to PureError and PureHTTPError from the Python
 // REST client.
 func validateResponse(r *http.Response) error {
 	if c := r.StatusCode; 200 <= c && c <= 299 {
 		return nil
 	}
 
-	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	bodyBytes, _ := io.ReadAll(r.Body)
 	bodyString := string(bodyBytes)
 	return fmt.Errorf("Response code: %d, ResponeBody: %s", r.StatusCode, bodyString)
 }

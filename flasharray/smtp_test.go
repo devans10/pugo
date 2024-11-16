@@ -18,7 +18,7 @@ package flasharray
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -43,7 +43,7 @@ func TestGetSMTP(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetSMTP(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetSMTP(restVersion))),
 			Header:     head,
 		}
 	})
@@ -71,7 +71,7 @@ func TestSetSMTP(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respSetSMTP(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respSetSMTP(restVersion))),
 			Header:     head,
 		}
 	})

@@ -18,7 +18,7 @@ package flasharray
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -43,7 +43,7 @@ func TestListPods(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetPod(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetPod(restVersion))),
 			Header:     head,
 		}
 	})
@@ -69,7 +69,7 @@ func TestGetPod(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetPodpod(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetPodpod(restVersion))),
 			Header:     head,
 		}
 	})
@@ -95,7 +95,7 @@ func TestCreatePod(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostPodpod(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostPodpod(restVersion))),
 			Header:     head,
 		}
 	})
@@ -123,7 +123,7 @@ func TestSetPod(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutPodpod(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutPodpod(restVersion))),
 			Header:     head,
 		}
 	})
@@ -149,7 +149,7 @@ func TestRenamePod(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutPodpodRename(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutPodpodRename(restVersion))),
 			Header:     head,
 		}
 	})
@@ -175,7 +175,7 @@ func TestDeletePod(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeletePodpod(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeletePodpod(restVersion))),
 			Header:     head,
 		}
 	})

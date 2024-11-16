@@ -18,7 +18,7 @@ package flasharray
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -43,7 +43,7 @@ func TestListAdmins(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetAdmin(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetAdmin(restVersion))),
 			Header:     head,
 		}
 	})
@@ -69,7 +69,7 @@ func TestGetAdmin(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetAdminadmin(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetAdminadmin(restVersion))),
 			Header:     head,
 		}
 	})
@@ -95,7 +95,7 @@ func TestCreateAdmin(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostAdminadmin(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostAdminadmin(restVersion))),
 			Header:     head,
 		}
 	})
@@ -121,7 +121,7 @@ func TestSetAdmin(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAdminadmin(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutAdminadmin(restVersion))),
 			Header:     head,
 		}
 	})
@@ -145,7 +145,7 @@ func TestDeleteAdmin(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteAdminadmin(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteAdminadmin(restVersion))),
 			Header:     head,
 		}
 	})
@@ -172,7 +172,7 @@ func TestCreateAPIToken(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostAdminadminAPIToken(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostAdminadminAPIToken(restVersion))),
 			Header:     head,
 		}
 	})
@@ -199,7 +199,7 @@ func TestGetAPIToken(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetAdminadminAPIToken(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetAdminadminAPIToken(restVersion))),
 			Header:     head,
 		}
 	})
@@ -223,7 +223,7 @@ func TestDeleteAPIToken(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteAdminadminAPIToken(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteAdminadminAPIToken(restVersion))),
 			Header:     head,
 		}
 	})
@@ -258,7 +258,7 @@ func TestListAPITokens(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetAdminAPIToken(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetAdminAPIToken(restVersion))),
 			Header:     head,
 		}
 	})
@@ -284,7 +284,7 @@ func TestRefreshAdmin(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAdminadmin(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutAdminadmin(restVersion))),
 			Header:     head,
 		}
 	})
@@ -310,7 +310,7 @@ func TestRefreshAdmins(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAdminadmin(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutAdminadmin(restVersion))),
 			Header:     head,
 		}
 	})
