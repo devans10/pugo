@@ -18,7 +18,7 @@ package flasharray
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -41,7 +41,7 @@ func TestGetDirectoryService(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetDirectoryservice(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetDirectoryservice(restVersion))),
 			Header:     head,
 		}
 	})
@@ -62,7 +62,7 @@ func TestGetDirectoryServiceError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetDirectoryservice(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetDirectoryservice(restVersion))),
 			Header:     head,
 		}
 	})

@@ -18,7 +18,7 @@ package flasharray
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -35,7 +35,7 @@ func TestListAlerts(t *testing.T) {
 		equals(t, req.Method, "GET")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetAlert(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetAlert(restVersion))),
 			Header:     head,
 		}
 	})
@@ -56,7 +56,7 @@ func TestListAlertsError(t *testing.T) {
 		equals(t, req.Method, "GET")
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetAlert(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetAlert(restVersion))),
 			Header:     head,
 		}
 	})
@@ -79,7 +79,7 @@ func TestGetAlert(t *testing.T) {
 		equals(t, req.Method, "GET")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetAlertaddress(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
@@ -100,7 +100,7 @@ func TestGetAlertError(t *testing.T) {
 		equals(t, req.Method, "GET")
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetAlertaddress(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
@@ -123,7 +123,7 @@ func TestCreateAlert(t *testing.T) {
 		equals(t, req.Method, "POST")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostAlertaddress(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
@@ -145,7 +145,7 @@ func TestCreateAlertError(t *testing.T) {
 		equals(t, req.Method, "POST")
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostAlertaddress(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
@@ -168,7 +168,7 @@ func TestTestAlert(t *testing.T) {
 		equals(t, req.Method, "PUT")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
@@ -189,7 +189,7 @@ func TestTestAlertError(t *testing.T) {
 		equals(t, req.Method, "PUT")
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
@@ -215,7 +215,7 @@ func TestSetAlert(t *testing.T) {
 		equals(t, req.Method, "PUT")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
@@ -237,7 +237,7 @@ func TestSetAlertError(t *testing.T) {
 		equals(t, req.Method, "PUT")
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
@@ -260,7 +260,7 @@ func TestEnableAlert(t *testing.T) {
 		equals(t, req.Method, "PUT")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
@@ -281,7 +281,7 @@ func TestEnableAlertError(t *testing.T) {
 		equals(t, req.Method, "PUT")
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
@@ -304,7 +304,7 @@ func TestDisableAlert(t *testing.T) {
 		equals(t, req.Method, "PUT")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
@@ -325,7 +325,7 @@ func TestDisableAlertError(t *testing.T) {
 		equals(t, req.Method, "PUT")
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
@@ -348,7 +348,7 @@ func TestDeleteAlert(t *testing.T) {
 		equals(t, req.Method, "DELETE")
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteAlertaddress(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})
@@ -369,7 +369,7 @@ func TestDeleteAlertError(t *testing.T) {
 		equals(t, req.Method, "DELETE")
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteAlertaddress(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteAlertaddress(restVersion))),
 			Header:     head,
 		}
 	})

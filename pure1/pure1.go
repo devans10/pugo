@@ -23,7 +23,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -140,13 +140,13 @@ func getToken(c *Client) (*pure1Token, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if err := validateResponse(resp); err != nil {
 		return nil, err
 	}
 
-	responseBody, err := ioutil.ReadAll(resp.Body)
+	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -224,7 +224,7 @@ func (c *Client) NewRequest(method string, path string, params map[string]string
 // v    The data object that will be populated and returned. i.e. Volume struct
 // reestablish_session  A bool that states if the session should be reestablished prior to execution.
 //
-//	This functionality is NOT implemented yet.  By default the Go HTTP library
+//	This functionality is NOT implemented yet. By default the Go HTTP library
 //	does not set a timeout, I need to set this implicitly.
 //	However, the array will timeout the session after 30 minutes.
 func (c *Client) Do(req *http.Request, v interface{}, reestablishSession bool) (*http.Response, error) {
@@ -233,7 +233,7 @@ func (c *Client) Do(req *http.Request, v interface{}, reestablishSession bool) (
 		fmt.Println("Do request failed")
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 	//log.Printf("[debug] URL: %s ", req.URL.String())
 	//log.Printf("[debug] Response code: %v", resp.Status)
 
@@ -252,7 +252,7 @@ func decodeResponse(r *http.Response, v interface{}) error {
 		return fmt.Errorf("nil interface provided to decodeResponse")
 	}
 
-	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	bodyBytes, _ := io.ReadAll(r.Body)
 	bodyString := string(bodyBytes)
 	err := json.Unmarshal([]byte(bodyString), &v)
 
@@ -261,14 +261,14 @@ func decodeResponse(r *http.Response, v interface{}) error {
 
 // validateResponse checks that the http response is within the 200 range.
 // Some functionality needs to be added here to check for some specific errors,
-// and probably add the equivlents to PureError and PureHTTPError from the Python
+// and probably add the equivalents to PureError and PureHTTPError from the Python
 // REST client.
 func validateResponse(r *http.Response) error {
 	if c := r.StatusCode; 200 <= c && c <= 299 {
 		return nil
 	}
 
-	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	bodyBytes, _ := io.ReadAll(r.Body)
 	bodyString := string(bodyBytes)
 	return fmt.Errorf("Response code: %d, ResponeBody: %s", r.StatusCode, bodyString)
 }

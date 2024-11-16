@@ -19,7 +19,7 @@ package flasharray
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -254,7 +254,7 @@ func TestSetVolume(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutVolumevolName(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutVolumevolName(restVersion))),
 			Header:     head,
 		}
 	})
@@ -281,7 +281,7 @@ func TestCreateSnapshot(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostVolume(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostVolume(restVersion))),
 			Header:     head,
 		}
 	})
@@ -314,7 +314,7 @@ func TestCreateSnapshots(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostVolume(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostVolume(restVersion))),
 			Header:     head,
 		}
 	})
@@ -340,7 +340,7 @@ func TestCreateVolume(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostVolumevol(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostVolumevol(restVersion))),
 			Header:     head,
 		}
 	})
@@ -350,7 +350,7 @@ func TestCreateVolume(t *testing.T) {
 	equals(t, &testVolume, vol)
 }
 
-//TODO
+// TODO
 func TestCreateConglomerateVolume(t *testing.T) {}
 
 func TestCopyVolume(t *testing.T) {
@@ -369,7 +369,7 @@ func TestCopyVolume(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostVolumevol(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostVolumevol(restVersion))),
 			Header:     head,
 		}
 	})
@@ -390,7 +390,7 @@ func TestDeleteVolume(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteVolumevol(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteVolumevol(restVersion))),
 			Header:     head,
 		}
 	})
@@ -411,7 +411,7 @@ func TestEradicateVolume(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteVolumevol(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteVolumevol(restVersion))),
 			Header:     head,
 		}
 	})
@@ -432,7 +432,7 @@ func TestExtendVolume(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutVolumevolSize(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutVolumevolSize(restVersion))),
 			Header:     head,
 		}
 	})
@@ -459,7 +459,7 @@ func TestGetVolume(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetVolumevol(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetVolumevol(restVersion))),
 			Header:     head,
 		}
 	})
@@ -469,7 +469,7 @@ func TestGetVolume(t *testing.T) {
 	equals(t, &testVolume, vol)
 }
 
-//TODO: Figure out how to compare this.
+// TODO: Figure out how to compare this.
 func TestMonitorVolume(t *testing.T) {
 	restVersion := "1.15"
 	/*testVolume := Volume{Name: "v3",
@@ -492,7 +492,7 @@ func TestMonitorVolume(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetVolumevolMonitor(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetVolumevolMonitor(restVersion))),
 			Header:     head,
 		}
 	})
@@ -502,7 +502,7 @@ func TestMonitorVolume(t *testing.T) {
 	//equals(t, testVolume, vol)
 }
 
-//TODO: Get Output Sample
+// TODO: Get Output Sample
 func TestAddVolume(t *testing.T) {
 	restVersion := "1.15"
 	//testVolume := Volume
@@ -514,7 +514,7 @@ func TestAddVolume(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostVolumevol(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostVolumevol(restVersion))),
 			Header:     head,
 		}
 	})
@@ -524,7 +524,7 @@ func TestAddVolume(t *testing.T) {
 	//equals(t, testVolume, vol)
 }
 
-//TODO: Get Output Sample
+// TODO: Get Output Sample
 func TestRemoveVolume(t *testing.T) {
 	restVersion := "1.15"
 	//testVolume := Volume
@@ -536,7 +536,7 @@ func TestRemoveVolume(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostVolumevol(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostVolumevol(restVersion))),
 			Header:     head,
 		}
 	})
@@ -557,7 +557,7 @@ func TestListVolumeBlockDiff(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetVolumevolDiff(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetVolumevolDiff(restVersion))),
 			Header:     head,
 		}
 	})
@@ -583,7 +583,7 @@ func TestListVolumePrivateConnections(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetVolumevolHost(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetVolumevolHost(restVersion))),
 			Header:     head,
 		}
 	})
@@ -610,7 +610,7 @@ func TestListVolumeSharedConnections(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetVolumevolHgroup(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetVolumevolHgroup(restVersion))),
 			Header:     head,
 		}
 	})
@@ -649,7 +649,7 @@ func TestListVolumes(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetVolume(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetVolume(restVersion))),
 			Header:     head,
 		}
 	})
@@ -670,7 +670,7 @@ func TestRenameVolume(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutVolumevolName(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutVolumevolName(restVersion))),
 			Header:     head,
 		}
 	})
@@ -691,7 +691,7 @@ func TestRecoverVolume(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutVolumevolName(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutVolumevolName(restVersion))),
 			Header:     head,
 		}
 	})
@@ -712,7 +712,7 @@ func TestTruncateVolume(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutVolumevolSize(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutVolumevolSize(restVersion))),
 			Header:     head,
 		}
 	})
@@ -722,7 +722,7 @@ func TestTruncateVolume(t *testing.T) {
 	equals(t, &testVolume, vol)
 }
 
-//TODO: Get Sample Output
+// TODO: Get Sample Output
 func TestMoveVolume(t *testing.T) {
 	restVersion := "1.15"
 	testVolume := Volume{Name: "v5", Size: 1073741824}
@@ -734,7 +734,7 @@ func TestMoveVolume(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutVolumevolSize(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutVolumevolSize(restVersion))),
 			Header:     head,
 		}
 	})

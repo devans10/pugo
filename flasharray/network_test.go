@@ -18,7 +18,7 @@ package flasharray
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -49,7 +49,7 @@ func TestListNetworkInterface(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetNetwork(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetNetwork(restVersion))),
 			Header:     head,
 		}
 	})
@@ -70,7 +70,7 @@ func TestListNetworkInterfaceError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetNetwork(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetNetwork(restVersion))),
 			Header:     head,
 		}
 	})
@@ -105,7 +105,7 @@ func TestGetNetworkInterface(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetNetworkintf(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetNetworkintf(restVersion))),
 			Header:     head,
 		}
 	})
@@ -126,7 +126,7 @@ func TestGettNetworkInterfaceError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetNetworkintf(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetNetworkintf(restVersion))),
 			Header:     head,
 		}
 	})
@@ -161,7 +161,7 @@ func TestEnableNetworkInterface(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutNetworkintf(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutNetworkintf(restVersion))),
 			Header:     head,
 		}
 	})
@@ -182,7 +182,7 @@ func TestEnableNetworkInterfaceError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutNetworkintf(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutNetworkintf(restVersion))),
 			Header:     head,
 		}
 	})
@@ -217,7 +217,7 @@ func TestDisableNetworkInterface(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutNetworkintf(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutNetworkintf(restVersion))),
 			Header:     head,
 		}
 	})
@@ -238,7 +238,7 @@ func TestDisableNetworkInterfaceError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutNetworkintf(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutNetworkintf(restVersion))),
 			Header:     head,
 		}
 	})
@@ -273,7 +273,7 @@ func TestSetNetworkInterface(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutNetworkintf(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutNetworkintf(restVersion))),
 			Header:     head,
 		}
 	})
@@ -295,7 +295,7 @@ func TestSetNetworkInterfaceError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutNetworkintf(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutNetworkintf(restVersion))),
 			Header:     head,
 		}
 	})
@@ -325,7 +325,7 @@ func TestCreateSubnet(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
 			Header:     head,
 		}
 	})
@@ -346,7 +346,7 @@ func TestCreateSubnetError(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutNetworkintf(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutNetworkintf(restVersion))),
 			Header:     head,
 		}
 	})
@@ -371,7 +371,7 @@ func TestDeleteSubnet(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteSubnetsubnet(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteSubnetsubnet(restVersion))),
 			Header:     head,
 		}
 	})
@@ -392,7 +392,7 @@ func TestDeleteSubnetError(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteNetworkintf(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteNetworkintf(restVersion))),
 			Header:     head,
 		}
 	})
@@ -422,7 +422,7 @@ func TestGetSubnet(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetSubnetsubnet(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetSubnetsubnet(restVersion))),
 			Header:     head,
 		}
 	})
@@ -443,7 +443,7 @@ func TestGetSubnetError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetSubnetsubnet(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetSubnetsubnet(restVersion))),
 			Header:     head,
 		}
 	})
@@ -476,7 +476,7 @@ func TestListSubnets(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetSubnet(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetSubnet(restVersion))),
 			Header:     head,
 		}
 	})
@@ -497,7 +497,7 @@ func TestListSubnetError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetSubnet(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetSubnet(restVersion))),
 			Header:     head,
 		}
 	})
@@ -526,7 +526,7 @@ func TestSetSubnet(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
 			Header:     head,
 		}
 	})
@@ -548,7 +548,7 @@ func TestSetSubnetError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
 			Header:     head,
 		}
 	})
@@ -578,7 +578,7 @@ func TestRenameSubnet(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
 			Header:     head,
 		}
 	})
@@ -599,7 +599,7 @@ func TestRenameSubnetError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
 			Header:     head,
 		}
 	})
@@ -628,7 +628,7 @@ func TestEnableSubnet(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
 			Header:     head,
 		}
 	})
@@ -649,7 +649,7 @@ func TestEnableSubnetError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
 			Header:     head,
 		}
 	})
@@ -678,7 +678,7 @@ func TestDisableSubnet(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
 			Header:     head,
 		}
 	})
@@ -699,7 +699,7 @@ func TestDisableSubnetError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutSubnetsubnet(restVersion))),
 			Header:     head,
 		}
 	})
@@ -733,7 +733,7 @@ func TestCreateVlanInterface(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostNetworkVifintf(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostNetworkVifintf(restVersion))),
 			Header:     head,
 		}
 	})
@@ -754,7 +754,7 @@ func TestCreateVlanInterfaceError(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostNetworkVifintf(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostNetworkVifintf(restVersion))),
 			Header:     head,
 		}
 	})
@@ -779,7 +779,7 @@ func TestDeleteVlanInterface(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteNetworkintf(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteNetworkintf(restVersion))),
 			Header:     head,
 		}
 	})
@@ -800,7 +800,7 @@ func TestDeleteVlanInterfaceError(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteNetworkintf(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteNetworkintf(restVersion))),
 			Header:     head,
 		}
 	})
@@ -826,7 +826,7 @@ func TestGetDNS(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetDNS(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetDNS(restVersion))),
 			Header:     head,
 		}
 	})
@@ -847,7 +847,7 @@ func TestGetDNSError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetDNS(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetDNS(restVersion))),
 			Header:     head,
 		}
 	})
@@ -873,7 +873,7 @@ func TestSetDNS(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutDNS(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutDNS(restVersion))),
 			Header:     head,
 		}
 	})
@@ -895,7 +895,7 @@ func TestSetDNSError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutDNS(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutDNS(restVersion))),
 			Header:     head,
 		}
 	})
@@ -948,7 +948,7 @@ func TestListPorts(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetPort(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetPort(restVersion))),
 			Header:     head,
 		}
 	})
@@ -969,7 +969,7 @@ func TestListPortsError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetPort(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetPort(restVersion))),
 			Header:     head,
 		}
 	})

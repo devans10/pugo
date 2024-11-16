@@ -18,7 +18,7 @@ package flasharray
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -63,7 +63,7 @@ func TestListCert(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetCert(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetCert(restVersion))),
 			Header:     head,
 		}
 	})
@@ -84,7 +84,7 @@ func TestListCertError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetCert(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetCert(restVersion))),
 			Header:     head,
 		}
 	})
@@ -120,7 +120,7 @@ func TestGetCert(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetCertmanagement(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetCertmanagement(restVersion))),
 			Header:     head,
 		}
 	})
@@ -141,7 +141,7 @@ func TestGetCertError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetCert(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetCert(restVersion))),
 			Header:     head,
 		}
 	})
@@ -164,7 +164,7 @@ func TestGetCSR(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetCertCSR(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetCertCSR(restVersion))),
 			Header:     head,
 		}
 	})
@@ -185,7 +185,7 @@ func TestGetCSRError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetCertCSR(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetCertCSR(restVersion))),
 			Header:     head,
 		}
 	})
@@ -221,7 +221,7 @@ func TestCreateCert(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostCertcert(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostCertcert(restVersion))),
 			Header:     head,
 		}
 	})
@@ -242,7 +242,7 @@ func TestCreateCertError(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetCertCSR(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetCertCSR(restVersion))),
 			Header:     head,
 		}
 	})
@@ -278,7 +278,7 @@ func TestSetCert(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutCertcert(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutCertcert(restVersion))),
 			Header:     head,
 		}
 	})
@@ -299,7 +299,7 @@ func TestSetCertError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutCertcert(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutCertcert(restVersion))),
 			Header:     head,
 		}
 	})
@@ -322,7 +322,7 @@ func TestDeleteCert(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteCertcert(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteCertcert(restVersion))),
 			Header:     head,
 		}
 	})
@@ -343,7 +343,7 @@ func TestDeleteCertError(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteCertcert(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteCertcert(restVersion))),
 			Header:     head,
 		}
 	})

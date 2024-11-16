@@ -18,7 +18,7 @@ package flasharray
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -243,7 +243,7 @@ func TestConnectHostgroup(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostHgrouphgroupVolumevol(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostHgrouphgroupVolumevol(restVersion))),
 			Header:     head,
 		}
 	})
@@ -263,7 +263,7 @@ func TestConnectHostgroupError(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostHgrouphgroupVolumevol(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostHgrouphgroupVolumevol(restVersion))),
 			Header:     head,
 		}
 	})
@@ -285,7 +285,7 @@ func TestCreateHostgroup(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostHgrouphgroup(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostHgrouphgroup(restVersion))),
 			Header:     head,
 		}
 	})
@@ -306,7 +306,7 @@ func TestCreateHostgroupError(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostHgrouphgroup(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostHgrouphgroup(restVersion))),
 			Header:     head,
 		}
 	})
@@ -328,7 +328,7 @@ func TestDeleteHostgroup(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteHgrouphgroup(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteHgrouphgroup(restVersion))),
 			Header:     head,
 		}
 	})
@@ -348,7 +348,7 @@ func TestDeleteHostgroupError(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteHgrouphgroup(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteHgrouphgroup(restVersion))),
 			Header:     head,
 		}
 	})
@@ -370,7 +370,7 @@ func TestDisconnectHostgroup(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteHgrouphgroupVolumevol(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteHgrouphgroupVolumevol(restVersion))),
 			Header:     head,
 		}
 	})
@@ -390,7 +390,7 @@ func TestDisconnectHostgroupError(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteHgrouphgroupVolumevol(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteHgrouphgroupVolumevol(restVersion))),
 			Header:     head,
 		}
 	})
@@ -412,7 +412,7 @@ func TestGetHostgroup(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHgrouphgroup(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetHgrouphgroup(restVersion))),
 			Header:     head,
 		}
 	})
@@ -432,7 +432,7 @@ func TestGetHostgroupError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHgrouphgroup(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetHgrouphgroup(restVersion))),
 			Header:     head,
 		}
 	})
@@ -460,7 +460,7 @@ func TestGetHostgroupConnections(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHgrouphgroupVolume(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetHgrouphgroupVolume(restVersion))),
 			Header:     head,
 		}
 	})
@@ -480,7 +480,7 @@ func TestGetHostgroupConnectionsError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHgrouphgroupVolume(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetHgrouphgroupVolume(restVersion))),
 			Header:     head,
 		}
 	})
@@ -504,7 +504,7 @@ func TestListHostgroups(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHgroup(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetHgroup(restVersion))),
 			Header:     head,
 		}
 	})
@@ -524,7 +524,7 @@ func TestListHostgroupsError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHgroup(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetHgroup(restVersion))),
 			Header:     head,
 		}
 	})
@@ -546,7 +546,7 @@ func TestRenameHostgroup(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutHgrouphgroupRename(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutHgrouphgroupRename(restVersion))),
 			Header:     head,
 		}
 	})
@@ -566,7 +566,7 @@ func TestRenameHostgroupError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutHgrouphgroupRename(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutHgrouphgroupRename(restVersion))),
 			Header:     head,
 		}
 	})
@@ -588,7 +588,7 @@ func TestSetHostgroup(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutHgrouphgroup(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutHgrouphgroup(restVersion))),
 			Header:     head,
 		}
 	})
@@ -609,7 +609,7 @@ func TestSetHostgroupError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutHgrouphgroup(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutHgrouphgroup(restVersion))),
 			Header:     head,
 		}
 	})

@@ -18,7 +18,7 @@ package flasharray
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -34,7 +34,7 @@ func TestEnableConsoleLock(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayConsoleLock(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayConsoleLock(restVersion))),
 			Header:     head,
 		}
 	})
@@ -54,7 +54,7 @@ func TestEnableConsoleLockError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayConsoleLock(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayConsoleLock(restVersion))),
 			Header:     head,
 		}
 	})
@@ -76,7 +76,7 @@ func TestDisableConsoleLock(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayConsoleLock(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayConsoleLock(restVersion))),
 			Header:     head,
 		}
 	})
@@ -95,7 +95,7 @@ func TestDisableConsoleLockError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayConsoleLock(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayConsoleLock(restVersion))),
 			Header:     head,
 		}
 	})
@@ -118,7 +118,7 @@ func TestGetConsoleLock(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArrayConsoleLock(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetArrayConsoleLock(restVersion))),
 			Header:     head,
 		}
 	})
@@ -139,7 +139,7 @@ func TestGetConsoleLockError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArrayConsoleLock(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetArrayConsoleLock(restVersion))),
 			Header:     head,
 		}
 	})
@@ -165,7 +165,7 @@ func TestGet(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArray(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetArray(restVersion))),
 			Header:     head,
 		}
 	})
@@ -186,7 +186,7 @@ func TestGetError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArray(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetArray(restVersion))),
 			Header:     head,
 		}
 	})
@@ -212,7 +212,7 @@ func TestGetArray(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArray(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetArray(restVersion))),
 			Header:     head,
 		}
 	})
@@ -233,7 +233,7 @@ func TestGetArrayError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArray(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetArray(restVersion))),
 			Header:     head,
 		}
 	})
@@ -255,7 +255,7 @@ func TestGetArraySpace(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArraySpace(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetArraySpace(restVersion))),
 			Header:     head,
 		}
 	})
@@ -275,7 +275,7 @@ func TestGetArraySpaceError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArraySpace(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetArraySpace(restVersion))),
 			Header:     head,
 		}
 	})
@@ -297,7 +297,7 @@ func TestGetMonitor(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArrayMonitor(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetArrayMonitor(restVersion))),
 			Header:     head,
 		}
 	})
@@ -317,7 +317,7 @@ func TestGetMonitorError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetArrayMonitor(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetArrayMonitor(restVersion))),
 			Header:     head,
 		}
 	})
@@ -340,7 +340,7 @@ func TestDisablePhoneHome(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
 			Header:     head,
 		}
 	})
@@ -361,7 +361,7 @@ func TestDisablePhoneHomeError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
 			Header:     head,
 		}
 	})
@@ -384,7 +384,7 @@ func TestEnablePhoneHome(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
 			Header:     head,
 		}
 	})
@@ -405,7 +405,7 @@ func TestEnablePhoneHomeError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
 			Header:     head,
 		}
 	})
@@ -428,7 +428,7 @@ func TestGetManualPhoneHome(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
 			Header:     head,
 		}
 	})
@@ -449,7 +449,7 @@ func TestGetManualPhoneHomeError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayPhonehome(restVersion))),
 			Header:     head,
 		}
 	})
@@ -472,7 +472,7 @@ func TestEnableRemoteAssist(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
 			Header:     head,
 		}
 	})
@@ -493,7 +493,7 @@ func TestEnableRemoteAssistError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
 			Header:     head,
 		}
 	})
@@ -516,7 +516,7 @@ func TestDisableRemoteAssist(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
 			Header:     head,
 		}
 	})
@@ -537,7 +537,7 @@ func TestDisableRemoteAssistError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
 			Header:     head,
 		}
 	})
@@ -560,7 +560,7 @@ func TestGetRemoteAssist(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
 			Header:     head,
 		}
 	})
@@ -581,7 +581,7 @@ func TestGetRemoteAssistError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutArrayRemoteassist(restVersion))),
 			Header:     head,
 		}
 	})

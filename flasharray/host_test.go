@@ -18,7 +18,7 @@ package flasharray
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -223,7 +223,7 @@ func TestConnectHost(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostHosthostVolumevol(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostHosthostVolumevol(restVersion))),
 			Header:     head,
 		}
 	})
@@ -244,7 +244,7 @@ func TestCreateHost(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostHosthost(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostHosthost(restVersion))),
 			Header:     head,
 		}
 	})
@@ -265,7 +265,7 @@ func TestDeleteHost(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteHosthost(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteHosthost(restVersion))),
 			Header:     head,
 		}
 	})
@@ -286,7 +286,7 @@ func TestDisconnectHost(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteHosthostVolumevol(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteHosthostVolumevol(restVersion))),
 			Header:     head,
 		}
 	})
@@ -307,7 +307,7 @@ func TestGetHost(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHosthost(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetHosthost(restVersion))),
 			Header:     head,
 		}
 	})
@@ -330,7 +330,7 @@ func TestAddHost(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPostHosthostPgrouppgroup(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPostHosthostPgrouppgroup(restVersion))),
 			Header:     head,
 		}
 	})
@@ -353,7 +353,7 @@ func TestRemoveHost(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteHosthostPgrouppgroup(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteHosthostPgrouppgroup(restVersion))),
 			Header:     head,
 		}
 	})
@@ -374,7 +374,7 @@ func TestListHostConnections(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHosthostVolumePrivate(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetHosthostVolumePrivate(restVersion))),
 			Header:     head,
 		}
 	})
@@ -398,7 +398,7 @@ func TestListHosts(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHost(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetHost(restVersion))),
 			Header:     head,
 		}
 	})
@@ -419,7 +419,7 @@ func TestRenameHost(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutHosthostRename(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutHosthostRename(restVersion))),
 			Header:     head,
 		}
 	})
@@ -440,7 +440,7 @@ func TestSetHost(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutHosthost(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutHosthost(restVersion))),
 			Header:     head,
 		}
 	})

@@ -18,7 +18,7 @@ package flasharray
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -45,7 +45,7 @@ func TestGetDrive(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetDrivedrive(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetDrivedrive(restVersion))),
 			Header:     head,
 		}
 	})
@@ -66,7 +66,7 @@ func TestGetDriveError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetDrivedrive(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetDrivedrive(restVersion))),
 			Header:     head,
 		}
 	})
@@ -107,7 +107,7 @@ func TestListDrives(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetDrive(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetDrive(restVersion))),
 			Header:     head,
 		}
 	})
@@ -128,7 +128,7 @@ func TestListDrivesError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetDrive(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetDrive(restVersion))),
 			Header:     head,
 		}
 	})
@@ -162,7 +162,7 @@ func TestGetHardware(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHardwareComp(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetHardwareComp(restVersion))),
 			Header:     head,
 		}
 	})
@@ -183,7 +183,7 @@ func TestGetHardwareError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHardwareComp(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetHardwareComp(restVersion))),
 			Header:     head,
 		}
 	})
@@ -217,7 +217,7 @@ func TestListHardware(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHardware(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetHardware(restVersion))),
 			Header:     head,
 		}
 	})
@@ -238,7 +238,7 @@ func TestListHardwareError(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetHardware(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetHardware(restVersion))),
 			Header:     head,
 		}
 	})
@@ -266,7 +266,7 @@ func TestSetHardware(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutHardwareComp(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutHardwareComp(restVersion))),
 			Header:     head,
 		}
 	})
@@ -288,7 +288,7 @@ func TestSetHardwareError(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 500,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respPutHardwareComp(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respPutHardwareComp(restVersion))),
 			Header:     head,
 		}
 	})

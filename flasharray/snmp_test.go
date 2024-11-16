@@ -18,7 +18,7 @@ package flasharray
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -42,7 +42,7 @@ func TestGetSnmp(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetSnmpsnmp(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetSnmpsnmp(restVersion))),
 			Header:     head,
 		}
 	})
@@ -71,7 +71,7 @@ func TestListSnmp(t *testing.T) {
 		equals(t, "GET", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetSnmp(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetSnmp(restVersion))),
 			Header:     head,
 		}
 	})
@@ -98,7 +98,7 @@ func TestCreateSnmp(t *testing.T) {
 		equals(t, "POST", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetSnmpsnmp(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetSnmpsnmp(restVersion))),
 			Header:     head,
 		}
 	})
@@ -125,7 +125,7 @@ func TestSetSnmp(t *testing.T) {
 		equals(t, "PUT", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respGetSnmpsnmp(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respGetSnmpsnmp(restVersion))),
 			Header:     head,
 		}
 	})
@@ -150,7 +150,7 @@ func TestDeleteSnmp(t *testing.T) {
 		equals(t, "DELETE", req.Method)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(respDeleteSnmpsnmp(restVersion))),
+			Body:       io.NopCloser(bytes.NewBufferString(respDeleteSnmpsnmp(restVersion))),
 			Header:     head,
 		}
 	})
